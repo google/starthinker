@@ -6,7 +6,7 @@
     "icon":"add_alert",
     "title":"CM360 Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
-    "image":"https://storage.googleapis.com/starthinker-ui/floodlight_monitor.png",
+    "image":"https://google.github.io/starthinker/static/floodlight_monitor.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
     "from":["dv360"],
     "to":["email"],

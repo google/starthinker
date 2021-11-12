@@ -32,14 +32,17 @@ class AccountConfig(AppConfig):
   name = 'starthinker_ui.account'
 
   def ready(self):
-    print('CHECKING IF USER BUCKET EXISTS:', USER_BUCKET, USER_LOCATION)
-    bucket_create(
-      Configuration(
-        service=settings.UI_SERVICE,
-        project=settings.UI_PROJECT
-      ),
-      'service',
-      settings.UI_PROJECT,
-      USER_BUCKET,
-      USER_LOCATION
-    )
+    try:
+      print('CHECKING IF USER BUCKET EXISTS:', USER_BUCKET, USER_LOCATION)
+      bucket_create(
+        Configuration(
+          service=settings.UI_SERVICE,
+          project=settings.UI_PROJECT
+        ),
+        'service',
+        settings.UI_PROJECT,
+        USER_BUCKET,
+        USER_LOCATION
+      )
+    except Exception as err:
+      print(str(err))

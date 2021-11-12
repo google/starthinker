@@ -34,13 +34,13 @@
       gtag('js', new Date());
       gtag('config', 'UA-167283455-3');
     </script>
-    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://google.github.io/starthinker/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://google.github.io/starthinker/static/favicon.ico" type="image/x-icon">
     <!--Import Google Icon Font-->
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
+    <link rel="stylesheet" href="https://google.github.io/starthinker/static/css/materialize-1.0.0.min.css">
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
       .material-icons { line-height: normal; vertical-align: middle; }
@@ -81,7 +81,7 @@
     <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <img src="https://google.github.io/starthinker/static/StarThinker.png" alt="StarThinker Logo"/>
           <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -97,8 +97,8 @@
     </ul>
   <body>
     <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
+    <script type="text/javascript" src="https://google.github.io/starthinker/static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://google.github.io/starthinker/static/js/materialize-1.0.0.min.js"></script>
 <!--
 Start of Floodlight Tag: Please do not remove
 Activity name of this tag: Gallery Conversions
@@ -125,7 +125,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         <p class="flow-text">Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.</p>
       </div>
       <div class="col s12 m6 l8">
-        <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/transparency.png" alt="CM360 Domain And App Transparency Sample Screenshot"/>
+        <img id="solution_image" src="https://google.github.io/starthinker/static/transparency.png" alt="CM360 Domain And App Transparency Sample Screenshot"/>
       </div>
     </div>
   <br/><br/>
@@ -242,11 +242,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 19, 2019 (2 years, 1 month)</td>
+              <td>Aug. 19, 2019 (2 years, 2 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Domain+And+App+Transparency+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Domain+And+App+Transparency+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fstarthinker.googleplex.com%2Fsolution%2Ftransparency%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Domain+And+App+Transparency+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Domain+And+App+Transparency+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Ftransparency%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -555,23 +555,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "view": "Transparency_Combined_KPI"
             },
             "from": {
-                "query": "With Transparent_Domains AS (   SELECT    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,    CONCAT(Site_Cm360, ' - ', CAST(Site_Id_Cm360 AS STRING)) AS Site,    Domain,    Ad_Type,    Verifiable_Impressions AS Impressions,    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions  FROM `[PARAMETER].Transparency_Domain_KPI`),Transparent_Apps AS (   SELECT    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,    CONCAT(Site_Cm360, ' - ', CAST(Site_Id_Cm360 AS STRING)) AS Site,    /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */    CASE       WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))      WHEN App_Id IS NOT NULL THEN App_Id      ELSE NULL    END AS App,    Ad_Type,    Impressions,    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions  FROM `[PARAMETER].Transparency_App_KPI`  WHERE Environment = 'App'),Domains_And_Apps AS (  SELECT     TD.Advertiser,    TD.Campaign,    TD.Site,    TD.Ad_Type,    TD.Domain,    TD.Impressions AS Domain_Impressions,    TD.Visible_Impressions AS Domain_Visible_Impressions,    TD.Null_Impressions AS Domain_Null_Impressions,    NULL AS App,    0 AS App_Impressions,    0 AS App_Visible_Impressions,    0 AS App_Null_Impressions  FROM Transparent_Domains AS TD  UNION ALL  SELECT     TA.Advertiser,    TA.Campaign,    TA.Site,    TA.Ad_Type,    NULL AS Domain,    0 AS Domain_Impressions,    0 AS Domain_Visible_Impressions,    0 AS Domain_Null_Impressions,    TA.App,    TA.Impressions AS App_Impressions,    TA.Visible_Impressions AS App_Visible_Impressions,    TA.Null_Impressions AS App_Null_Impressions  FROM Transparent_Apps AS TA)  SELECT    Advertiser,    Campaign,    Site,    COALESCE(Domain, App, '') AS Domain_Or_App,    Ad_Type,    CASE      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */      WHEN App IS NOT NULL THEN 'App'      WHEN Domain IS NOT NULL Then 'Domain'      ELSE 'Neither'    END AS Category,    SUM(Domain_Impressions) AS Domain_Impressions,    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,    SUM(App_Impressions) AS App_Impressions,    SUM(App_Visible_Impressions) AS App_Visible_Impressions,    SUM(App_Null_Impressions) AS App_Null_Impressions,    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/  FROM Domains_And_Apps  GROUP By 1,2,3,4,5,6",
-                "parameters": [
-                    {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
-                        }
-                    },
-                    {
+                "query": "WITH           Transparent_Domains AS (             SELECT               CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,               CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,               CONCAT(Site_Cm360, ' - ', CAST(Site_Id_Cm360 AS STRING)) AS Site,               Domain,               Ad_Type,               Verifiable_Impressions AS Impressions,               IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,               IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions             FROM `{dataset}.Transparency_Domain_KPI`           ),           Transparent_Apps AS (             SELECT               CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,               CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,               CONCAT(Site_Cm360, ' - ', CAST(Site_Id_Cm360 AS STRING)) AS Site,               /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */               CASE                 WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))                 WHEN App_Id IS NOT NULL THEN App_Id                 ELSE NULL               END AS App,               Ad_Type,               Impressions,               IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,               IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions             FROM `{dataset}.Transparency_App_KPI`  WHERE Environment = 'App'           ),           Domains_And_Apps AS (             SELECT               TD.Advertiser,               TD.Campaign,               TD.Site,               TD.Ad_Type,               TD.Domain,               TD.Impressions AS Domain_Impressions,               TD.Visible_Impressions AS Domain_Visible_Impressions,               TD.Null_Impressions AS Domain_Null_Impressions,               NULL AS App,               0 AS App_Impressions,               0 AS App_Visible_Impressions,               0 AS App_Null_Impressions  FROM Transparent_Domains AS TD  UNION ALL  SELECT               TA.Advertiser,               TA.Campaign,               TA.Site,               TA.Ad_Type,               NULL AS Domain,               0 AS Domain_Impressions,               0 AS Domain_Visible_Impressions,               0 AS Domain_Null_Impressions,               TA.App,               TA.Impressions AS App_Impressions,               TA.Visible_Impressions AS App_Visible_Impressions,               TA.Null_Impressions AS App_Null_Impressions             FROM Transparent_Apps AS TA           )           SELECT             Advertiser,             Campaign,             Site,             COALESCE(Domain, App, '') AS Domain_Or_App,             Ad_Type,             CASE               WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */               WHEN App IS NOT NULL THEN 'App'               WHEN Domain IS NOT NULL Then 'Domain'               ELSE 'Neither'             END AS Category,             SUM(Domain_Impressions) AS Domain_Impressions,             SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,             SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,             SUM(App_Impressions) AS App_Impressions,             SUM(App_Visible_Impressions) AS App_Visible_Impressions,             SUM(App_Null_Impressions) AS App_Null_Impressions,             SUM(App_Impressions + Domain_Impressions) AS Impressions             /* Could also be MAX as its always one or the other*/           FROM Domains_And_Apps  GROUP By 1,2,3,4,5,6",
+                "parameters": {
+                    "dataset": {
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
                     }
-                ],
+                },
                 "legacy": false
             }
         }

@@ -9,7 +9,7 @@
     "font":"Roboto, Helvetica, Arial sans-serif;",
     "align":"center"
   },
-  "logo":"https://storage.googleapis.com/starthinker-ui/gTech_StarThinker.png",
+  "logo":"https://google.github.io/starthinker/static/gTech_StarThinker.png",
   "body":{
     "sections":[
       {
@@ -19,7 +19,7 @@
           [
             {
               "header":"GitHub Gallery ",
-              "image":{ "src":"https://storage.googleapis.com/starthinker-ui/starthinker_ui_solutions.png", "link":"https://google.github.io/starthinker/" },
+              "image":{ "src":"https://google.github.io/starthinker/static/starthinker_ui_solutions.png", "link":"https://google.github.io/starthinker/" },
               "paragraph":"Each solution can be deployed without coding using the [StarThinker UI](http://go/starthinker).  All jobs run as you.",
               "button":{
                 "text":"Visit",
@@ -35,7 +35,7 @@
             },
             {
               "header":"GitHub Code",
-              "image":{ "src":"https://storage.googleapis.com/starthinker-ui/starthinker_ui_solutions.png", "link":"https://github.com/google/starthinker" },
+              "image":{ "src":"https://google.github.io/starthinker/static/starthinker_ui_solutions.png", "link":"https://github.com/google/starthinker" },
               "paragraph":"Download the source and have your development team customize any part of StarThinker or its solutions.",
               "button":{
                 "text":"Visit",

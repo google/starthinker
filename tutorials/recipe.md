@@ -128,7 +128,7 @@ scripts/script_hello.json
       "This should be called for testing only."
     ],
     "authors":["kenjora@google.com"],
-    "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
+    "image":"https://google.github.io/starthinker/static/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
     "from":["cm"],

@@ -18,6 +18,7 @@
 
 import os
 import re
+import shutil
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -46,6 +47,7 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
 
     settings.GOOGLE_ANALYTICS = kwargs['analytics']
+    settings.STATIC_URL = 'https://google.github.io/starthinker/static/'
 
     directory = '%s/docs' % settings.UI_ROOT
     print('Writing:', directory)
@@ -63,6 +65,12 @@ class Command(BaseCommand):
     os.makedirs(directory, exist_ok=True)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(self.strip_trailing_whitespace(solutions(request=None)))
+
+    # Move static files to doc/
+    src_dir = '%s/starthinker_ui/static' % settings.UI_ROOT
+    dest_dir = '%s/docs/static' % settings.UI_ROOT
+    shutil.rmtree(dest_dir)
+    shutil.copytree(src_dir, dest_dir)
 
     for s in Script.get_scripts():
       if s.get_open_source():

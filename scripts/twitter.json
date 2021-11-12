@@ -6,7 +6,7 @@
     "icon":"perm_phone_msg",
     "title":"Twitter Targeting",
     "description":"Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.",
-    "image":"https://storage.googleapis.com/starthinker-ui/twitter_targeting.png",
+    "image":"https://google.github.io/starthinker/static/twitter_targeting.png",
     "sample":"https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
     "from":["twitter", "sheets"],
     "to":["bigquery", "dv360"],

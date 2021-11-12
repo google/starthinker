@@ -6,7 +6,7 @@
     "icon":"fingerprint",
     "title":"CM360 Domain And App Transparency",
     "description":"Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.",
-    "image":"https://storage.googleapis.com/starthinker-ui/transparency.png",
+    "image":"https://google.github.io/starthinker/static/transparency.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj",
     "from":["cm360"],
     "to":["bigquery", "datastudio"],

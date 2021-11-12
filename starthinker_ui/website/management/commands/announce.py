@@ -54,7 +54,7 @@ class Command(BaseCommand):
             'align': 'left'
         },
         'logo':
-            'https://storage.googleapis.com/starthinker-ui/gTech_StarThinker.png',
+            'https://google.github.io/starthinker/static/gTech_StarThinker.png',
         'body': {
             'sections': [{
                 'header':
