@@ -8,6 +8,7 @@
     "to":["bigquery"],
     "title":"BigQuery Dataset",
     "description":"Create and permission a dataset in BigQuery.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dataset.json",
     "instructions":[
       "Specify the name of the dataset.",
       "If dataset exists, it is inchanged.",
@@ -15,7 +16,7 @@
       "CAUTION: Removing permissions in StarThinker has no effect.",
       "CAUTION: To remove permissions you have to edit the dataset."
     ],
-    "authors":["ceh@google.com", "kenjora@google.com"]
+    "authors":["kenjora@google.com"]
   },
   "tasks":[
     { "dataset":{

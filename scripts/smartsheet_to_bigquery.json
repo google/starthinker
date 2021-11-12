@@ -6,6 +6,7 @@
     "icon":"donut_large",
     "title":"SmartSheet Sheet To BigQuery",
     "description":"Move sheet data into a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/smartsheet.json",
     "from":["smartsheet"],
     "to":["bigquery"],
     "instructions":[

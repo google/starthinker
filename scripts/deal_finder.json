@@ -8,6 +8,7 @@
     "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
     "image":"https://google.github.io/starthinker/static/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
+    "test":"https://github.com/google/starthinker/blob/master/tests/deal_finder.json",
     "from":["dv360"],
     "to":["bigquery", "datastudio"],
     "pitches":[

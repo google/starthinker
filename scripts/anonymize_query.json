@@ -12,7 +12,7 @@
        "Provide the destination project, dataset, and table."
     ],
     "image":"https://google.github.io/starthinker/static/anonymize_dataset.png",
-    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json",
+    "test":"https://github.com/google/starthinker/blob/master/tests/anonymize.json",
     "from":["bigquery"],
     "to":["bigquery"],
     "pitches":[

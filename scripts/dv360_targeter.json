@@ -8,6 +8,7 @@
     "description":"Allows bulk targeting DV360 through Sheets and BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/dv360_targeter.png",
     "sample":"https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dv360_targeter.json",
     "from":["dv360"],
     "to":["sheets", "bigquery" ],
     "pitches":[

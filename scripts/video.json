@@ -8,6 +8,7 @@
     "description":"Add images, text, and audio to videos.",
     "from":["sheets", "video"],
     "to":["bigquery", "youtube", "cm360"],
+    "test":"https://github.com/google/starthinker/blob/master/tests/video.json",
     "instructions":[
       "Provide either a sheet or a BigQuery table.",
       "Each video edit will be read from the sheet or table."

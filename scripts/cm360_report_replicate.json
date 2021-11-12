@@ -8,6 +8,8 @@
     "to":["bigquery"],
     "title":"CM360 Report Replicate",
     "description":"Replicate a report across multiple networks and advertisers.",
+    "documentation":"https://medium.com/starthinker/replicating-cm360-reports-across-multiple-accounts-108c7c7278b3",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_report_replicate.json",
     "instructions":[
       "Provide the name or ID of an existing report.",
       "Run the recipe once to generate the input sheet called {recipe_name}.",

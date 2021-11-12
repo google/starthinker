@@ -8,6 +8,7 @@
     "description":"Gives DV clients ability to see which users have access to which parts of an account. Loads DV user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/barnacle_dv.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/9f6b9e62-43ec-4027-849a-287e9c1911bd",
+    "test":"https://github.com/google/starthinker/blob/master/tests/barnacle_dv360.json",
     "documentation":"https://medium.com/starthinker/display-video-360-user-audit-solution-fea607ae3ecc",
     "from":["dv360"],
     "to":["datastudio", "bigquery" ],

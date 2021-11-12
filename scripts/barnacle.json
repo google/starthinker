@@ -8,6 +8,7 @@
     "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://google.github.io/starthinker/static/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
+    "test":"https://github.com/google/starthinker/blob/master/tests/barnacle.json",
     "from":["cm360"],
     "to":["datastudio", "bigquery" ],
     "pitches":[

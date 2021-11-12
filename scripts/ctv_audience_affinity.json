@@ -10,6 +10,7 @@
     "description": "The cTV Audience Affinity dashboard is designed to give clients insights into which cTV apps their audiences have a high affinity for using.  The goal of this dashboard is to provide some assistance with the lack of audience targeting for cTV within DV360.",
     "image": "https://google.github.io/starthinker/static/ctv_audience_affinity.png",
     "sample": "https://datastudio.google.com/reporting/3008bdb5-03a7-4f18-99ae-038d803a7dc3",
+    "test":"https://github.com/google/starthinker/blob/master/tests/ctv_audience_affinity.json",
     "from":["dv360"],
     "to":["datastudio", "bigquery"],
     "status":"NEEDS FIX - tests not passing.",

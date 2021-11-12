@@ -104,6 +104,9 @@ class Script:
   def get_link_colab(self):
     return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 
+  def get_link_python(self):
+    return 'https://github.com/google/starthinker/blob/master/examples/%s_example.py' % self.get_tag()
+
   def get_link_airflow(self):
     return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag()
 

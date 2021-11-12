@@ -6,6 +6,7 @@
     "icon":"donut_large",
     "title":"CM360 Oculi",
     "description":"Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_oculi.json",
     "from":["cm360", "vision_api"],
     "to":["bigquery"],
     "pitches":[

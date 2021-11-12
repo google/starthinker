@@ -6,6 +6,7 @@
     "icon":"settings_input_component",
     "title":"Google API To BigQuery",
     "description":"Execute any Google API function and store results to BigQuery.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/google_api.json",
     "from":["google_api"],
     "to":["bigquery"],
     "instructions":[

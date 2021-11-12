@@ -9,6 +9,7 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/campaign_comparison.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/e34669ec-0894-4453-9ac4-ae9c3e739c48/page/p_pkxetkzemc",
     "documentation":"https://medium.com/starthinker/campaign-comparison-dashboard-c0849697f807",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_campaign_comparison.json",
     "from":["cm360"],
     "to":["datastudio", "bigquery" ],
     "pitches":[

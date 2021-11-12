@@ -11,6 +11,7 @@
     "documentation":"",
     "from":["weather", "sheets"],
     "to":["dv360"],
+    "test":"https://github.com/google/starthinker/blob/master/tests/dv3po_custom_signals.json",
     "status":"NEEDS FIX - needs to be migrated from SDF to API calls.",
     "pitches":[
       "Automatically react to custom signals and analytics",

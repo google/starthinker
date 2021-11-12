@@ -8,6 +8,7 @@
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
     "image":"https://google.github.io/starthinker/static/floodlight_monitor.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
+    "test":"https://github.com/google/starthinker/blob/master/tests/floodlight_monitor.json",
     "from":["dv360"],
     "to":["email"],
     "pitches":[

@@ -8,6 +8,7 @@
     "to":["sheets"],
     "title":"CM360 Report To Sheets",
     "description":"Move existing CM report into a Sheet tab.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dcm_to_sheets.json",
     "instructions":[
       "Specify an account id.",
       "Specify either report name or report id to move a report.",

@@ -78,21 +78,9 @@
       </a>
     {% endif %}
 
-    {% if script.get_test %}
-      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
-        <i class="material-icons right">thumb_up</i>Example Test
-      </a>
-    {% endif %}
-
     {% if script.get_documentation %}
       <a class="btn-large blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
         <i class="material-icons right">list</i>Documentation
-      </a>
-    {% endif %}
-
-    {% if not external %}
-      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
-        <i class="material-icons right">play_circle_outline</i>Run Now
       </a>
     {% endif %}
 
@@ -100,11 +88,26 @@
       <a class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_python }}" target="_blank">
+        <i class="material-icons right">source</i>Python
+      </a>
       <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
-        <i class="material-icons right">copyright</i>Colab Notebook
+        <i class="material-icons right">menu_book</i>Colab
       </a>
       <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
-        <i class="material-icons right">copyright</i>Airflow DAG
+        <i class="material-icons right">air</i>Airflow
+      </a>
+    {% endif %}
+
+    {% if script.get_test %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
+        <i class="material-icons right">thumb_up</i>Test
+      </a>
+    {% endif %}
+
+    {% if not external %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
+        <i class="material-icons right">play_circle_outline</i>Run Now
       </a>
     {% endif %}
 

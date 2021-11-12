@@ -8,6 +8,7 @@
     "description":"Allows bulk editing DV360 through Sheets and BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulk_dv360.png",
     "sample":"https://docs.google.com/spreadsheets/d/18G6cGo4j5SsY08H8P53R22D_Pm6m-zkE6APd3EDLf2c/",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dv360_editor.json",
     "from":["dv360"],
     "to":["sheets", "bigquery" ],
     "pitches":[

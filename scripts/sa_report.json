@@ -6,6 +6,7 @@
     "icon":"donut_large",
     "title":"SA360 Report",
     "description":"Move SA360 report to BigQuery.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/sa_to_bigquery.json",
     "from":["sa360"],
     "to":["bigquery"],
     "pitches":[

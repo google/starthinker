@@ -6,6 +6,7 @@
     "icon":"archive",
     "title":"Storage Archive",
     "description":"Wipe old information from a Storage bucket based on last update time.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/archive.json",
     "from":["storage"],
     "to":["storage"],
     "instructions":[

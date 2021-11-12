@@ -6,6 +6,7 @@
     "icon":"addchart",
     "title":"BigQuery Function",
     "description":"Add a custom function or table to a dataset.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/bigquery_function.json",
     "to":["bigquery"],
     "from":["bigquery"],
     "instructions":[

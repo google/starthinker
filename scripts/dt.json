@@ -6,6 +6,7 @@
     "icon":"assignment_returned",
     "title":"CM360 Data Transfer To Bigquery",
     "description":"Move data from a DT bucket into a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dt.json",
     "from":["cm360"],
     "to":["bigquery"],
     "instructions":[

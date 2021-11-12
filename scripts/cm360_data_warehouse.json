@@ -6,6 +6,7 @@
     "icon":"donut_large",
     "title":"CM360 Data Warehouse",
     "description":"Deploy a BigQuery dataset mirroring CM360 account structure. Foundation for solutions on top.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_data_warehouse.json",
     "from":["cm360"],
     "to":["bigquery"],
     "pitches":[

@@ -6,6 +6,7 @@
     "icon":"donut_large",
     "title":"DV360 SDF To BigQuery",
     "description":"Download SDF reports into a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/sdf_to_bigquery.json",
     "from":["dv360"],
     "to":["bigquery"],
     "instructions":[

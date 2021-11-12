@@ -6,6 +6,7 @@
     "icon":"file_upload",
     "title":"CM360 Conversion Upload From BigQuery",
     "description":"Move from BigQuery to CM.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_conversions.json",
     "from":["bigquery"],
     "to":["cm360"],
     "instructions":[

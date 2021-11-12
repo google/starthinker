@@ -7,7 +7,7 @@
     "title":"DV360 Report Emailed To BigQuery",
     "description":"Pulls a DV360 Report from a gMail email into BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/email_dv360.png",
-    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json",
+    "test":"https://github.com/google/starthinker/blob/master/tests/email_dv360.json",
     "from":["dv360", "gmail"],
     "to":["bigquery"],
     "pitches":[

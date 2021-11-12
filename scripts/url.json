@@ -8,6 +8,7 @@
     "to":["bigquery"],
     "title":"URL",
     "description":"Pull URL list from a table, fetch them, and write the results to another table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/url.json",
     "instructions":[
       "Specify a table with only two columns URL, URI (can be null).",
       "Check bigquery destination for results of fetching each URL."

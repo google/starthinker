@@ -9,7 +9,7 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/segmentology_dv.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/",
     "documentation":"https://medium.com/starthinker/using-census-data-for-advertising-campaign-funnel-analysis-2fe0ccbdae2c",
-    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/google_ads_segemntology.json",
+    "test":"https://github.com/google/starthinker/blob/master/tests/google_ads_segemntology.json",
     "from":["google ads", "census"],
     "to":["bigquery", "datastudio"],
     "pitches":[

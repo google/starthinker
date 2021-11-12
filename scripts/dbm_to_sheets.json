@@ -8,6 +8,7 @@
     "to":["sheets"],
     "title":"DV360 Report To Sheets",
     "description":"Move existing DV360 report into a Sheets tab.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dbm_to_sheets.json",
     "instructions":[
       "Specify either report name or report id to move a report.",
       "The most recent valid file will be moved to the sheet."

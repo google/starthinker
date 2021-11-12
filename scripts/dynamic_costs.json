@@ -8,6 +8,7 @@
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
     "from":["cm360", "sheets"],
     "to":["bigquery"],
+    "test":"https://github.com/google/starthinker/blob/master/tests/dynamic_costs.json",
     "status":"NEEDS FIX - test not passing.",
     "instructions":[
       "Add a sheet URL. This is where you will enter advertiser and campaign level details.",

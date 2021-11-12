@@ -8,6 +8,7 @@
     "to":["bigquery"],
     "title":"CM360 Report To BigQuery",
     "description":"Move existing CM report into a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dcm_to_bigquery.json",
     "instructions":[
       "Specify an account id.",
       "Specify either report name or report id to move a report.",

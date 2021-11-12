@@ -7,6 +7,7 @@
     "icon":"view_column",
     "title":"Sheet To BigQuery",
     "description":"Import data from a sheet and move it to a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/sheets.json",
     "from":["sheets"],
     "to":["bigquery"],
     "instructions":[

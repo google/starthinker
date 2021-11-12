@@ -6,6 +6,7 @@
     "icon":"file_copy",
     "title":"Drive Copy",
     "description":"Copy a drive document.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/drive.json",
     "from":["drive"],
     "to":["drive"],
     "instructions":[

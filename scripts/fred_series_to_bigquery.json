@@ -6,6 +6,7 @@
     "icon":"analytics",
     "title":"Federal Reserve Series Data",
     "description":"Download federal reserve series.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/fred.json",
     "to":["bigquery"],
     "from":["fred"],
     "instructions":[

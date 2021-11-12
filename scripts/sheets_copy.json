@@ -6,6 +6,7 @@
     "icon":"view_column",
     "title":"Sheet Copy",
     "description":"Copy tab from a sheet to a sheet.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/sheets.json",
     "from":["sheets"],
     "to":["sheets"],
     "instructions":[
