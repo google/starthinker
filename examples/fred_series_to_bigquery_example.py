@@ -69,8 +69,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Download federal reserve series.
 
-        1. Specify the values for a <a href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html' target='_blank'>Fred observations API call</a>.
-        2. A table will appear in the dataset.
+      1. Specify the values for a 1-Fred observations API call.
+         1.1 - Fred observations API call: https://fred.stlouisfed.org/docs/api/fred/series_observations.html
+      2. A table will appear in the dataset.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

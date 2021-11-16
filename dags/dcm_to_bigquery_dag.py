@@ -71,10 +71,14 @@ CM360 Report To BigQuery
 
 Move existing CM report into a BigQuery table.
 
+
+
   - Specify an account id.
   - Specify either report name or report id to move a report.
   - The most recent valid file will overwrite the table.
   - Schema is pulled from the official CM specification.
+
+
 
 --------------------------------------------------------------
 

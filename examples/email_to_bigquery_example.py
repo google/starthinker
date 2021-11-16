@@ -73,9 +73,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 
-        1. The person executing this recipe must be the recipient of the email.
-        2. Give a regular expression to match the email subject, link or attachment.
-        3. The data downloaded will overwrite the table specified.
+      1. The person executing this recipe must be the recipient of the email.
+      2. Give a regular expression to match the email subject, link or attachment.
+      3. The data downloaded will overwrite the table specified.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

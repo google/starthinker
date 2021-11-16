@@ -63,10 +63,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move data from a DT bucket into a BigQuery table.
 
-        1. Ensure your user has <a href='https://developers.google.com/doubleclick-advertisers/dtv2/getting-started' target='_blank'>access to the bucket</a>.
-        2. Provide the DT bucket name to read from.
-        3. Provide the path of the files to read.
-        4. Each file is synchronized to a unique table.  Use a view or aggregate select.
+      1. Ensure your user has 1-access to the bucket.
+         1.1 - access to the bucket: https://developers.google.com/doubleclick-advertisers/dtv2/getting-started
+      2. Provide the DT bucket name to read from.
+      3. Provide the path of the files to read.
+      4. Each file is synchronized to a unique table.  Use a view or aggregate select.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

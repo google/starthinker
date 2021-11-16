@@ -71,10 +71,14 @@ CM360 Report Replicate
 
 Replicate a report across multiple networks and advertisers.
 
+
+
   - Provide the name or ID of an existing report.
   - Run the recipe once to generate the input sheet called .
   - Enter network and advertiser ids to replicate the report.
   - Data will be written to BigQuery &gt;  &gt;  &gt; _All
+
+
 
 --------------------------------------------------------------
 

@@ -66,13 +66,13 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Pulls a CM Report from a gMail powered email account into BigQuery.
 
-        1. The person executing this recipe must be the recipient of the email.
-        2. Schedule a CM report to be sent to <b></b>.
-        3. Or set up a redirect rule to forward a report you already receive.
-        4. The report must be sent as an attachment.
-        5. Ensure this recipe runs after the report is email daily.
-        6. Give a regular expression to match the email subject.
-        7. Configure the destination in BigQuery to write the data.
+      1. The person executing this recipe must be the recipient of the email.
+      2. Schedule a CM report to be sent to .
+      3. Or set up a redirect rule to forward a report you already receive.
+      4. The report must be sent as an attachment.
+      5. Ensure this recipe runs after the report is email daily.
+      6. Give a regular expression to match the email subject.
+      7. Configure the destination in BigQuery to write the data.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

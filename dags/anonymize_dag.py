@@ -71,9 +71,13 @@ BigQuery Anonymize Dataset
 
 Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
+
+
   - Ensure you have user access to both datasets.
   - Provide the source project and dataset.
   - Provide the destination project and dataset.
+
+
 
 --------------------------------------------------------------
 

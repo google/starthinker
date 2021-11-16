@@ -66,8 +66,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Pull URL list from a table, fetch them, and write the results to another table.
 
-        1. Specify a table with only two columns URL, URI (can be null).
-        2. Check bigquery destination for results of fetching each URL.
+      1. Specify a table with only two columns URL, URI (can be null).
+      2. Check bigquery destination for results of fetching each URL.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

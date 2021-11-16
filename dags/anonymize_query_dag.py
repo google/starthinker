@@ -71,9 +71,13 @@ BigQuery Anonymize Query
 
 Runs a query and anynonamizes all rows.  Used to create sample table for dashboards.
 
+
+
   - Ensure you have user access to both datasets.
   - Provide the source project, dataset and query.
   - Provide the destination project, dataset, and table.
+
+
 
 --------------------------------------------------------------
 

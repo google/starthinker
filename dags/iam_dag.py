@@ -71,9 +71,13 @@ Project IAM
 
 Sets project permissions for an email.
 
+
+
   - Provide a role in the form of projects/[project name]/roles/[role name]
   - Enter an email to grant that role to.
   - This only grants roles, you must remove them from the project manually.
+
+
 
 --------------------------------------------------------------
 

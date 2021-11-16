@@ -71,9 +71,13 @@ BigQuery Query Run
 
 Run query on a project.
 
+
+
   - Specify a single query and choose legacy or standard mode.
   - For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
   - For non legacy use: SELECT * `project.datset.table` WHERE...
+
+
 
 --------------------------------------------------------------
 

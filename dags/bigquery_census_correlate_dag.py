@@ -71,12 +71,16 @@ Census Data Correlation
 
 Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.
 
+
+
   - Pre-requisite is Census Normalize, run that at least once.
   - Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.
   - Define the DATASET and TABLE for the joinable source. Can be a view.
   - Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.
   - Specify where to write the results.
-  - <br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes.
+  - IMPORTANT:** If you use VIEWS, you will have to delete them manually if the recipe changes.
+
+
 
 --------------------------------------------------------------
 

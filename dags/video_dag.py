@@ -71,8 +71,12 @@ Video Overlay
 
 Add images, text, and audio to videos.
 
+
+
   - Provide either a sheet or a BigQuery table.
   - Each video edit will be read from the sheet or table.
+
+
 
 --------------------------------------------------------------
 

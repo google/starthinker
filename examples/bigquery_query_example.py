@@ -59,9 +59,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Save query results into a BigQuery table.
 
-        1. Specify a single query and choose legacy or standard mode.
-        2. For PLX use user authentication and: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
-        3. Every time the query runs it will overwrite the table.
+      1. Specify a single query and choose legacy or standard mode.
+      2. For PLX use user authentication and: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
+      3. Every time the query runs it will overwrite the table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

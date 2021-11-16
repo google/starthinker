@@ -71,7 +71,11 @@ DV360 / CM360 Privacy Audit
 
 Dashboard that shows performance metrics across browser to see the impact of privacy changes.
 
-  - Follow the instructions from <a href="https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/edit?usp=sharing" target="_blank">this document</a>
+
+
+  - Follow the instructions from 1-this document.
+
+  1-this document: https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/
 
 --------------------------------------------------------------
 

@@ -62,10 +62,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Monitor floodlight impressions specified in sheet and send email alerts.
 
-        1. Specify an account_id or account_id:subaccount_id.
-        2. Will copy <a href='https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing'>Floodlight Monitor Sheet</a> to the sheet you specify.
-        3. Follow instructions on sheet.
-        4. Emails are sent once a day.
+      1. Specify an account_id or account_id:subaccount_id.
+      2. Will copy 1-Floodlight Monitor Sheet to the sheet you specify.
+         2.1 - Floodlight Monitor Sheet: https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/
+      3. Follow instructions on sheet.
+      4. Emails are sent once a day.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

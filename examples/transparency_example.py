@@ -316,11 +316,15 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.
 
-        1. Wait for <a href='https://console.cloud.google.com/bigquery?project=&d=' target='_blank'>BigQuery : </a> :  : </a> to be created.
-        2. Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.
-        3. Copy DataStudio <a href='https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj' target='_blank'>Transparency Breakdown</a>.
-        4. When prompted choose the new data source you just created.
-        5. Or give these intructions to the client, they will have to join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a>.
+      1. Wait for 1-BigQuery :  :  :  to be created.
+         1.1 - BigQuery :  :  : : https://console.cloud.google.com/bigquery?project=&d=
+      2. Copy DataStudio 1-Transparency Combined KPI and connect.
+         2.1 - Transparency Combined KPI: https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs
+      3. Copy DataStudio 1-Transparency Breakdown.
+         3.1 - Transparency Breakdown: https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj
+      4. When prompted choose the new data source you just created.
+      5. Or give these intructions to the client, they will have to join the 1-StarThinker Assets Group.
+         5.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

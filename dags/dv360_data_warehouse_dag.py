@@ -71,8 +71,12 @@ DV360 Data Warehouse
 
 Deploy a BigQuery dataset mirroring DV360 account structure. Foundation for solutions on top.
 
-  - Wait for <b>BigQuery->->->*</b> to be created.
-  - Every table mimics the <a href='https://developers.google.com/display-video/api/reference/rest' target='_blank'>DV360 API Endpoints</a>.
+
+
+  - Wait for BigQuery->->->... to be created.
+  - Every table mimics the 1-DV360 API Endpoints.
+
+  1-DV360 API Endpoints: https://developers.google.com/display-video/api/reference/rest
 
 --------------------------------------------------------------
 

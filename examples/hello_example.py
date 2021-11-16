@@ -60,7 +60,7 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Recipe template for say hello.
 
-        1. This should be called for testing only.
+      1. This should be called for testing only.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

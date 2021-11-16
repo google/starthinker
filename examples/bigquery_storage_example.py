@@ -63,8 +63,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move using bucket and path prefix.
 
-        1. Specify a bucket and path prefix, * suffix is NOT required.
-        2. Every time the job runs it will overwrite the table.
+      1. Specify a bucket and path prefix, * suffix is NOT required.
+      2. Every time the job runs it will overwrite the table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

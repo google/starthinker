@@ -237,13 +237,16 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 
-        1. Wait for <b>BigQuery->->->Deal_Finder_Dashboard</b> to be created.
-        2. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        3. Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.
-        4. Click Edit Connection, and change to <b>BigQuery->StarThinker Data->->Deal_Finder_Dashboard</b>.
-        5. Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.
-        6. When prompted choose the new data source you just created.
-        7. Or give these intructions to the client.
+      1. Wait for BigQuery->->->Deal_Finder_Dashboard to be created.
+      2. Join the 1-StarThinker Assets Group to access the following assets
+         2.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      3. Copy 1-Deal Finder Sample Data.
+         3.1 - Deal Finder Sample Data: https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ
+      4. Click Edit Connection, and change to BigQuery->StarThinker Data->->Deal_Finder_Dashboard.
+      5. Copy 1-Deal Finder Sample Report.
+         5.1 - Deal Finder Sample Report: https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO
+      6. When prompted choose the new data source you just created.
+      7. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -71,9 +71,13 @@ BigQuery Query To Table
 
 Save query results into a BigQuery table.
 
+
+
   - Specify a single query and choose legacy or standard mode.
   - For PLX use user authentication and: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
   - Every time the query runs it will overwrite the table.
+
+
 
 --------------------------------------------------------------
 

@@ -71,10 +71,14 @@ Twitter Targeting
 
 Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
 
-  - Click <b>Run Now</b> and a sheet called <b>Twitter Targeting </b> will be generated with a tab called <b>Twitter Triggers</b>.
+
+
+  - Click Run Now and a sheet called Twitter Targeting  will be generated with a tab called Twitter Triggers.
   - Follow instructions on the sheets tab to provide triggers and lineitems.
-  - Click <b>Run Now</b> again, trends are downloaded and triggered.
+  - Click Run Now again, trends are downloaded and triggered.
   - Or give these intructions to the client.
+
+
 
 --------------------------------------------------------------
 

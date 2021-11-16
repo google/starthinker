@@ -62,8 +62,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move existing DV360 report into a Sheets tab.
 
-        1. Specify either report name or report id to move a report.
-        2. The most recent valid file will be moved to the sheet.
+      1. Specify either report name or report id to move a report.
+      2. The most recent valid file will be moved to the sheet.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

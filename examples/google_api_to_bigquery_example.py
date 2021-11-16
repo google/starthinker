@@ -73,14 +73,18 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Execute any Google API function and store results to BigQuery.
 
-        1. Enter an api name and version.
-        2. Specify the function using dot notation.
-        3. Specify the arguments using json.
-        4. Iterate is optional, use if API returns a list of items that are not unpacking correctly.
-        5. The <a href='https://cloud.google.com/docs/authentication/api-keys' target='_blank'>API Key</a> may be required for some calls.
-        6. The <a href='https://developers.google.com/google-ads/api/docs/first-call/dev-token' target='_blank'>Developer Token</a> may be required for some calls.
-        7. Give BigQuery dataset and table where response will be written.
-        8. All API calls are based on <a href='https://developers.google.com/discovery/v1/reference'  target='_blank'>discovery document</a>, for example the <a href='https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list' target='_blank'>Campaign Manager API</a>.
+      1. Enter an api name and version.
+      2. Specify the function using dot notation.
+      3. Specify the arguments using json.
+      4. Iterate is optional, use if API returns a list of items that are not unpacking correctly.
+      5. The 1-API Key may be required for some calls.
+         5.1 - API Key: https://cloud.google.com/docs/authentication/api-keys
+      6. The 1-Developer Token may be required for some calls.
+         6.1 - Developer Token: https://developers.google.com/google-ads/api/docs/first-call/dev-token
+      7. Give BigQuery dataset and table where response will be written.
+      8. All API calls are based on 1-discovery document, for example the 2-Campaign Manager API.
+         8.1 - discovery document: https://developers.google.com/discovery/v1/reference
+         8.2 - Campaign Manager API: https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

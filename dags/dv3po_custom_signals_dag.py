@@ -71,6 +71,8 @@ DV-3PO Custom Signals
 
 DV-3PO Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.
 
+
+
   - Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1JYtVL3teV_4Jr2Bi_tS8v0Uq-I44r78hFbmveloxd2I'>[DV-3PO] Custom Signals Configs</a>.
   - Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.
   - In the Station IDs field below enter a comma separated list of NOAA weather station IDs. Most major airports are stations and their ID typically is K followed by the 3 letter airport code, e.g. KORD for Chicago O'Hare International Airport, KSFO for San Francisco international airport, etc. You can get a full list of stations <a target='_blank' href='https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.txt'>here</a>, the station ID to use is the 'CALL' column of this list.
@@ -80,6 +82,8 @@ DV-3PO Custom Signals allows automated changes to be made to DV360 campaigns bas
   - In the Line Item ID colunn, enter the line item ID of the line item you'd like to automatically update.
   - The 'Active' column of the Rules tab allows you to control if the line item should be active or paused. If this field is TRUE the line item will be set to active, if this field is FALSE the line item will be set to inactive. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!C2>30, TRUE, FALSE) will cause the line item to be activated if the temperature of the first station in the Weather tab is above 30 degrees. Leave this field empty if you don't want it to be modified by the tool.
   - The 'Fixed Bid' column of the Rules tab allows you to control the fixed bid amount of the line item. The value set to this field will be applied to the specified line item. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!G2>3, 0.7, 0.4) will cause bid to be set to $0.7 if the wind speed of the first line in the Weather tab is greater than 3 mph, or $0.4 otherwise. Leave this field empty if you don't want it to be modified by the tool.
+
+
 
 --------------------------------------------------------------
 

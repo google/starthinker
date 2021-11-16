@@ -71,8 +71,12 @@ Federal Reserve Regional Data
 
 Download federal reserve region.
 
-  - Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.
+
+
+  - Specify the values for a 1-Fred observations API call.
   - A table will appear in the dataset.
+
+  1-Fred observations API call: https://research.stlouisfed.org/docs/api/geofred/regional_data.html
 
 --------------------------------------------------------------
 

@@ -69,9 +69,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move query results into a BigQuery table.
 
-        1. Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
-        2. Specify the query youd like to execute.
-        3. Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
+      1. Specify 1-Salesforce credentials.
+         1.1 - Salesforce: https://developer.salesforce.com/
+      2. Specify the query youd like to execute.
+      3. Specify a 1-SCHEMA for that query (optional).
+         3.1 - SCHEMA: https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

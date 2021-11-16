@@ -53,9 +53,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Copy a drive document.
 
-        1. Specify a source URL or document name.
-        2. Specify a destination name.
-        3. If destination does not exist, source will be copied.
+      1. Specify a source URL or document name.
+      2. Specify a destination name.
+      3. If destination does not exist, source will be copied.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

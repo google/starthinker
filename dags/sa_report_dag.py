@@ -71,9 +71,13 @@ SA360 Report
 
 Move SA360 report to BigQuery.
 
+
+
   - Fill in the report definition and destination table.
-  - Wait for <b>BigQuery->->-></b> to be created.
+  - Wait for BigQuery->->-> to be created.
   - Or give these intructions to the client.
+
+
 
 --------------------------------------------------------------
 

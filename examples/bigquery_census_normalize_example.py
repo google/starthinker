@@ -61,9 +61,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Convert given census table to percent of population, normalizing it.
 
-        1. Specify the geography, year, and span that make up the <a href='https://pantheon.corp.google.com/bigquery?redirect_from_classic=true&p=bigquery-public-data&d=census_bureau_acs&page=dataset' target='_blank'>census table names</a>.
-        2. Not every combination of geography, year, and span exists or contains all the required fields.
-        3. Every time the query runs it will overwrite the table.
+      1. Specify the geography, year, and span that make up the 1-census table names.
+         1.1 - census table names: https://pantheon.corp.google.com/bigquery?redirect_from_classic=true&p=bigquery-public-data&d=census_bureau_acs&page=dataset
+      2. Not every combination of geography, year, and span exists or contains all the required fields.
+      3. Every time the query runs it will overwrite the table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -54,9 +54,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 
-        1. Add this card to a recipe and save it.
-        2. Then click <strong>Run Now</strong> to deploy.
-        3. Follow the <a href="https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/">instructions</a> for setup.
+      1. Add this card to a recipe and save it.
+      2. Then click Run Now to deploy.
+      3. Follow the 1-instructions for setup.
+         3.1 - instructions: https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

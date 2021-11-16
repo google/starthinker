@@ -71,10 +71,14 @@ Sheet To BigQuery
 
 Import data from a sheet and move it to a BigQuery table.
 
+
+
   - For the sheet, provide the full edit URL.
   - If the tab does not exist it will be created.
   - Empty cells in the range will be NULL.
   - Check Sheets header if first row is a header
+
+
 
 --------------------------------------------------------------
 

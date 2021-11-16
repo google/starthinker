@@ -71,9 +71,13 @@ Airflow Composer Example
 
 Demonstration that uses Airflow/Composer native, Airflow/Composer local, and StarThinker tasks in the same generated DAG.
 
+
+
   - Execute this using Airflow or Composer, the Colab and UI recipe is for refence only.
   - This is an example DAG that will execute and print dates and text.
   - Run it once to ensure everything works, then customize it.
+
+
 
 --------------------------------------------------------------
 

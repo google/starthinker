@@ -66,18 +66,20 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Calculate DV360 cost at the dynamic creative combination level.
 
-        1. Add a sheet URL. This is where you will enter advertiser and campaign level details.
-        2. Specify the CM network ID.
-        3. Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
-        4. Follow the instructions on the sheet; this will be your configuration.
-        5. StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
-        6. Wait for <b>BigQuery->->->Dynamic_Costs_Analysis</b> to be created or click Run Now.
-        7. Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
-        8. Click Edit Connection, and Change to <b>BigQuery->->->Dynamic_Costs_Analysis</b>.
-        9. Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.
-        10. When prompted, choose the new data source you just created.
-        11. Edit the table to include or exclude columns as desired.
-        12. Or, give the dashboard connection intructions to the client.
+      1. Add a sheet URL. This is where you will enter advertiser and campaign level details.
+      2. Specify the CM network ID.
+      3. Click run now once, and a tab called Dynamic Costs will be added to the sheet with instructions.
+      4. Follow the instructions on the sheet; this will be your configuration.
+      5. StarThinker will create two or three (depending on the case) reports in CM named Dynamic Costs - ....
+      6. Wait for BigQuery->->->Dynamic_Costs_Analysis to be created or click Run Now.
+      7. Copy 1-Dynamic Costs Sample Data.
+         7.1 - Dynamic Costs Sample Data: https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA
+      8. Click Edit Connection, and Change to BigQuery->->->Dynamic_Costs_Analysis.
+      9. Copy 1-Dynamic Costs Sample Report.
+         9.1 - Dynamic Costs Sample Report: https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8
+      10. When prompted, choose the new data source you just created.
+      11. Edit the table to include or exclude columns as desired.
+      12. Or, give the dashboard connection intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

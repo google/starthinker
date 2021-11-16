@@ -71,8 +71,12 @@ Federal Reserve Series Data
 
 Download federal reserve series.
 
-  - Specify the values for a <a href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html' target='_blank'>Fred observations API call</a>.
+
+
+  - Specify the values for a 1-Fred observations API call.
   - A table will appear in the dataset.
+
+  1-Fred observations API call: https://fred.stlouisfed.org/docs/api/fred/series_observations.html
 
 --------------------------------------------------------------
 

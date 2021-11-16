@@ -71,9 +71,13 @@ CM360 Oculi
 
 Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.
 
-  - Wait for <b>BigQuery->->->Oculi_...</b> to be created.
+
+
+  - Wait for BigQuery->->->Oculi_... to be created.
   - Then use the data for analysis.
   - Or give these intructions to the client.
+
+
 
 --------------------------------------------------------------
 

@@ -71,11 +71,18 @@ CM360 Domain And App Transparency
 
 Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.
 
-  - Wait for <a href='https://console.cloud.google.com/bigquery?project=&d=' target='_blank'>BigQuery : </a> :  : </a> to be created.
-  - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.
-  - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj' target='_blank'>Transparency Breakdown</a>.
+
+
+  - Wait for 1-BigQuery :  :  :  to be created.
+  - Copy DataStudio 2-Transparency Combined KPI and connect.
+  - Copy DataStudio 3-Transparency Breakdown.
   - When prompted choose the new data source you just created.
-  - Or give these intructions to the client, they will have to join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a>.
+  - Or give these intructions to the client, they will have to join the 4-StarThinker Assets Group.
+
+  1-BigQuery :  :  : : https://console.cloud.google.com/bigquery?project=&d=
+  2-Transparency Combined KPI: https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs
+  3-Transparency Breakdown: https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj
+  4-StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
 
 --------------------------------------------------------------
 

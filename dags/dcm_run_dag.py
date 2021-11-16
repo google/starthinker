@@ -71,8 +71,12 @@ CM360 Report Run
 
 Trigger a CM report run
 
+
+
   - Specify an account id.
   - Specify either report name or report id to run.
+
+
 
 --------------------------------------------------------------
 

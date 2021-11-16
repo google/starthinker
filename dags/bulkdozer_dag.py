@@ -71,17 +71,21 @@ CM360 Bulkdozer Editor
 
 Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
 
-  - Open the <a href='https://docs.google.com/spreadsheets/d/1EjprWTDLWOvkV7znA0P4uciz0_E5_TNn3N3f8J4jTwA/edit?usp=sharing&resourcekey=0-jVCGjrPdnUnJ0rk7nQCFBQ' target='_blank'>Bulkdozer 0.28</a> feed.
+
+
+  - Open the 1-Bulkdozer feed.
   - Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.
   - Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.
   - Under the Account ID field below, enter the your Campaign Manager Network ID.
   - Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.
   - Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.
-  - Click the 'Save' button below.
-  - After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.
+  - Click the Save button below.
+  - After clicking Save, copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.
   - Bulkdozer is ready for use
-  - Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.
-  - Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.
+  - Review the 2-Bulkdozer documentation.
+
+  1-Bulkdozer: https://docs.google.com/spreadsheets/d/1EjprWTDLWOvkV7znA0P4uciz0_E5_TNn3N3f8J4jTwA/edit?usp=sharing&resourcekey=0-jVCGjrPdnUnJ0rk7nQCFBQ
+  2-Bulkdozer documentation: https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md
 
 --------------------------------------------------------------
 

@@ -71,8 +71,12 @@ CM360 Data Warehouse
 
 Deploy a BigQuery dataset mirroring CM360 account structure. Foundation for solutions on top.
 
-  - Wait for <b>BigQuery->->->*</b> to be created.
-  - Every table mimics the <a href='https://developers.google.com/doubleclick-advertisers/rel_notes' target='_blank'>CM360 API Endpoints</a>.
+
+
+  - Wait for BigQuery->->->... to be created.
+  - Every table mimics the 1-CM360 API Endpoints.
+
+  1-CM360 API Endpoints: https://developers.google.com/doubleclick-advertisers/rel_notes
 
 --------------------------------------------------------------
 

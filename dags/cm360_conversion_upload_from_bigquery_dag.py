@@ -71,10 +71,14 @@ CM360 Conversion Upload From BigQuery
 
 Move from BigQuery to CM.
 
+
+
   - Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
   - Include BigQuery dataset and table.
   - Columns: Ordinal, timestampMicros, quantity, value, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId | matchId | dclid
   - Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
+
+
 
 --------------------------------------------------------------
 

@@ -53,10 +53,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Create and permission a bucket in Storage.
 
-        1. Specify the name of the bucket and who will have owner permissions.
-        2. Existing buckets are preserved.
-        3. Adding a permission to the list will update the permissions but removing them will not.
-        4. You have to manualy remove grants.
+      1. Specify the name of the bucket and who will have owner permissions.
+      2. Existing buckets are preserved.
+      3. Adding a permission to the list will update the permissions but removing them will not.
+      4. You have to manualy remove grants.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

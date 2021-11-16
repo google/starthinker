@@ -69,13 +69,13 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Pulls a DV360 Report from a gMail email into BigQuery.
 
-        1. The person executing this recipe must be the recipient of the email.
-        2. Schedule a DV360 report to be sent to an email like <b></b>.
-        3. Or set up a redirect rule to forward a report you already receive.
-        4. The report can be sent as an attachment or a link.
-        5. Ensure this recipe runs after the report is email daily.
-        6. Give a regular expression to match the email subject.
-        7. Configure the destination in BigQuery to write the data.
+      1. The person executing this recipe must be the recipient of the email.
+      2. Schedule a DV360 report to be sent to an email like .
+      3. Or set up a redirect rule to forward a report you already receive.
+      4. The report can be sent as an attachment or a link.
+      5. Ensure this recipe runs after the report is email daily.
+      6. Give a regular expression to match the email subject.
+      7. Configure the destination in BigQuery to write the data.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

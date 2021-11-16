@@ -169,10 +169,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
 
-        1. Click <b>Run Now</b> and a sheet called <b>Twitter Targeting </b> will be generated with a tab called <b>Twitter Triggers</b>.
-        2. Follow instructions on the sheets tab to provide triggers and lineitems.
-        3. Click <b>Run Now</b> again, trends are downloaded and triggered.
-        4. Or give these intructions to the client.
+      1. Click Run Now and a sheet called Twitter Targeting  will be generated with a tab called Twitter Triggers.
+      2. Follow instructions on the sheets tab to provide triggers and lineitems.
+      3. Click Run Now again, trends are downloaded and triggered.
+      4. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -71,9 +71,13 @@ SA360 Web Query Report
 
 Download SA360 reports into a Google Sheet.
 
+
+
   - Add this card to a recipe and save it.
-  - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href='https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0'>instructions</a> for setup.
+  - Then click Run Now to deploy.
+  - Follow the 1-instructions for setup.
+
+  1-instructions: https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0
 
 --------------------------------------------------------------
 

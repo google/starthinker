@@ -71,10 +71,14 @@ CM360 Conversion Upload From Sheets
 
 Move form Sheets to CM.
 
+
+
   - Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
   - Include Sheets url, tab, and range, omit headers in range.
   - Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId | matchId | dclid
   - Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
+
+
 
 --------------------------------------------------------------
 

@@ -191,13 +191,15 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Gives DV clients ability to see which users have access to which parts of an account. Loads DV user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 
-        1. DV360 only permits SERVICE accounts to access the user list API endpoint, be sure to provide and permission one.
-        2. Wait for <b>BigQuery->->->DV_*</b> to be created.
-        3. Wait for <b>BigQuery->->->Barnacle_*</b> to be created, then copy and connect the following data sources.
-        4. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        5. Copy <a href='https://datastudio.google.com/c/u/0/reporting/9f6b9e62-43ec-4027-849a-287e9c1911bd' target='_blank'>Barnacle DV Report</a>.
-        6. Click Edit->Resource->Manage added data sources, then edit each connection to connect to your new tables above.
-        7. Or give these intructions to the client.
+      1. DV360 only permits SERVICE accounts to access the user list API endpoint, be sure to provide and permission one.
+      2. Wait for BigQuery->->->DV_... to be created.
+      3. Wait for BigQuery->->->Barnacle_... to be created, then copy and connect the following data sources.
+      4. Join the 1-StarThinker Assets Group to access the following assets
+         4.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      5. Copy 1-Barnacle DV Report.
+         5.1 - Barnacle DV Report: https://datastudio.google.com/c/u/0/reporting/9f6b9e62-43ec-4027-849a-287e9c1911bd
+      6. Click Edit->Resource->Manage added data sources, then edit each connection to connect to your new tables above.
+      7. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

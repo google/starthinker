@@ -73,10 +73,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move from BigQuery to CM.
 
-        1. Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
-        2. Include BigQuery dataset and table.
-        3. Columns: Ordinal, timestampMicros, quantity, value, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId | matchId | dclid
-        4. Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
+      1. Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
+      2. Include BigQuery dataset and table.
+      3. Columns: Ordinal, timestampMicros, quantity, value, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId | matchId | dclid
+      4. Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

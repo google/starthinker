@@ -71,13 +71,17 @@ DV360 Report Emailed To BigQuery
 
 Pulls a DV360 Report from a gMail email into BigQuery.
 
+
+
   - The person executing this recipe must be the recipient of the email.
-  - Schedule a DV360 report to be sent to an email like <b></b>.
+  - Schedule a DV360 report to be sent to an email like .
   - Or set up a redirect rule to forward a report you already receive.
   - The report can be sent as an attachment or a link.
   - Ensure this recipe runs after the report is email daily.
   - Give a regular expression to match the email subject.
   - Configure the destination in BigQuery to write the data.
+
+
 
 --------------------------------------------------------------
 

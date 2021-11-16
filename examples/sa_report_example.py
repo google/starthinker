@@ -63,9 +63,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move SA360 report to BigQuery.
 
-        1. Fill in the report definition and destination table.
-        2. Wait for <b>BigQuery->->-></b> to be created.
-        3. Or give these intructions to the client.
+      1. Fill in the report definition and destination table.
+      2. Wait for BigQuery->->-> to be created.
+      3. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

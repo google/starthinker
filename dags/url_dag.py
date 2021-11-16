@@ -71,8 +71,12 @@ URL
 
 Pull URL list from a table, fetch them, and write the results to another table.
 
+
+
   - Specify a table with only two columns URL, URI (can be null).
   - Check bigquery destination for results of fetching each URL.
+
+
 
 --------------------------------------------------------------
 

@@ -63,10 +63,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move report data into a BigQuery table.
 
-        1. Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet Report</a> token.
-        2. Locate the ID of a report by viewing its properties.
-        3. Provide a BigQuery dataset ( must exist ) and table to write the data into.
-        4. StarThinker will automatically map the correct schema.
+      1. Specify 1-SmartSheet Report token.
+         1.1 - SmartSheet Report: https://smartsheet-platform.github.io/api-docs/
+      2. Locate the ID of a report by viewing its properties.
+      3. Provide a BigQuery dataset (must exist) and table to write the data into.
+      4. StarThinker will automatically map the correct schema.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

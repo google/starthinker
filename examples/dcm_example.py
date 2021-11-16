@@ -55,9 +55,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Create a CM report from a JSON definition.
 
-        1. Add a an account as [account_id]@[profile_id]
-        2. Fetch the report JSON definition. Arguably could be better.
-        3. The account is automatically added to the report definition.
+      1. Add a an account as [account_id]@[profile_id]
+      2. Fetch the report JSON definition. Arguably could be better.
+      3. The account is automatically added to the report definition.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

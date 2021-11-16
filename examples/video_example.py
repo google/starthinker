@@ -74,8 +74,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Add images, text, and audio to videos.
 
-        1. Provide either a sheet or a BigQuery table.
-        2. Each video edit will be read from the sheet or table.
+      1. Provide either a sheet or a BigQuery table.
+      2. Each video edit will be read from the sheet or table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

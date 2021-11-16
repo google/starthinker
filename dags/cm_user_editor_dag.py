@@ -71,9 +71,13 @@ CM360 Bulk User Editor
 
 A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 
+
+
   - Add this card to a recipe and save it.
-  - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href="https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/">instructions</a> for setup.
+  - Then click Run Now to deploy.
+  - Follow the 1-instructions for setup.
+
+  1-instructions: https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/
 
 --------------------------------------------------------------
 

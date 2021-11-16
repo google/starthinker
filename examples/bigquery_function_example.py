@@ -53,9 +53,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Add a custom function or table to a dataset.
 
-        1. Specify the dataset, and the function or table will be added.
-        2. Pearson Significance Test: Check if a correlation is significant.
-        3. RGB To HSV: Convert color values for analysis.
+      1. Specify the dataset, and the function or table will be added.
+      2. Pearson Significance Test: Check if a correlation is significant.
+      3. RGB To HSV: Convert color values for analysis.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

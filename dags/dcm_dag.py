@@ -71,9 +71,13 @@ CM360 Report
 
 Create a CM report from a JSON definition.
 
+
+
   - Add a an account as [account_id]@[profile_id]
   - Fetch the report JSON definition. Arguably could be better.
   - The account is automatically added to the report definition.
+
+
 
 --------------------------------------------------------------
 

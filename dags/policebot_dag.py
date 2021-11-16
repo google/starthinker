@@ -71,9 +71,13 @@ PoliceBot
 
 A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
 
+
+
   - Add this card to a recipe and save it.
-  - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructions</a> for setup.
+  - Then click Run Now to deploy.
+  - Follow the 1-instructions for setup.
+
+  1-instructions: https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA
 
 --------------------------------------------------------------
 

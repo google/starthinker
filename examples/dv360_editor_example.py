@@ -75,21 +75,21 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Allows bulk editing DV360 through Sheets and BigQuery.
 
-        1. Select <b>Load Partners</b>, then click <b>Save + Run</b>, then a sheet called DV Editor  will be created.
-        2. In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Advertisers</b>, click <b>Save + Run</b>.
-        3. In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Campaigns</b>, click <b>Save + Run</b>.
-        4. In the <b>Campaigns</b> sheet tab, fill in <i>Filter</i> column, optional.
-        5. Then select <b>Load Insertion Orders And Line Items</b>, click <b>Save + Run</b>.
-        6. To update values, make changes on all <i>Edit</i> columns.
-        7. Select <i>Preview</i>, then <b>Save + Run</b>.
-        8. Check the <b>Audit</b> and <b>Preview</b> tabs to verify commit.
-        9. To commit changes, select <i>Update</i>, then <b>Save + Run</b>.
-        10. Check the <b>Success</b> and <b>Error</b> tabs.
-        11. Update can be run multiple times.
-        12. Update ONLY changes fields that do not match their original value.
-        13. Insert operates only on Edit columns, ignores orignal value columns.
-        14. Carefull when using drag to copy rows, values are incremented automatically.
-        15. Modify audit logic by visting BigQuery and changing the views.
+      1. Select Load Partners, then click Save + Run, then a sheet called DV Editor  will be created.
+      2. In the Partners sheet tab, fill in Filter column then select Load Advertisers, click Save + Run.
+      3. In the Advertisers sheet tab, fill in Filter column then select Load Campaigns, click Save + Run.
+      4. In the Campaigns sheet tab, fill in Filter column, optional.
+      5. Then select Load Insertion Orders And Line Items, click Save + Run.
+      6. To update values, make changes on all Edit columns.
+      7. Select Preview, then Save + Run.
+      8. Check the Audit and Preview tabs to verify commit.
+      9. To commit changes, select Update, then Save + Run.
+      10. Check the Success and Error tabs.
+      11. Update can be run multiple times.
+      12. Update ONLY changes fields that do not match their original value.
+      13. Insert operates only on Edit columns, ignores orignal value columns.
+      14. Carefull when using drag to copy rows, values are incremented automatically.
+      15. Modify audit logic by visting BigQuery and changing the views.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

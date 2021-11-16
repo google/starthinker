@@ -410,12 +410,13 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Group KPIs into cohorts and compare performance across time and geography. Quickly discover where national and local campaigns need to be targeted, funded, or optimized.
 
-        1. Add required parameters and run recipe.
-        2. After recipe completes make a copy of the [Campaign Comparison Dashboard](https://datastudio.google.com/c/u/0/reporting/e34669ec-0894-4453-9ac4-ae9c3e739c48/page/p_pkxetkzemc').
-        3. Keep the data source as is on the copy screen. It will change later.
-        4. After the copy is made, click Edit->Resource->Manage Added Data Sources->CC_Report->Edit->Edit Connection.
-        5. Connect to the newly created **BigQuery->->_Campaign_Comparison->Comparison** table.
-        6. Or give these intructions to the client.
+      1. Add required parameters and run recipe.
+      2. After recipe completes make a copy of the 1-Campaign Comparison Dashboard.
+         2.1 - Campaign Comparison Dashboard: https://datastudio.google.com/c/u/0/reporting/e34669ec-0894-4453-9ac4-ae9c3e739c48/page/p_pkxetkzemc
+      3. Keep the data source as is on the copy screen. It will change later.
+      4. After the copy is made, click Edit->Resource->Manage Added Data Sources->CC_Report->Edit->Edit Connection.
+      5. Connect to the newly created BigQuery->->_Campaign_Comparison->Comparison table.
+      6. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -424,9 +424,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.
 
-        1. Wait for <b>BigQuery->->->Oculi_...</b> to be created.
-        2. Then use the data for analysis.
-        3. Or give these intructions to the client.
+      1. Wait for BigQuery->->->Oculi_... to be created.
+      2. Then use the data for analysis.
+      3. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

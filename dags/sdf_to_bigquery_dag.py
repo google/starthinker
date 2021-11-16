@@ -71,10 +71,14 @@ DV360 SDF To BigQuery
 
 Download SDF reports into a BigQuery table.
 
+
+
   - Select your filter types and the filter ideas.
-  - Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.
+  - Enter the 1-file types using commas.
   - SDF_ will be prefixed to all tables and date appended to daily tables.
   - File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...
+
+  1-file types: https://developers.google.com/bid-manager/v1.1/sdf/download
 
 --------------------------------------------------------------
 

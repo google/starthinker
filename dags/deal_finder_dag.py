@@ -71,13 +71,19 @@ DV360 Deal Finder
 
 Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 
-  - Wait for <b>BigQuery->->->Deal_Finder_Dashboard</b> to be created.
-  - Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-  - Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.
-  - Click Edit Connection, and change to <b>BigQuery->StarThinker Data->->Deal_Finder_Dashboard</b>.
-  - Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.
+
+
+  - Wait for BigQuery->->->Deal_Finder_Dashboard to be created.
+  - Join the 1-StarThinker Assets Group to access the following assets
+  - Copy 2-Deal Finder Sample Data.
+  - Click Edit Connection, and change to BigQuery->StarThinker Data->->Deal_Finder_Dashboard.
+  - Copy 3-Deal Finder Sample Report.
   - When prompted choose the new data source you just created.
   - Or give these intructions to the client.
+
+  1-StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+  2-Deal Finder Sample Data: https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ
+  3-Deal Finder Sample Report: https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO
 
 --------------------------------------------------------------
 

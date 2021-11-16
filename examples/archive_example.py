@@ -57,8 +57,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Wipe old information from a Storage bucket based on last update time.
 
-        1. Specify how many days back to retain data and which buckets and paths to purge.
-        2. Everything under a path will be moved to archive or deleted depending on your choice.
+      1. Specify how many days back to retain data and which buckets and paths to purge.
+      2. Everything under a path will be moved to archive or deleted depending on your choice.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

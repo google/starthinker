@@ -535,13 +535,16 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.
 
-        1. Wait for <b>BigQuery->->->DV360_Audience_Analysis</b> to be created.
-        2. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        3. Copy <a href='https://datastudio.google.com/open/1d2vlf4C1roN95NsdsvWNZqKFcYN8N9Jg' target='_blank'>Sample DV360 Audience Analysis Dataset</a>.
-        4. Click Edit Connection, and change to <b>BigQuery->->->DV360_Audience_Analysis</b>.
-        5. Copy <a href='https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M' target='_blank'>Sample DV360 Audience Analysis Report</a>.
-        6. When prompted choose the new data source you just created.
-        7. Or give these intructions to the client.
+      1. Wait for BigQuery->->->DV360_Audience_Analysis to be created.
+      2. Join the 1-StarThinker Assets Group to access the following assets
+         2.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      3. Copy <a 1-Sample DV360 Audience Analysis Dataset.
+         3.1 - Sample DV360 Audience Analysis Dataset: https://datastudio.google.com/open/1d2vlf4C1roN95NsdsvWNZqKFcYN8N9Jg
+      4. Click Edit Connection, and change to BigQuery->->->DV360_Audience_Analysis.
+      5. Copy 1-Sample DV360 Audience Analysis Report.
+         5.1 - Sample DV360 Audience Analysis Report: https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M
+      6. When prompted choose the new data source you just created.
+      7. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

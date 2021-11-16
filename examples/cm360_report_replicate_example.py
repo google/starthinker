@@ -89,10 +89,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Replicate a report across multiple networks and advertisers.
 
-        1. Provide the name or ID of an existing report.
-        2. Run the recipe once to generate the input sheet called .
-        3. Enter network and advertiser ids to replicate the report.
-        4. Data will be written to BigQuery &gt;  &gt;  &gt; _All
+      1. Provide the name or ID of an existing report.
+      2. Run the recipe once to generate the input sheet called .
+      3. Enter network and advertiser ids to replicate the report.
+      4. Data will be written to BigQuery &gt;  &gt;  &gt; _All
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -71,8 +71,12 @@ DV360 Report To Storage
 
 Move existing DV360 report into a Storage bucket.
 
+
+
   - Specify either report name or report id to move a report.
   - The most recent valid file will be moved to the bucket.
+
+
 
 --------------------------------------------------------------
 

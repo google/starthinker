@@ -71,11 +71,15 @@ BigQuery Dataset
 
 Create and permission a dataset in BigQuery.
 
+
+
   - Specify the name of the dataset.
   - If dataset exists, it is inchanged.
   - Add emails and / or groups to add read permission.
   - CAUTION: Removing permissions in StarThinker has no effect.
   - CAUTION: To remove permissions you have to edit the dataset.
+
+
 
 --------------------------------------------------------------
 

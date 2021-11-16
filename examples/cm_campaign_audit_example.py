@@ -53,7 +53,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       A tool for rapidly bulk checking Campaign Manager campaigns
 
-        1. All Bulkdozer Lite related tools and instructions on how to use them can be found at: <a href="https://github.com/google/bulkdozer-lite#installation">Bulkdozer Lite</a>
+      1. See all 1-Bulkdozer Lite related tools and instructions.
+         1.1 - Bulkdozer Lite: https://github.com/google/bulkdozer-lite#installation
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

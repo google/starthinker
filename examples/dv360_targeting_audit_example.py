@@ -593,11 +593,13 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Continously audit all targeting settings for a DV360 Partner in one dashboard. Use filters to locate errant targeting and quickly correct issues.
 
-        1. Wait for <b>BigQuery->->->Targeting Audit</b> to be created.
-        2. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        3. Copy <a href='https://datastudio.google.com/c/u/0/reporting/2f140045-dd62-48ae-bc3b-8d01b79828b7' target='_blank'>Sample DV360 Targeting Audit</a>.
-        4. Edit the data source to point at <b>BigQuery->->->Targeting_Audit</b>.
-        5. Or give these intructions to the client.
+      1. Wait for BigQuery->->->Targeting Audit to be created.
+      2. Join the 1-StarThinker Assets Group to access the following assets
+         2.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      3. Copy 1-Sample DV360 Targeting Audit.
+         3.1 - Sample DV360 Targeting Audit: https://datastudio.google.com/c/u/0/reporting/2f140045-dd62-48ae-bc3b-8d01b79828b7
+      4. Edit the data source to point at BigQuery->->->Targeting_Audit.
+      5. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

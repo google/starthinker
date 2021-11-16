@@ -71,21 +71,25 @@ DV360 Bulk Editor
 
 Allows bulk editing DV360 through Sheets and BigQuery.
 
-  - Select <b>Load Partners</b>, then click <b>Save + Run</b>, then a sheet called DV Editor  will be created.
-  - In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Advertisers</b>, click <b>Save + Run</b>.
-  - In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Campaigns</b>, click <b>Save + Run</b>.
-  - In the <b>Campaigns</b> sheet tab, fill in <i>Filter</i> column, optional.
-  - Then select <b>Load Insertion Orders And Line Items</b>, click <b>Save + Run</b>.
-  - To update values, make changes on all <i>Edit</i> columns.
-  - Select <i>Preview</i>, then <b>Save + Run</b>.
-  - Check the <b>Audit</b> and <b>Preview</b> tabs to verify commit.
-  - To commit changes, select <i>Update</i>, then <b>Save + Run</b>.
-  - Check the <b>Success</b> and <b>Error</b> tabs.
+
+
+  - Select Load Partners, then click Save + Run, then a sheet called DV Editor  will be created.
+  - In the Partners sheet tab, fill in Filter column then select Load Advertisers, click Save + Run.
+  - In the Advertisers sheet tab, fill in Filter column then select Load Campaigns, click Save + Run.
+  - In the Campaigns sheet tab, fill in Filter column, optional.
+  - Then select Load Insertion Orders And Line Items, click Save + Run.
+  - To update values, make changes on all Edit columns.
+  - Select Preview, then Save + Run.
+  - Check the Audit and Preview tabs to verify commit.
+  - To commit changes, select Update, then Save + Run.
+  - Check the Success and Error tabs.
   - Update can be run multiple times.
   - Update ONLY changes fields that do not match their original value.
   - Insert operates only on Edit columns, ignores orignal value columns.
   - Carefull when using drag to copy rows, values are incremented automatically.
   - Modify audit logic by visting BigQuery and changing the views.
+
+
 
 --------------------------------------------------------------
 

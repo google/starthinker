@@ -70,12 +70,12 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.
 
-        1. Pre-requisite is Census Normalize, run that at least once.
-        2. Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.
-        3. Define the DATASET and TABLE for the joinable source. Can be a view.
-        4. Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.
-        5. Specify where to write the results.
-        6. <br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes.
+      1. Pre-requisite is Census Normalize, run that at least once.
+      2. Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.
+      3. Define the DATASET and TABLE for the joinable source. Can be a view.
+      4. Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.
+      5. Specify where to write the results.
+      6. IMPORTANT:** If you use VIEWS, you will have to delete them manually if the recipe changes.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

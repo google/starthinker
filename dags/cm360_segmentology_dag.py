@@ -71,11 +71,16 @@ CM360 Segmentology
 
 CM360 funnel analysis using Census data.
 
-  - Wait for <b>BigQuery->->->Census_Join</b> to be created.
-  - Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-  - Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>CM360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.
-  - Click Edit Connection, and change to <b>BigQuery->->->Census_Join</b>.
+
+
+  - Wait for BigQuery->->->Census_Join to be created.
+  - Join the 1-StarThinker Assets Group to access the following assets
+  - Copy 2-CM360 Segmentology Sample. Leave the Data Source as is, you will change it in the next step.
+  - Click Edit Connection, and change to BigQuery->->->Census_Join.
   - Or give these intructions to the client.
+
+  1-StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+  2-CM360 Segmentology Sample: https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/
 
 --------------------------------------------------------------
 

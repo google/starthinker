@@ -71,9 +71,13 @@ BigQuery Query To View
 
 Create a BigQuery view.
 
+
+
   - Specify a single query and choose legacy or standard mode.
   - For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
   - If the view exists, it is unchanged, delete it manually to re-create.
+
+
 
 --------------------------------------------------------------
 

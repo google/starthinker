@@ -71,9 +71,13 @@ Tag Key Value Uploader
 
 A tool for bulk editing key value pairs for CM placements.
 
+
+
   - Add this card to a recipe and save it.
-  - Then click <strong>Run Now</strong> to deploy.
+  - Then click Run Now to deploy.
   - Follow the instructions in the sheet for setup.
+
+
 
 --------------------------------------------------------------
 

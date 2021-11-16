@@ -76,10 +76,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Download SDF reports into a BigQuery table.
 
-        1. Select your filter types and the filter ideas.
-        2. Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.
-        3. SDF_ will be prefixed to all tables and date appended to daily tables.
-        4. File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...
+      1. Select your filter types and the filter ideas.
+      2. Enter the 1-file types using commas.
+         2.1 - file types: https://developers.google.com/bid-manager/v1.1/sdf/download
+      3. SDF_ will be prefixed to all tables and date appended to daily tables.
+      4. File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

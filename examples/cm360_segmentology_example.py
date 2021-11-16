@@ -214,11 +214,13 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       CM360 funnel analysis using Census data.
 
-        1. Wait for <b>BigQuery->->->Census_Join</b> to be created.
-        2. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        3. Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>CM360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.
-        4. Click Edit Connection, and change to <b>BigQuery->->->Census_Join</b>.
-        5. Or give these intructions to the client.
+      1. Wait for BigQuery->->->Census_Join to be created.
+      2. Join the 1-StarThinker Assets Group to access the following assets
+         2.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      3. Copy 1-CM360 Segmentology Sample. Leave the Data Source as is, you will change it in the next step.
+         3.1 - CM360 Segmentology Sample: https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/
+      4. Click Edit Connection, and change to BigQuery->->->Census_Join.
+      5. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -53,9 +53,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Download SA360 reports into a Google Sheet.
 
-        1. Add this card to a recipe and save it.
-        2. Then click <strong>Run Now</strong> to deploy.
-        3. Follow the <a href='https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0'>instructions</a> for setup.
+      1. Add this card to a recipe and save it.
+      2. Then click Run Now to deploy.
+      3. Follow the 1-instructions for setup.
+         3.1 - instructions: https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

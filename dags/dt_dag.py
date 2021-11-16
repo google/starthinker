@@ -71,10 +71,14 @@ CM360 Data Transfer To Bigquery
 
 Move data from a DT bucket into a BigQuery table.
 
-  - Ensure your user has <a href='https://developers.google.com/doubleclick-advertisers/dtv2/getting-started' target='_blank'>access to the bucket</a>.
+
+
+  - Ensure your user has 1-access to the bucket.
   - Provide the DT bucket name to read from.
   - Provide the path of the files to read.
   - Each file is synchronized to a unique table.  Use a view or aggregate select.
+
+  1-access to the bucket: https://developers.google.com/doubleclick-advertisers/dtv2/getting-started
 
 --------------------------------------------------------------
 

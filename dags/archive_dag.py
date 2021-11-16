@@ -71,8 +71,12 @@ Storage Archive
 
 Wipe old information from a Storage bucket based on last update time.
 
+
+
   - Specify how many days back to retain data and which buckets and paths to purge.
   - Everything under a path will be moved to archive or deleted depending on your choice.
+
+
 
 --------------------------------------------------------------
 

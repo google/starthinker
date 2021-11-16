@@ -54,7 +54,7 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Clear data from a sheet.
 
-        1. For the sheet, provide the full edit URL.
+      1. For the sheet, provide the full edit URL.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -51,8 +51,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Used by tests.
 
-        1. This should be called by the tests scripts only.
-        2. When run will generate a say hello log.
+      1. This should be called by the tests scripts only.
+      2. When run will generate a say hello log.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -71,6 +71,8 @@ DV360 Monthly Budget Mover
 
 Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 
+
+
   - No changes made can be made in DV360 from the start to the end of this process
   - Make sure there is budget information for the current and previous month's IOs in DV360
   - Make sure the provided spend report has spend data for every IO in the previous month
@@ -81,6 +83,8 @@ Apply the previous month's budget/spend delta to the current month.  Aggregate u
   - Manually run this job
   - Once the job has completed go to the table for the new sdf and export to a csv
   - Take the new sdf and upload it into DV360
+
+
 
 --------------------------------------------------------------
 

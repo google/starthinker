@@ -71,8 +71,12 @@ Storage To Table
 
 Move using bucket and path prefix.
 
+
+
   - Specify a bucket and path prefix, * suffix is NOT required.
   - Every time the job runs it will overwrite the table.
+
+
 
 --------------------------------------------------------------
 

@@ -64,10 +64,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Copy the contents of a query into a Google Sheet.
 
-        1. Specify the sheet and the query.
-        2. Leave range blank or set to A2 to insert one line down.
-        3. The range is cleared before the sheet is written to.
-        4. To select a table use SELECT * FROM table.
+      1. Specify the sheet and the query.
+      2. Leave range blank or set to A2 to insert one line down.
+      3. The range is cleared before the sheet is written to.
+      4. To select a table use SELECT * FROM table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

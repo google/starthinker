@@ -71,21 +71,35 @@ CM360 Log Audit
 
 Downloads Campaign manager logs and allows audits.
 
-  - Wait for <b>BigQuery->->->CM_*</b> to be created.
-  - Wait for <b>BigQuery->->->Barnacle_*</b> to be created, then copy and connect the following data sources.
-  - Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-  - Copy <a href='https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj' target='_blank'>Barnacle Profile Advertiser Map</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT' target='_blank'>Barnacle Profile Campaign Map</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y' target='_blank'>Barnacle Profile Site Map</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE' target='_blank'>Barnacle Profiles Connections</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG' target='_blank'>Barnacle Report Delivery Profiles</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Roles Duplicates</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI' target='_blank'>Barnacle Roles Not Used</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj' target='_blank'>Barnacle Site Contacts Profiles</a> and connect.
-  - If reports checked, copy <a href='https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq' target='_blank'>Barnacle Profile Report Map</a> and connect.
-  - Copy <a href='https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT' target='_blank'>Barnacle Report</a>.
+
+
+  - Wait for BigQuery->->->CM_... to be created.
+  - Wait for BigQuery->->->Barnacle_... to be created, then copy and connect the following data sources.
+  - Join the 1-StarThinker Assets Group to access the following assets
+  - Copy 2-Barnacle Profile Advertiser Map and connect.
+  - Copy 3-Barnacle Profile Campaign Map and connect.
+  - Copy 4-Barnacle Profile Site Map and connect.
+  - Copy 5-Barnacle Profiles Connections and connect.
+  - Copy 6-Barnacle Report Delivery Profiles and connect.
+  - Copy 7-Barnacle Roles Duplicates and connect.
+  - Copy 8-Barnacle Roles Not Used and connect.
+  - Copy 9-Barnacle Site Contacts Profiles and connect.
+  - If reports checked, copy 10-Barnacle Profile Report Map and connect.
+  - Copy 11-Barnacle Report.
   - When prompted choose the new data sources you just created.
   - Or give these intructions to the client.
+
+  1-StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+  2-Barnacle Profile Advertiser Map: https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj
+  3-Barnacle Profile Campaign Map: https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT
+  4-Barnacle Profile Site Map: https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y
+  5-Barnacle Profiles Connections: https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE
+  6-Barnacle Report Delivery Profiles: https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG
+  7-Barnacle Roles Duplicates: https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A
+  8-Barnacle Roles Not Used: https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI
+  9-Barnacle Site Contacts Profiles: https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj
+  10-Barnacle Profile Report Map: https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq
+  11-Barnacle Report: https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT
 
 --------------------------------------------------------------
 

@@ -68,10 +68,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move existing CM report into a BigQuery table.
 
-        1. Specify an account id.
-        2. Specify either report name or report id to move a report.
-        3. The most recent valid file will overwrite the table.
-        4. Schema is pulled from the official CM specification.
+      1. Specify an account id.
+      2. Specify either report name or report id to move a report.
+      3. The most recent valid file will overwrite the table.
+      4. Schema is pulled from the official CM specification.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

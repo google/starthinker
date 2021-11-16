@@ -53,11 +53,11 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Create and permission a dataset in BigQuery.
 
-        1. Specify the name of the dataset.
-        2. If dataset exists, it is inchanged.
-        3. Add emails and / or groups to add read permission.
-        4. CAUTION: Removing permissions in StarThinker has no effect.
-        5. CAUTION: To remove permissions you have to edit the dataset.
+      1. Specify the name of the dataset.
+      2. If dataset exists, it is inchanged.
+      3. Add emails and / or groups to add read permission.
+      4. CAUTION: Removing permissions in StarThinker has no effect.
+      5. CAUTION: To remove permissions you have to edit the dataset.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

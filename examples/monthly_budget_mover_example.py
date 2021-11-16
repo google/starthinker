@@ -153,16 +153,16 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 
-        1. No changes made can be made in DV360 from the start to the end of this process
-        2. Make sure there is budget information for the current and previous month's IOs in DV360
-        3. Make sure the provided spend report has spend data for every IO in the previous month
-        4. Spend report must contain 'Revenue (Adv Currency)' and 'Insertion Order ID'
-        5. There are no duplicate IO Ids in the categories outlined below
-        6. This process must be ran during the month of the budget it is updating
-        7. If you receive a 502 error then you must separate your jobs into two, because there is too much information being pulled in the sdf
-        8. Manually run this job
-        9. Once the job has completed go to the table for the new sdf and export to a csv
-        10. Take the new sdf and upload it into DV360
+      1. No changes made can be made in DV360 from the start to the end of this process
+      2. Make sure there is budget information for the current and previous month's IOs in DV360
+      3. Make sure the provided spend report has spend data for every IO in the previous month
+      4. Spend report must contain 'Revenue (Adv Currency)' and 'Insertion Order ID'
+      5. There are no duplicate IO Ids in the categories outlined below
+      6. This process must be ran during the month of the budget it is updating
+      7. If you receive a 502 error then you must separate your jobs into two, because there is too much information being pulled in the sdf
+      8. Manually run this job
+      9. Once the job has completed go to the table for the new sdf and export to a csv
+      10. Take the new sdf and upload it into DV360
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

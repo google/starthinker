@@ -71,18 +71,23 @@ Dynamic Costs Reporting
 
 Calculate DV360 cost at the dynamic creative combination level.
 
+
+
   - Add a sheet URL. This is where you will enter advertiser and campaign level details.
   - Specify the CM network ID.
-  - Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
+  - Click run now once, and a tab called Dynamic Costs will be added to the sheet with instructions.
   - Follow the instructions on the sheet; this will be your configuration.
-  - StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
-  - Wait for <b>BigQuery->->->Dynamic_Costs_Analysis</b> to be created or click Run Now.
-  - Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
-  - Click Edit Connection, and Change to <b>BigQuery->->->Dynamic_Costs_Analysis</b>.
-  - Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.
+  - StarThinker will create two or three (depending on the case) reports in CM named Dynamic Costs - ....
+  - Wait for BigQuery->->->Dynamic_Costs_Analysis to be created or click Run Now.
+  - Copy 1-Dynamic Costs Sample Data.
+  - Click Edit Connection, and Change to BigQuery->->->Dynamic_Costs_Analysis.
+  - Copy 2-Dynamic Costs Sample Report.
   - When prompted, choose the new data source you just created.
   - Edit the table to include or exclude columns as desired.
   - Or, give the dashboard connection intructions to the client.
+
+  1-Dynamic Costs Sample Data: https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA
+  2-Dynamic Costs Sample Report: https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8
 
 --------------------------------------------------------------
 

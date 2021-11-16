@@ -71,10 +71,14 @@ Storage Bucket
 
 Create and permission a bucket in Storage.
 
+
+
   - Specify the name of the bucket and who will have owner permissions.
   - Existing buckets are preserved.
   - Adding a permission to the list will update the permissions but removing them will not.
   - You have to manualy remove grants.
+
+
 
 --------------------------------------------------------------
 

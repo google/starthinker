@@ -51,9 +51,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Sets project permissions for an email.
 
-        1. Provide a role in the form of projects/[project name]/roles/[role name]
-        2. Enter an email to grant that role to.
-        3. This only grants roles, you must remove them from the project manually.
+      1. Provide a role in the form of projects/[project name]/roles/[role name]
+      2. Enter an email to grant that role to.
+      3. This only grants roles, you must remove them from the project manually.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -71,9 +71,14 @@ Salesforce To BigQuery
 
 Move query results into a BigQuery table.
 
-  - Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
+
+
+  - Specify 1-Salesforce credentials.
   - Specify the query youd like to execute.
-  - Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
+  - Specify a 2-SCHEMA for that query (optional).
+
+  1-Salesforce: https://developer.salesforce.com/
+  2-SCHEMA: https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file
 
 --------------------------------------------------------------
 

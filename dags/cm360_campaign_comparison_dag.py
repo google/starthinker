@@ -71,12 +71,16 @@ CM360 Campaign Comparison
 
 Group KPIs into cohorts and compare performance across time and geography. Quickly discover where national and local campaigns need to be targeted, funded, or optimized.
 
+
+
   - Add required parameters and run recipe.
-  - After recipe completes make a copy of the [Campaign Comparison Dashboard](https://datastudio.google.com/c/u/0/reporting/e34669ec-0894-4453-9ac4-ae9c3e739c48/page/p_pkxetkzemc').
+  - After recipe completes make a copy of the 1-Campaign Comparison Dashboard.
   - Keep the data source as is on the copy screen. It will change later.
   - After the copy is made, click Edit->Resource->Manage Added Data Sources->CC_Report->Edit->Edit Connection.
-  - Connect to the newly created **BigQuery->->_Campaign_Comparison->Comparison** table.
+  - Connect to the newly created BigQuery->->_Campaign_Comparison->Comparison table.
   - Or give these intructions to the client.
+
+  1-Campaign Comparison Dashboard: https://datastudio.google.com/c/u/0/reporting/e34669ec-0894-4453-9ac4-ae9c3e739c48/page/p_pkxetkzemc
 
 --------------------------------------------------------------
 

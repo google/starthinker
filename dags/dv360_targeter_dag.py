@@ -71,18 +71,22 @@ DV360 Bulk Targeting Editor
 
 Allows bulk targeting DV360 through Sheets and BigQuery.
 
-  - Select <b>Load</b>, click <b>Save + Run</b>, a sheet called <b> DV Targeter</b> will be created.
-  - In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load</b>, click <b>Save + Run</b>.
-  - In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column. then select <b>Load</b>, click <b>Save + Run</b>.
+
+
+  - Select Load, click Save + Run, a sheet called  DV Targeter will be created.
+  - In the Partners sheet tab, fill in Filter column then select Load, click Save + Run.
+  - In the Advertisers sheet tab, fill in Filter column. then select Load, click Save + Run.
   - Check the First And Third Party option to load audiences, which may be slow.  If not loaded, user will enter audience ids into the sheet manually.
-  - On the <b>Line Items</b> sheet tab, the <i>Filter</i> is used only to limit drop down choices in the rest of the tool.
-  - Optionally edit or filter the <i>Targeting Options</i> or <i>Inventory Sources</i> sheets to limit choices.
+  - On the Line Items sheet tab, the Filter is used only to limit drop down choices in the rest of the tool.
+  - Optionally edit or filter the Targeting Options or Inventory Sources sheets to limit choices.
   - Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).
-  - Select <i>Preview</i>, click <b>Save + Run</b> then check the <b>Preview</b> tabs.
-  - Select <b>Update</b>, click <b>Save + Run</b> then check the <b>Success</b> and <b>Error</b> tabs.
+  - Select Preview, click Save + Run then check the Preview tabs.
+  - Select Update, click Save + Run then check the Success and Error tabs.
   - Load and Update can be run multiple times.
   - If an update fails, all parts of the update failed, break it up into multiple updates.
   - To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load.
+
+
 
 --------------------------------------------------------------
 

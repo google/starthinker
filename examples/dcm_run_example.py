@@ -56,8 +56,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Trigger a CM report run
 
-        1. Specify an account id.
-        2. Specify either report name or report id to run.
+      1. Specify an account id.
+      2. Specify either report name or report id to run.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

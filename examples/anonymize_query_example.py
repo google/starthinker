@@ -66,9 +66,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Runs a query and anynonamizes all rows.  Used to create sample table for dashboards.
 
-        1. Ensure you have user access to both datasets.
-        2. Provide the source project, dataset and query.
-        3. Provide the destination project, dataset, and table.
+      1. Ensure you have user access to both datasets.
+      2. Provide the source project, dataset and query.
+      3. Provide the destination project, dataset, and table.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

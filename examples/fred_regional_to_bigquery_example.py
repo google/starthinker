@@ -73,8 +73,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Download federal reserve region.
 
-        1. Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.
-        2. A table will appear in the dataset.
+      1. Specify the values for a 1-Fred observations API call.
+         1.1 - Fred observations API call: https://research.stlouisfed.org/docs/api/geofred/regional_data.html
+      2. A table will appear in the dataset.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

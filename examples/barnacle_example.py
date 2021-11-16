@@ -445,21 +445,32 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 
-        1. Wait for <b>BigQuery->->->CM_*</b> to be created.
-        2. Wait for <b>BigQuery->->->Barnacle_*</b> to be created, then copy and connect the following data sources.
-        3. Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-        4. Copy <a href='https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj' target='_blank'>Barnacle Profile Advertiser Map</a> and connect.
-        5. Copy <a href='https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT' target='_blank'>Barnacle Profile Campaign Map</a> and connect.
-        6. Copy <a href='https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y' target='_blank'>Barnacle Profile Site Map</a> and connect.
-        7. Copy <a href='https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE' target='_blank'>Barnacle Profiles Connections</a> and connect.
-        8. Copy <a href='https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG' target='_blank'>Barnacle Report Delivery Profiles</a> and connect.
-        9. Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Roles Duplicates</a> and connect.
-        10. Copy <a href='https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI' target='_blank'>Barnacle Roles Not Used</a> and connect.
-        11. Copy <a href='https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj' target='_blank'>Barnacle Site Contacts Profiles</a> and connect.
-        12. If reports checked, copy <a href='https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq' target='_blank'>Barnacle Profile Report Map</a> and connect.
-        13. Copy <a href='https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT' target='_blank'>Barnacle Report</a>.
-        14. When prompted choose the new data sources you just created.
-        15. Or give these intructions to the client.
+      1. Wait for BigQuery->->->CM_... to be created.
+      2. Wait for BigQuery->->->Barnacle_... to be created, then copy and connect the following data sources.
+      3. Join the 1-StarThinker Assets Group to access the following assets
+         3.1 - StarThinker Assets Group: https://groups.google.com/d/forum/starthinker-assets
+      4. Copy 1-Barnacle Profile Advertiser Map and connect.
+         4.1 - Barnacle Profile Advertiser Map: https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj
+      5. Copy 1-Barnacle Profile Campaign Map and connect.
+         5.1 - Barnacle Profile Campaign Map: https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT
+      6. Copy 1-Barnacle Profile Site Map and connect.
+         6.1 - Barnacle Profile Site Map: https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y
+      7. Copy 1-Barnacle Profiles Connections and connect.
+         7.1 - Barnacle Profiles Connections: https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE
+      8. Copy 1-Barnacle Report Delivery Profiles and connect.
+         8.1 - Barnacle Report Delivery Profiles: https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG
+      9. Copy 1-Barnacle Roles Duplicates and connect.
+         9.1 - Barnacle Roles Duplicates: https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A
+      10. Copy 1-Barnacle Roles Not Used and connect.
+         10.1 - Barnacle Roles Not Used: https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI
+      11. Copy 1-Barnacle Site Contacts Profiles and connect.
+         11.1 - Barnacle Site Contacts Profiles: https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj
+      12. If reports checked, copy 1-Barnacle Profile Report Map and connect.
+         12.1 - Barnacle Profile Report Map: https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq
+      13. Copy 1-Barnacle Report.
+         13.1 - Barnacle Report: https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT
+      14. When prompted choose the new data sources you just created.
+      15. Or give these intructions to the client.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

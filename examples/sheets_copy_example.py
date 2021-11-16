@@ -57,9 +57,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Copy tab from a sheet to a sheet.
 
-        1. Provide the full edit URL for both sheets.
-        2. Provide the tab name for both sheets.
-        3. The tab will only be copied if it does not already exist.
+      1. Provide the full edit URL for both sheets.
+      2. Provide the tab name for both sheets.
+      3. The tab will only be copied if it does not already exist.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -65,10 +65,10 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Import data from a sheet and move it to a BigQuery table.
 
-        1. For the sheet, provide the full edit URL.
-        2. If the tab does not exist it will be created.
-        3. Empty cells in the range will be NULL.
-        4. Check Sheets header if first row is a header
+      1. For the sheet, provide the full edit URL.
+      2. If the tab does not exist it will be created.
+      3. Empty cells in the range will be NULL.
+      4. Check Sheets header if first row is a header
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

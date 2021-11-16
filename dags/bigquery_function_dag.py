@@ -71,9 +71,13 @@ BigQuery Function
 
 Add a custom function or table to a dataset.
 
+
+
   - Specify the dataset, and the function or table will be added.
   - Pearson Significance Test: Check if a correlation is significant.
   - RGB To HSV: Convert color values for analysis.
+
+
 
 --------------------------------------------------------------
 

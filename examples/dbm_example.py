@@ -51,10 +51,12 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Create a DV360 report.
 
-        1. Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.
-        2. Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json' target='_blank'>sample for reference</a>.
-        3. The report is only created, a seperate script is required to move the data.
-        4. To reset a report, delete it from DV360 reporting.
+      1. Reference field values from the 1-DV360 API to build a report.
+         1.1 - DV360 API: https://developers.google.com/bid-manager/v1/reports
+      2. Copy and paste the JSON definition of a report, 1-sample for reference.
+         2.1 - sample for reference: https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json
+      3. The report is only created, a seperate script is required to move the data.
+      4. To reset a report, delete it from DV360 reporting.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

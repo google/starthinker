@@ -59,9 +59,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Create a BigQuery view.
 
-        1. Specify a single query and choose legacy or standard mode.
-        2. For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
-        3. If the view exists, it is unchanged, delete it manually to re-create.
+      1. Specify a single query and choose legacy or standard mode.
+      2. For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
+      3. If the view exists, it is unchanged, delete it manually to re-create.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

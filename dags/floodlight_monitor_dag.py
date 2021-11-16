@@ -71,10 +71,14 @@ CM360 Floodlight Monitor
 
 Monitor floodlight impressions specified in sheet and send email alerts.
 
+
+
   - Specify an account_id or account_id:subaccount_id.
-  - Will copy <a href='https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing'>Floodlight Monitor Sheet</a> to the sheet you specify.
+  - Will copy 1-Floodlight Monitor Sheet to the sheet you specify.
   - Follow instructions on sheet.
   - Emails are sent once a day.
+
+  1-Floodlight Monitor Sheet: https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/
 
 --------------------------------------------------------------
 

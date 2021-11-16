@@ -53,9 +53,9 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       A tool for bulk editing key value pairs for CM placements.
 
-        1. Add this card to a recipe and save it.
-        2. Then click <strong>Run Now</strong> to deploy.
-        3. Follow the instructions in the sheet for setup.
+      1. Add this card to a recipe and save it.
+      2. Then click Run Now to deploy.
+      3. Follow the instructions in the sheet for setup.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

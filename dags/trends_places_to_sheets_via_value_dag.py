@@ -71,11 +71,15 @@ Trends Places To Sheets Via Values
 
 Move using hard coded WOEID values.
 
-  - Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.
+
+
+  - Provide 1-Twitter Credentials.
   - Provide a comma delimited list of WOEIDs.
   - Specify Sheet url and tab to write API call results to.
   - Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume
   - Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.
+
+  1-Twitter Credentials: https://apps.twitter.com
 
 --------------------------------------------------------------
 

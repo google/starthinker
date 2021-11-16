@@ -1041,7 +1041,8 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Dashboard that shows performance metrics across browser to see the impact of privacy changes.
 
-        1. Follow the instructions from <a href="https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/edit?usp=sharing" target="_blank">this document</a>
+      1. Follow the instructions from 1-this document.
+         1.1 - this document: https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

@@ -73,11 +73,12 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Move using a WOEID query.
 
-        1. Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.
-        2. Provide BigQuery WOEID source query.
-        3. Specify Sheet url and tab to write API call results to.
-        4. Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume
-        5. Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.
+      1. Provide 1-Twitter Credentials.
+         1.1 - Twitter Credentials: https://apps.twitter.com
+      2. Provide BigQuery WOEID source query.
+      3. Specify Sheet url and tab to write API call results to.
+      4. Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume
+      5. Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

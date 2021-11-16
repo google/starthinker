@@ -77,18 +77,18 @@ if __name__ == "__main__":
     description=textwrap.dedent("""
       Allows bulk targeting DV360 through Sheets and BigQuery.
 
-        1. Select <b>Load</b>, click <b>Save + Run</b>, a sheet called <b> DV Targeter</b> will be created.
-        2. In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load</b>, click <b>Save + Run</b>.
-        3. In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column. then select <b>Load</b>, click <b>Save + Run</b>.
-        4. Check the First And Third Party option to load audiences, which may be slow.  If not loaded, user will enter audience ids into the sheet manually.
-        5. On the <b>Line Items</b> sheet tab, the <i>Filter</i> is used only to limit drop down choices in the rest of the tool.
-        6. Optionally edit or filter the <i>Targeting Options</i> or <i>Inventory Sources</i> sheets to limit choices.
-        7. Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).
-        8. Select <i>Preview</i>, click <b>Save + Run</b> then check the <b>Preview</b> tabs.
-        9. Select <b>Update</b>, click <b>Save + Run</b> then check the <b>Success</b> and <b>Error</b> tabs.
-        10. Load and Update can be run multiple times.
-        11. If an update fails, all parts of the update failed, break it up into multiple updates.
-        12. To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load.
+      1. Select Load, click Save + Run, a sheet called  DV Targeter will be created.
+      2. In the Partners sheet tab, fill in Filter column then select Load, click Save + Run.
+      3. In the Advertisers sheet tab, fill in Filter column. then select Load, click Save + Run.
+      4. Check the First And Third Party option to load audiences, which may be slow.  If not loaded, user will enter audience ids into the sheet manually.
+      5. On the Line Items sheet tab, the Filter is used only to limit drop down choices in the rest of the tool.
+      6. Optionally edit or filter the Targeting Options or Inventory Sources sheets to limit choices.
+      7. Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).
+      8. Select Preview, click Save + Run then check the Preview tabs.
+      9. Select Update, click Save + Run then check the Success and Error tabs.
+      10. Load and Update can be run multiple times.
+      11. If an update fails, all parts of the update failed, break it up into multiple updates.
+      12. To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load.
   """))
 
   parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)

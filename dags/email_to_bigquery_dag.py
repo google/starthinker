@@ -71,9 +71,13 @@ Email Fetch
 
 Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 
+
+
   - The person executing this recipe must be the recipient of the email.
   - Give a regular expression to match the email subject, link or attachment.
   - The data downloaded will overwrite the table specified.
+
+
 
 --------------------------------------------------------------
 

@@ -71,7 +71,11 @@ cTV Inventory Availability Dashboard
 
 The cTV Audience Affinity dashboard is designed to give clients insights into which cTV apps their audiences have a high affinity for using.  The goal of this dashboard is to provide some assistance with the lack of audience targeting for cTV within DV360.
 
-  - Find instructions and recommendations for this dashboard <a href="https://docs.google.com/document/d/120kcR9OrS4hGdTxRK0Ig2koNmm6Gl7sH0L6U56N0SAM/view?usp=sharing" target="_blank">here</a>
+
+
+  - Find instructions and recommendations for 1-this dashboard
+
+  1-this dashboard: https://docs.google.com/document/d/120kcR9OrS4hGdTxRK0Ig2koNmm6Gl7sH0L6U56N0SAM/
 
 --------------------------------------------------------------
 

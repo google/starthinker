@@ -71,9 +71,13 @@ DV360 Report To BigQuery
 
 Move existing DV360 reports into a BigQuery table.
 
+
+
   - Specify either report name or report id to move a report.
   - A schema is recommended, if not provided it will be guessed.
   - The most recent valid file will be moved to the table.
+
+
 
 --------------------------------------------------------------
 

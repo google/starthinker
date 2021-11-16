@@ -71,10 +71,14 @@ BigQuery Query to Sheet
 
 Copy the contents of a query into a Google Sheet.
 
+
+
   - Specify the sheet and the query.
   - Leave range blank or set to A2 to insert one line down.
   - The range is cleared before the sheet is written to.
   - To select a table use SELECT * FROM table.
+
+
 
 --------------------------------------------------------------
 
