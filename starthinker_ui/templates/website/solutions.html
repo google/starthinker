@@ -133,7 +133,7 @@
                     {{ script.get_name }}
                   </a>
                 </span>
-                <p>{{ script.get_description|safe }}</p>
+                <p>{{ script.get_description|markdown|safe }}</p>
               </div>
               <div class="card-reveal">
                 <i class="card-title material-icons right">close</i>

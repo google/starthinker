@@ -26,7 +26,7 @@
     },
     "instructions":[
       "The person executing this recipe must be the recipient of the email.",
-      "Schedule a DV360 report to be sent to an email like <b>{field:recipe_email_token}</b>.",
+      "Schedule a DV360 report to be sent to an email like **{field:recipe_email_token}**.",
       "Or set up a redirect rule to forward a report you already receive.",
       "The report can be sent as an attachment or a link.",
       "Ensure this recipe runs after the report is email daily.",

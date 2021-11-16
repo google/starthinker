@@ -36,6 +36,7 @@ except:
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
 from starthinker_ui.recipe.forms_fields import SwitchField
 from starthinker_ui.recipe.scripts import Script
+from starthinker.util.recipe import recipe_markdown_html
 
 register = template.Library()
 
@@ -81,6 +82,11 @@ def search_scripts(parser, token):
 @register.filter
 def sort(value):
   return sorted(value)
+
+
+@register.filter
+def markdown(text):
+  return recipe_markdown_html(text)
 
 
 @register.filter

@@ -7,7 +7,7 @@
     "from":["plx"],
     "to":["bigquery"],
     "instructions":[
-      "Each PLX BigQuery Bridge <a href=\"https://docs.google.com/document/d/1ok5lzaeb0GMbNomsIjQqCevSzcSUpDUGrcFJZmHP9zU/edit\" target=\"_blank\">now requires per table approval</a>.",
+      "Each PLX BigQuery Bridge [now requires per table approval](https://docs.google.com/document/d/1ok5lzaeb0GMbNomsIjQqCevSzcSUpDUGrcFJZmHP9zU/).",
       "SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...",
       "Specify a single query and choose legacy or standard mode.",
       "Every time the query runs it will overwrite the table."

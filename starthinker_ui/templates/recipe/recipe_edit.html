@@ -252,10 +252,10 @@
               <i class="right material-icons form_move blue-text">drag_handle</i>
               <i class="right material-icons form_delete blue-text" id="{{ form.prefix }}-script_delete">delete</i>
               <h3>{{ form.script.get_name }}</h3>
-              <p class="flow-text">{{ form.get_description|safe }}</p>
+              <p class="flow-text">{{ form.get_description|markdown|safe }}</p>
               <ol>
                 {% for step in form.get_instructions %}
-                  <li>{{ step|safe }}</li>
+                  <li>{{ step|markdown|safe }}</li>
                 {% endfor %}
               </ol>
               {% with fields=form %}
@@ -326,10 +326,10 @@
         <i class="right material-icons form_move">drag_handle</i>
         <i class="right material-icons form_delete" id="{{ blank.prefix }}-script_delete">delete</i>
         <h3>{{ blank.script.get_name }}</h3>
-        <p class="flow-text">{{ blank.get_description|safe }}</p>
+        <p class="flow-text">{{ blank.get_description|markdown|safe }}</p>
         <ol>
           {% for step in blank.get_instructions %}
-            <li>{{ step|safe }}</li>
+            <li>{{ step|markdown|safe }}</li>
           {% endfor %}
         </ol>
         {% with fields=blank %}

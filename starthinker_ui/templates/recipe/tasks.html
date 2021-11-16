@@ -71,7 +71,7 @@
             <i class="form_button material-icons blue-text large" id="form_button_{{ script.get_tag }}">add_circle</i>
             <span id="form_button_count_{{ script.get_tag }}"></span>
           </p>
-          <p class="flow-text center-align">{{ script.get_description|safe }}</p>
+          <p class="flow-text center-align">{{ script.get_description|markdown|safe }}</p>
 
           {% if script.get_image %}
             <br/><br/>

@@ -23,7 +23,8 @@ from collections import defaultdict
 
 
 RE_TEXT_FIELD = re.compile(r'\{\w+:(\w+)(, .*?)?}')
-
+RE_MARKDOWN_LINK = re.compile(r'\[(.*?)\]\((.*?)\)')
+RE_MARKDOWN_BOLD = re.compile(r'\*\*(.*?)\*\*')
 
 def get_recipe(filepath=None, includepath=None, stringcontent=None):
   """Loads json for recipe, replaces newlines, and expands includes.
@@ -515,3 +516,31 @@ def json_expand_queries(recipe, nodes=['query']):
       json_expand_queries(value, nodes)
 
   return recipe
+
+
+def recipe_markdown_html(text):
+  return RE_MARKDOWN_LINK.sub(
+    '<a href="\g<2>" target="_blank">\g<1></a>',
+    RE_MARKDOWN_BOLD.sub('<strong>\g<1></strong>', text)
+  )
+
+def recipe_markdown_text(text, basic=False):
+  footnotes = {}
+  def recipe_markdown_footnote(match):
+    nonlocal footnotes
+    nonlocal basic
+    footnotes[match.groups()] = len(footnotes) + 1
+    if basic:
+      return match.group(1)
+    else:
+      return '{}-{}'.format(footnotes[match.groups()], match.group(1))
+
+  text = RE_MARKDOWN_BOLD.sub('\g<1>', text)
+  if basic:
+    return RE_MARKDOWN_LINK.sub(recipe_markdown_footnote, text) + \
+      '\n\n' + \
+      '\n'.join(['  {}'.format(f[1]) for f in footnotes.keys()])
+  else:
+    return RE_MARKDOWN_LINK.sub(recipe_markdown_footnote, text) + \
+    '\n\n' + \
+    '\n'.join(['  {}-{}: {}'.format(i, f[0], f[1]) for i,f in enumerate(footnotes.keys(), 1)])

@@ -25,10 +25,10 @@
       "csat improvement":100
     },
     "instructions":[
-      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Targeting Audit</b> to be created.",
-      "Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
-      "Copy <a href='https://datastudio.google.com/c/u/0/reporting/2f140045-dd62-48ae-bc3b-8d01b79828b7' target='_blank'>Sample DV360 Targeting Audit</a>.",
-      "Edit the data source to point at <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Targeting_Audit</b>.",
+      "Wait for **BigQuery->{field:recipe_project}->{field:recipe_slug}->Targeting Audit** to be created.",
+      "Join the [StarThinker Assets Group](https://groups.google.com/d/forum/starthinker-assets) to access the following assets",
+      "Copy [Sample DV360 Targeting Audit](https://datastudio.google.com/c/u/0/reporting/2f140045-dd62-48ae-bc3b-8d01b79828b7).",
+      "Edit the data source to point at **BigQuery->{field:recipe_project}->{field:recipe_slug}->Targeting_Audit**.",
       "Or give these intructions to the client."
     ],
     "authors":["kenjora@google.com"]

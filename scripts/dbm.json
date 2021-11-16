@@ -9,8 +9,8 @@
     "from":["dv360"],
     "to":["dv360"],
     "instructions":[
-      "Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.",
-      "Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json' target='_blank'>sample for reference</a>.",
+      "Reference field values from the [DV360 API](https://developers.google.com/bid-manager/v1/reports) to build a report.",
+      "Copy and paste the JSON definition of a report, [sample for reference](https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json).",
       "The report is only created, a seperate script is required to move the data.",
       "To reset a report, delete it from DV360 reporting."
     ],

@@ -22,7 +22,7 @@
     },
     "instructions":[
       "Fill in the report definition and destination table.",
-      "Wait for <b>BigQuery->{field:recipe_project}->{field:dataset}->{field:table}</b> to be created.",
+      "Wait for **BigQuery->{field:recipe_project}->{field:dataset}->{field:table}** to be created.",
       "Or give these intructions to the client."
     ],
     "authors":["kenjora@google.com"]

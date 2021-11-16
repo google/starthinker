@@ -31,7 +31,6 @@ from starthinker.util.recipe import dict_to_string
 from starthinker.util.recipe import fields_to_string
 from starthinker.util.recipe import get_recipe
 from starthinker.util.recipe import json_get_fields
-#from starthinker.util.recipe import json_set_auths
 from starthinker.util.colab import Colab
 
 
@@ -140,7 +139,6 @@ def recipe_to_colab(name, description, instructions, tasks, parameters={}, proje
   colab.code('from starthinker.util.configuration import execute')
   colab.code('from starthinker.util.recipe import json_set_fields')
   colab.code('')
-  #colab.code('TASKS = %s' % dict_to_string(json_set_auths(tasks, 'user'), skip=('field',)))
   colab.code('TASKS = %s' % dict_to_string(tasks, skip=('field',)))
   colab.code('')
 

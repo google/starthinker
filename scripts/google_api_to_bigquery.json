@@ -14,10 +14,10 @@
       "Specify the function using dot notation.",
       "Specify the arguments using json.",
       "Iterate is optional, use if API returns a list of items that are not unpacking correctly.",
-      "The <a href='https://cloud.google.com/docs/authentication/api-keys' target='_blank'>API Key</a> may be required for some calls.",
-      "The <a href='https://developers.google.com/google-ads/api/docs/first-call/dev-token' target='_blank'>Developer Token</a> may be required for some calls.",
+      "The [API Key](https://cloud.google.com/docs/authentication/api-keys) may be required for some calls.",
+      "The [Developer Token](https://developers.google.com/google-ads/api/docs/first-call/dev-token) may be required for some calls.",
       "Give BigQuery dataset and table where response will be written.",
-      "All API calls are based on <a href='https://developers.google.com/discovery/v1/reference'  target='_blank'>discovery document</a>, for example the <a href='https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list' target='_blank'>Campaign Manager API</a>."
+      "All API calls are based on [discovery document](https://developers.google.com/discovery/v1/reference), for example the [Campaign Manager API](https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list)."
     ],
     "pitches":[
       "Call any Google API ednpoint.",

@@ -10,7 +10,7 @@
     "from":["twitter"],
     "to":["bigquery"],
     "instructions":[
-      "Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.",
+      "Provide [Twitter Credentials](https://apps.twitter.com).",
       "Provide BigQuery WOEID source query.",
       "Specify BigQuery dataset and table to write API call results to.",
       "Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume",

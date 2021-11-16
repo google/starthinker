@@ -21,10 +21,10 @@
       "csat improvement":70
     },
     "instructions":[
-      "Wait for <b>BigQuery->StarThinker Data->{field:recipe_slug}->Digitx_Dashboard</b> to be created.",
-      "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Digit X Sample Data</a>.",
-      "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->{field:recipe_slug}->Digit_X_Dashboard</b>.",
-      "Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Digit X Sample Report</a>.",
+      "Wait for **BigQuery->StarThinker Data->{field:recipe_slug}->Digitx_Dashboard** to be created.",
+      "Copy [Digit X Sample Data](https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ).",
+      "Click Edit Connection, and change to **BigQuery->StarThinker Data->{field:recipe_slug}->Digit_X_Dashboard**.",
+      "Copy [Digit X Sample Report](https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO).",
       "When prompted choose the new data source you just created.",
       "Or give these intructions to the client."
     ],

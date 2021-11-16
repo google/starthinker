@@ -23,8 +23,8 @@
       "csat improvement":100
     },
     "instructions":[
-      "Wait for <b>BigQuery->{recipe_project}->{recipe_slug}->*</b> to be created.",
-      "Every table mimics the <a href='https://developers.google.com/doubleclick-advertisers/rel_notes' target='_blank'>CM360 API Endpoints</a>."
+      "Wait for **BigQuery->{recipe_project}->{recipe_slug}->...** to be created.",
+      "Every table mimics the [CM360 API Endpoints](https://developers.google.com/doubleclick-advertisers/rel_notes)."
     ],
     "authors":["kenjora@google.com"]
   },

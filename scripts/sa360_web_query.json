@@ -24,8 +24,8 @@
     },
     "instructions":[
       "Add this card to a recipe and save it.",
-      "Then click <strong>Run Now</strong> to deploy.",
-      "Follow the <a href='https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0'>instructions</a> for setup."
+      "Then click **Run Now** to deploy.",
+      "Follow the [instructions](https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0) for setup."
     ],
     "authors":["syb@google.com"]
   },

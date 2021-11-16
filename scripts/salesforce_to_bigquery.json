@@ -10,9 +10,9 @@
     "from":["salesforce"],
     "to":["bigquery"],
     "instructions":[
-      "Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.",
+      "Specify [Salesforce](https://developer.salesforce.com/) credentials.",
       "Specify the query youd like to execute.",
-      "Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional )."
+      "Specify a [SCHEMA](https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file) for that query (optional)."
     ],
     "authors":["kenjora@google.com"]
   },

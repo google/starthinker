@@ -54,7 +54,7 @@
     <div class="row">
       <div class="col s12 m6 l4">
         <i class="large material-icons">{{ script.get_icon }}</i><h1>{{ script.get_name }}</h1>
-        <p class="flow-text">{{ script.get_description|safe }}</p>
+        <p class="flow-text">{{ script.get_description|markdown|safe }}</p>
       </div>
       <div class="col s12 m6 l8">
         {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}" alt="{{ script.get_name|escape }} {% trans 'Sample Screenshot' %}"/>{% endif %}
@@ -62,7 +62,7 @@
     </div>
   {% else %}
     <h1><i class="large material-icons">{{ script.get_icon }}</i>&nbsp;{{ script.get_name }}</h1>
-    <p class="flow-text">{{ script.get_description|safe }}</p>
+    <p class="flow-text">{{ script.get_description|markdown|safe }}</p>
   {% endif %}
 
   <br/><br/>
@@ -155,7 +155,7 @@
             <tbody>
               {% for instruction in script.get_instructions %}
               <tr>
-                <td>{{ instruction|safe }}</td>
+                <td>{{ instruction|markdown|safe }}</td>
               </tr>
               {% endfor %}
             </tbody>

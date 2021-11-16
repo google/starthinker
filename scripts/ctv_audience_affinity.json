@@ -19,7 +19,7 @@
       "cTV Targeting": 50
     },
     "instructions": [
-      "Find instructions and recommendations for this dashboard <a href=\"https://docs.google.com/document/d/120kcR9OrS4hGdTxRK0Ig2koNmm6Gl7sH0L6U56N0SAM/view?usp=sharing\" target=\"_blank\">here</a>"
+      "Find instructions and recommendations for [this dashboard](https://docs.google.com/document/d/120kcR9OrS4hGdTxRK0Ig2koNmm6Gl7sH0L6U56N0SAM/)"
     ],
     "authors": [
       "terwilleger@google.com"

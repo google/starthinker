@@ -21,7 +21,7 @@ import io
 
 from starthinker.config import UI_ROOT
 from starthinker.util.csv import find_utf8_split, response_utf8_stream
-from starthinker.util.recipe import get_recipe, recipe_includes, json_merge_field, json_merge_fields, json_set_fields
+from starthinker.util.recipe import get_recipe, recipe_includes, json_merge_field, json_merge_fields, json_set_fields, recipe_markdown_html, recipe_markdown_text
 
 
 class TestCSV(unittest.TestCase):
@@ -313,6 +313,19 @@ class TestRecipe(unittest.TestCase):
       "another":"StarThinker Test Twitter Also"
     })
 
+
+  def test_recipe_markdown_html(self):
+    self.maxDiff = None
+    self.assertEqual(
+      recipe_markdown_html('There is a [Google](http://www.google.com) here and another [Test](http://www.test.com) there.'),
+      'There is a <a href="http://www.google.com" target="_blank">Google</a> here and another <a href="http://www.test.com" target="_blank">Test</a> there.',
+    )
+
+  def test_recipe_markdown_text(self):
+    self.maxDiff = None
+    self.assertEqual(recipe_markdown_text('There is a [Google](http://www.google.com) here and another [Test](http://www.test.com) there.'),
+    'There is a 1-Google here and another 2-Test there.\n\n  1-Google: http://www.google.com\n  2-Test: http://www.test.com'
+  )
 
 if __name__ == '__main__':
   unittest.main()

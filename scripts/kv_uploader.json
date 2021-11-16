@@ -25,7 +25,7 @@
     },
     "instructions":[
       "Add this card to a recipe and save it.",
-      "Then click <strong>Run Now</strong> to deploy.",
+      "Then click **Run Now** to deploy.",
       "Follow the instructions in the sheet for setup."
     ],
     "authors":["kenjora@google.com"]

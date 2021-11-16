@@ -24,7 +24,7 @@
       "csat improvement":100
     },
     "instructions":[
-      "All Bulkdozer Lite related tools and instructions on how to use them can be found at: <a href=\"https://github.com/google/bulkdozer-lite#installation\">Bulkdozer Lite</a>"
+      "See all [Bulkdozer Lite](https://github.com/google/bulkdozer-lite#installation) related tools and instructions."
     ],
     "authors":["mauriciod@google.com"]
   },

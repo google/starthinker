@@ -22,7 +22,7 @@
       "csat improvement":100
     },
     "instructions":[
-      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Oculi_...</b> to be created.",
+      "Wait for **BigQuery->{field:recipe_project}->{field:recipe_slug}->Oculi_...** to be created.",
       "Then use the data for analysis.",
       "Or give these intructions to the client."
     ],

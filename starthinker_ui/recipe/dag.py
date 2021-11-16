@@ -17,7 +17,7 @@
 ###########################################################################
 
 from starthinker_ui.recipe.scripts import Script
-from starthinker.util.recipe import json_get_fields, dict_to_string, fields_to_string
+from starthinker.util.recipe import json_get_fields, dict_to_string, fields_to_string, recipe_markdown_text
 
 AIRFLOW_TEMPLATE = """###########################################################################
 #
@@ -123,8 +123,8 @@ def script_to_dag(dag_name,
                   parameters={}):
   return AIRFLOW_TEMPLATE.format(**{
     'title':title,
-    'description':description,
-    'instructions':'  - ' + '\n  - '.join(instructions),
+    'description':recipe_markdown_text(description),
+    'instructions':recipe_markdown_text('  - ' + '\n  - '.join(instructions)),
     'inputs':fields_to_string(
       json_get_fields(script),
       parameters

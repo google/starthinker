@@ -26,7 +26,7 @@
     },
     "instructions":[
       "The person executing this recipe must be the recipient of the email.",
-      "Schedule a CM report to be sent to <b>{field:recipe_email_token}</b>.",
+      "Schedule a CM report to be sent to **{field:recipe_email_token}**.",
       "Or set up a redirect rule to forward a report you already receive.",
       "The report must be sent as an attachment.",
       "Ensure this recipe runs after the report is email daily.",
