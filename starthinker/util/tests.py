@@ -323,9 +323,11 @@ class TestRecipe(unittest.TestCase):
 
   def test_recipe_markdown_text(self):
     self.maxDiff = None
-    self.assertEqual(recipe_markdown_text('There is a [Google](http://www.google.com) here and another [Test](http://www.test.com) there.'),
-    'There is a 1-Google here and another 2-Test there.\n\n  1-Google: http://www.google.com\n  2-Test: http://www.test.com'
-  )
+    text, links = recipe_markdown_text('There is a [Google](http://www.google.com) here and another [Test](http://www.test.com) there.')
+    self.assertEqual(text, 'There is a 1-Google here and another 2-Test there.')
+    self.assertEqual(links[0], ('Google', 'http://www.google.com'))
+    self.assertEqual(links[1], ('Test', 'http://www.test.com'))
+
 
 if __name__ == '__main__':
   unittest.main()

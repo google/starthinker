@@ -30,6 +30,8 @@ from starthinker.util.recipe import dict_to_python
 from starthinker.util.recipe import get_recipe
 from starthinker.util.recipe import json_get_fields
 from starthinker.util.recipe import json_expand_queries
+from starthinker.util.recipe import recipe_markdown_text
+
 
 DISCLAIMER = '''###########################################################################
 #
@@ -62,12 +64,18 @@ def parameters_to_argparse(description, instructions, parameters):
   code += '    description=textwrap.dedent("""\n'
 
   if description:
+    description, links = recipe_markdown_text(description)
     code += '      %s\n' % description
+    for index, link in enumerate(links, 1):
+      code += '         %d-%s: %s\n' % (index, link[0], link[1])
 
   if instructions:
     code += '\n'
     for step, instruction in enumerate(instructions, 1):
-      code += '        %d. %s\n' % (step, instruction)
+      instruction, links = recipe_markdown_text(instruction)
+      code += '      %d. %s\n' % (step, instruction)
+      for index, link in enumerate(links, 1):
+        code += '         %d.%d - %s: %s\n' % (step, index, link[0], link[1])
 
   code += '  """))\n\n'
 

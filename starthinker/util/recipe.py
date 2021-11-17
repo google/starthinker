@@ -524,23 +524,11 @@ def recipe_markdown_html(text):
     RE_MARKDOWN_BOLD.sub('<strong>\g<1></strong>', text)
   )
 
-def recipe_markdown_text(text, basic=False):
+def recipe_markdown_text(text):
   footnotes = {}
   def recipe_markdown_footnote(match):
     nonlocal footnotes
-    nonlocal basic
     footnotes[match.groups()] = len(footnotes) + 1
-    if basic:
-      return match.group(1)
-    else:
-      return '{}-{}'.format(footnotes[match.groups()], match.group(1))
+    return '{}-{}'.format(footnotes[match.groups()], match.group(1))
 
-  text = RE_MARKDOWN_BOLD.sub('\g<1>', text)
-  if basic:
-    return RE_MARKDOWN_LINK.sub(recipe_markdown_footnote, text) + \
-      '\n\n' + \
-      '\n'.join(['  {}'.format(f[1]) for f in footnotes.keys()])
-  else:
-    return RE_MARKDOWN_LINK.sub(recipe_markdown_footnote, text) + \
-    '\n\n' + \
-    '\n'.join(['  {}-{}: {}'.format(i, f[0], f[1]) for i,f in enumerate(footnotes.keys(), 1)])
+  return RE_MARKDOWN_LINK.sub(recipe_markdown_footnote, RE_MARKDOWN_BOLD.sub('\g<1>', text)), list(footnotes.keys())
