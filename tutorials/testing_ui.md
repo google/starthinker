@@ -28,7 +28,7 @@ When the UI is active it saves recipes to the local database.  Those recipes can
 using the following commands:
 
 ```
-source starthinker_assets/developer.sh
+source starthinker_assets/development.sh
 python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
 ```
 

@@ -49,26 +49,19 @@ def get_credentials(config, auth):
           config.recipe['setup']['auth']['user'],
           config.recipe['setup']['auth'].get('client')
         )
-      except (KeyError, ValueError):
+      except (KeyError, ValueError) as e:
         print('')
-        print(
-            'ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.'
-        )
+        print('ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.')
         print('')
-        print(
-            'SOLUTION: Specify a -u [user credentials path] parameter on the command line.'
-        )
-        print(
-            '          Alternaitvely specify a -u [user credentials path to be created] parameter and a -c [client credentials path] parameter on the command line.'
-        )
-        print(
-            '          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "user":"[JSON OR PATH]" }}} in the JSON.'
-        )
+        print('SOLUTION: Specify a -u [user credentials path] parameter on the command line.')
+        print('          Alternaitvely specify a -u [user credentials path to be created] parameter and a -c [client credentials path] parameter on the command line.')
+        print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "user":"[JSON OR PATH]" }}} in the JSON.')
         print('')
-        print(
-            'INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md'
-        )
+        print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md')
         print('')
+        print('Client JSON Parameter Missing:', str(e))
+        print('')
+
         sys.exit(1)
 
     return CREDENTIALS_USER_CACHE
@@ -78,22 +71,16 @@ def get_credentials(config, auth):
       return CredentialsServiceWrapper(
         config.recipe['setup']['auth']['service']
       )
-    except (KeyError, ValueError):
+    except (KeyError, ValueError) as e:
       print('')
-      print(
-          'ERROR: You are attempting to access an API endpoint that requires Google Cloud SERVICE authentication but have not provided credentials to make that possible.'
-      )
+      print('ERROR: You are attempting to access an API endpoint that requires Google Cloud SERVICE authentication but have not provided credentials to make that possible.')
       print('')
-      print(
-          'SOLUTION: Specify a -s [service credentials path] parameter on the command line.'
-      )
-      print(
-          '          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "service":"[JSON OR PATH]" }}} in the JSON.'
-      )
+      print('SOLUTION: Specify a -s [service credentials path] parameter on the command line.')
+      print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "service":"[JSON OR PATH]" }}} in the JSON.')
       print('')
-      print(
-          'INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md'
-      )
+      print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md')
+      print('')
+      print('Client JSON Parameter Missing:', str(e))
       print('')
       sys.exit(1)
 

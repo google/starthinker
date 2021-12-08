@@ -7,7 +7,7 @@ in StarThinker except that it doesn't do any work.  It simply compares and asser
 
 StarThinker also comes with a test helper that loads and runs test recipes for complete integration testing.
 Tests are run in parallel and written to individual log files.  The test helper uses StarThinker virtual
-environment and shell variables defined in [starthinker_assets/developer.sh](../starthinker_assets/developer.sh)
+environment and shell variables defined in [starthinker_assets/development.sh](../starthinker_assets/development.sh)
 or [starthinker_assets/production.sh](../starthinker_assets/production.sh).
 
 ## Architecture
@@ -21,8 +21,8 @@ an account id is almost always left as a field because each developer has unique
 - All remaining fields will be automatically inserted into the test configuration for the developer to provide.
 
 StarThinker runs full integration tests, many tests require specific access to testing assets such as account identifiers and emails.
-To configure this, the helper will create or update a config.json file in the [tests/](../tests/) directory. After it is
-created edit the file and fill in required fields.
+To configure this, the helper will create or update test configuration files in the **starthinker_assets/tests/** directory. After it is
+created edit the files in that directory and fill in required fields.
 
 Not all fields need to be filled in, tests missing values will error, if you are not using those components, ignore the tests.
 Not all tests require fields, test not listed in the config file do not require user input.
@@ -62,20 +62,19 @@ bash install/deploy.sh
 
 ### Initializing the tests to create or update the configuration files:
 ```
-source starthinker_assets/developer.sh
+source starthinker_assets/development.sh
 python starthinker/tool/test.py --configure
-vi tests/config.json
 ```
 
 ### Running all tests from the command line:
 ```
-source starthinker_assets/developer.sh
+source starthinker_assets/development.sh
 python starthinker/tool/test.py
 ```
 
 ### Running ONLY some tests from the command line ( where tests are [tests/scripts/[test].json](../tests/scripts/)):
 ```
-source starthinker_assets/developer.sh
+source starthinker_assets/development.sh
 python starthinker/tool/test.py --tests dt sheets
 ```
 
