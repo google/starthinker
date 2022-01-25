@@ -216,6 +216,7 @@ generate_assets() {
   source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
   python3 starthinker_ui/manage.py colab
   python3 starthinker_ui/manage.py airflow
+  python3 starthinker_ui/manage.py example
   python3 starthinker_ui/manage.py github --analytics UA-167283455-3
   deactivate
 
