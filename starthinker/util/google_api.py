@@ -235,7 +235,7 @@ def API_Iterator(function, kwargs, results=None, limit=None):
           raise StopIteration
 
       # if results remain, return them ( sometimes the iterable is missing )
-      if self.iterable and self.position < len(self.results.get(self.iterable, 0)):
+      if self.iterable and self.position < len(self.results.get(self.iterable, [])):
         value = self.results[self.iterable][self.position]
         self.position += 1
 
