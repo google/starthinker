@@ -94,6 +94,8 @@ Before running this Airflow module...
 
 {instructions}
 
+{links}
+
 --------------------------------------------------------------
 
 This StarThinker DAG can be extended with any additional tasks from the following sources:
@@ -121,10 +123,20 @@ def script_to_dag(dag_name,
                   instructions,
                   script,
                   parameters={}):
+  markdown_description = recipe_markdown_text(description)
+  formatted_description = markdown_description[0]  + '\n\n'
+  markdown_instructions = recipe_markdown_text('  - ' + '\n  - '.join(instructions))
+  formatted_instructions = markdown_instructions[0]
+  formatted_description_links = '\n'.join(['  {}-{}: {}'.format(i, f[0], f[1]) for i,f in enumerate(markdown_description[1], 1)])
+  if len(formatted_description_links) > 0:
+    formatted_description_links = formatted_description_links + '\n'
+  formatted_instruction_links = '\n'.join(['  {}-{}: {}'.format(i, f[0], f[1]) for i,f in enumerate(markdown_instructions[1], 1)])
+  formatted_links = formatted_description_links + formatted_instruction_links
   return AIRFLOW_TEMPLATE.format(**{
     'title':title,
-    'description':recipe_markdown_text(description),
-    'instructions':recipe_markdown_text('  - ' + '\n  - '.join(instructions)),
+    'description':formatted_description,
+    'instructions':formatted_instructions,
+    'links':formatted_links,
     'inputs':fields_to_string(
       json_get_fields(script),
       parameters
