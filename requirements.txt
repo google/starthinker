@@ -38,6 +38,6 @@ smartsheet-python-sdk
 wheel
 gunicorn
 jsonpickle
-django==3.2.11
+django==3.2.12
 psycopg2-binary
 contextlib2
