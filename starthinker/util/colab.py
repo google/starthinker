@@ -49,15 +49,14 @@ class Colab:
 
   def _next_id(self):
    self.id += 1
-   return "{}-{:03d}".format(hashlib.md5(self.colab['metadata']['colab']['name'].encode('utf-8')).hexdigest()[-8:], self.id)
+   return '{}-{:03d}'.format(hashlib.md5(self.colab['metadata']['colab']['name'].encode('utf-8')).hexdigest()[-8:], self.id)
 
   def _code(self):
     if self.code_lines:
       self.colab['cells'].append({
           'cell_type': 'code',
           'metadata': {
-              "id": self._next_id(),
-              'colab_type': 'code'
+              'id': self._next_id(),
           },
           'source': self.code_lines
       })
@@ -68,8 +67,7 @@ class Colab:
       self.colab['cells'].append({
           'cell_type': 'markdown',
           'metadata': {
-              "id": self._next_id(),
-              'colab_type': 'text'
+              'id': self._next_id(),
           },
           'source': self.markdown_lines
       })
