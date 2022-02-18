@@ -315,7 +315,7 @@ setup_cloud_function() {
 
   service=$(get_service_email);
 
-  gcloud alpha functions deploy starthinker --entry-point run --runtime python38 --trigger-http --security-level secure-always --service-account "${service}" --memory 4096MB --source "$STARTHINKER_ROOT/cloud_function" --timeout 540s --quiet
+  gcloud alpha functions deploy starthinker --entry-point run --runtime python39 --trigger-http --security-level secure-always --service-account "${service}" --memory 4096MB --source "$STARTHINKER_ROOT/cloud_function" --timeout 540s --quiet
 
   # not required, saved here in case that changes
   # gcloud alpha functions add-iam-policy-binding starthinker --region=us-central1 --member=allAuthenticatedUsers --role=roles/cloudfunctions.invoker
