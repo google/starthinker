@@ -199,7 +199,7 @@ scripts/script_hello.json
 ### Notes
 - You will need to re-start the UI to pick up new scripts.
 - The UI on load will print 'OK' next to your script.
-- Validate your JSON using [json helper](../scripts/helper.py).
+- Validate your JSON using [json helper](../tools/validate.py).
 - Always check [scripts](../scripts/) folder for solution samples.
 - It is best practice to provide a test with each solution.
 

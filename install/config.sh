@@ -654,7 +654,7 @@ setup_credentials_user() {
   echo ""
 
   source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
-  python3 "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
+  python3 "${THIS_DIR}/starthinker/tool/auth.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
   deactivate
 
   echo ""
