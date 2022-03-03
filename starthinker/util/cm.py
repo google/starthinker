@@ -432,7 +432,7 @@ def report_fetch(config, auth, account, report_id=None, name=None, timeout=60):
       #pprint.PrettyPrinter().pprint(file)
 
       # still running ( wait for timeout )
-      if file_json['status'] == 'PROCESSING':
+      if file_json.get('status') in ('PROCESSING', 'QUEUED', None):
         if config.verbose:
           print('REPORT PROCESSING WILL WAIT')
         running = True
@@ -440,7 +440,7 @@ def report_fetch(config, auth, account, report_id=None, name=None, timeout=60):
           break  # go to outer loop wait
 
       # ready for download ( return file )
-      elif file_json['status'] == 'REPORT_AVAILABLE':
+      elif file_json.get('status') == 'REPORT_AVAILABLE':
         if config.verbose:
           print('REPORT DONE')
         return file_json
