@@ -383,7 +383,7 @@ setup_enterprise() {
         4) setup_domain; save_config; break ;;
         5) setup_database; save_config; break ;;
         6) migrate_database_enterprise; break ;;
-        7) start_worker_proxy; break ;;
+        7) start_proxy; break ;;
         q) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac
