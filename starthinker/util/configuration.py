@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-"""The core singleton class of StarThinker that translates json to python.
+"""The core class of StarThinker that translates json to python.
 
 Project loads JSON and parameters and combines them for execturion.  It handles
 three important concepts:
@@ -80,11 +80,11 @@ from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
 
-class Configuration:
+class Configuration():
 
   def __init__(
     self,
-    recipe={},
+    recipe=None,
     project=None,
     user=None,
     service=None,
@@ -115,7 +115,7 @@ class Configuration:
 
     starthinker_trace_start(trace_print, trace_file)
 
-    self.recipe = recipe
+    self.recipe = recipe or {}
     self.verbose = verbose
     self.filepath = filepath
 
@@ -158,6 +158,13 @@ class Configuration:
     if self.verbose:
       print('DATE:', self.now.date())
       print('HOUR:', self.now.hour)
+
+
+  def __str__(self):
+    """Allow printing of class objects.
+    """
+
+    return json.dumps(self.recipe, indent=2, default=str)
 
 
 def commandline_parser(parser=None, arguments=None):
