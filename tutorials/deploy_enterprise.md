@@ -46,6 +46,9 @@ If you are running gSuite, you can select Internal Deployment and avoid the warn
 
 ## Debug
 
+- All settings will be derived from a file in **starthinker_assets/config.sh**, the deployment script simply manages this file.
+- Save and re-use the entire **starthinker_assets** directory to preseve all settings and credentials for future releases.
+- AppEngine does not allow chaning regions once a deployment is done, choose carefully.
 - If you get 500 error, check the [APP Engine Error Logs](https://console.cloud.google.com/errors)</a> or change the UI to show errors:
 ```
 source starthinker_assets/production.sh
@@ -54,15 +57,12 @@ gcloud app deploy $STARTHINKER_ROOT/app.yaml --stop-previous-version
 ```
 - If you get a 404 error, you may have to set a custom App Engine domain using the install deploy script.
 - If you get a service credentials error, verify the file *starthinker_assets/service.json* has a valid credential, if not delete the file and run install again.
-- If you get a  ModuleNotFoundError: No module named 'contextlib' error, try deleteing the starthinker_virtualenv directory and running install again. The problem may also be using "source install/deploy.sh" vs "bash install/deploy.sh", bash is preferd but try source as a last resort.
+- If you get a  ModuleNotFoundError: No module named 'contextlib' error, try deleteing the **starthinker_virtualenv** directory and running install again. The problem may also be using "source install/deploy.sh" vs "bash install/deploy.sh", bash is preferd but try source as a last resort.
 - If you get a database not found error, ensure your *starthinker_assets/config.sh* region is the same as your current [database region](https://console.cloud.google.com/sql/instances).
-- If your jobs all read queued and never change, odds are there was an error during deployment, scroll up and review.
-- If you are updating you may have to run the follwing SQL command in your database once to trigger a recipe refresh, or re-save each receipe via the UI:
-```
-UPDATE recipe_recipe SET job_utm=1 WHERE job_utm=0;
-```
-- If you are updating and you deleted prior migrations, you may have to run Django migrations manually.
-- If you are updating, the new default region is us-west3, you may have to modify your config.sh to match your prior region.
+- If jobs all read queued and never change, odds are there was an error during deployment, scroll up and review.
+- If updating, be sure the ZONE setting in **starthinker_assets/config.sh** matches the ZONE where the prior SQL database was deployed, otherwise the database will have to be migrated to match the new ZONE.
+- If updating and you deleted prior migrations, you may have to run Django migrations manually.
+- If updating, the new default region is us-west3, you may have to modify your config.sh to match your prior region.
 
 ## Cloud Resources
 
