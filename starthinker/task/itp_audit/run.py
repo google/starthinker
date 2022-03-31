@@ -16,6 +16,7 @@
 #
 ############################################################################
 import os
+import time
 from datetime import date
 
 from starthinker.util.bigquery import datasets_create,query_to_table, query_to_rows, run_query, table_to_rows, get_schema, rows_to_table, table_create
@@ -33,19 +34,14 @@ SAFARI_DISTRIBUTION_90DAYS_TABLE = 'DV3_Safari'
 DV360_BROWSER_SHARES_MULTICHART_TABLE = 'DV3_MultiChart'
 CM_BROWSER_REPORT_CLEAN_TABLE = 'CM_Browser'
 CM_FLOODLIGHT_MULTICHART_TABLE = 'CM_Floodlight_Multichart'
-SDF_LI_SCORES_TABLE = 'DV3_Li_Scores'
 CM_PLACEMENT_AUDIT_TABLE = 'CM_Placement_Audit'
 
 # Tables
 CLEAN_BROWSER_REPORT_TABLE = 'z_DV360_Browser_Report_Clean'
-DV360_CUSTOM_SEGMENTS_TABLE = 'z_Custom_Segments'
-DV360_CUSTOM_SEGMENTS_SHEET_TABLE = 'z_Custom_Segments_Sheet'
 CM_SITE_SEGMENTATION_SHEET_TABLE = 'z_CM_Site_Segmentation_Sheet'
 CM_SITE_SEGMENTATION_TABLE = 'z_CM_Site_Segmentation'
 CM_BROWSER_REPORT_DIRTY_TABLE = 'z_CM_Browser_Report_Dirty'
 CM_FLOODLIGHT_TABLE = 'z_CM_Floodlight'
-SDF_FEATURE_FLAGS_TABLE = 'z_sdf_feature_flags'
-SDF_SCORING_TABLE = 'z_sdf_scoring'
 CM_FLOODLIGHT_OUTPUT_TABLE = 'z_Floodlight_CM_Report'
 
 PLACEMENTS_SCHEMA = [
@@ -89,20 +85,11 @@ def itp_audit(config, task):
 
   run_cm_queries(config, task)
 
-  # Run SDF queries
-  run_sdf_queries(config, task)
-
   # CM Account Audit
   itp_audit_cm(config, task)
 
-def run_sdf_queries(config, task):
-  if config.verbose:
-    print('RUN SDF Query')
-  run_query_from_file(config, task, Queries.sdf_feature_flags.replace('{{dataset}}', task['dataset']), SDF_FEATURE_FLAGS_TABLE)
-  run_query_from_file(config, task, Queries.sdf_scoring.replace('{{dataset}}', task['dataset']), SDF_SCORING_TABLE)
-  run_query_from_file(config, task, Queries.sdf_li_scores.replace('{{dataset}}', task['dataset']), SDF_LI_SCORES_TABLE)
-
 def run_cm_queries(config, task):
+  time.sleep(120)
   # CM Floodlight Lookup Table
   run_query_from_file(config, task, Queries.cm_floodlight_join.replace('{{dataset}}', task['dataset']), CM_FLOODLIGHT_TABLE)
 
@@ -113,12 +100,6 @@ def run_cm_queries(config, task):
 
 
 def run_dv_360_queries(config, task):
-  # Create empty DV360 Custom Segments table for join until sheet is created
-  table_create(config, task['auth_bq'], config.project, task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
-
-  # Create DV360 Segments Table
-  create_dv360_segments(config, task)
-
   # Clean DV360 Browser Report
   run_query_from_file(config, task, Queries.clean_browser_report.replace('{{dataset}}', task['dataset']), CLEAN_BROWSER_REPORT_TABLE)
 
@@ -131,65 +112,6 @@ def run_dv_360_queries(config, task):
   if config.verbose:
     print('RUN Safari Distribution 90 days Query')
   run_query_from_file(config, task, Queries.safari_distribution_90days.replace('{{dataset}}', task['dataset']), SAFARI_DISTRIBUTION_90DAYS_TABLE)
-
-  # Browser Shares Multichart
-  if config.verbose:
-    print('RUN Dv360 Browser Share Multichart')
-  run_query_from_file(config, task, Queries.browser_share_multichart.replace('{{dataset}}', task['dataset']), DV360_BROWSER_SHARES_MULTICHART_TABLE)
-
-
-def create_dv360_segments(config, task):
-  a1_notation = 'A:N'
-  schema = [
-      { "type": "STRING", "name": "Advertiser", "mode": "NULLABLE" },
-      { "type": "INTEGER", "name": "Advertiser_Id", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Campaign", "mode": "NULLABLE" },
-      { "type": "INTEGER", "name": "Campaign_Id", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Insertion_Order", "mode": "NULLABLE" },
-      { "type": "INTEGER", "name": "Insertion_Order_Id", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Line_Item", "mode": "NULLABLE" },
-      { "type": "INTEGER", "name": "Line_Item_Id", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Line_Item_Type", "mode": "NULLABLE" },
-      { "type": "INTEGER", "name": "Impressions", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "SegmentAutoGen", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Segment1", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Segment2", "mode": "NULLABLE" },
-      { "type": "STRING", "name": "Segment3", "mode": "NULLABLE" }
-    ]
-
-  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation)
-
-  if not sheet_rows:
-    sheet_rows = []
-
-  print('DV360 SEGMENT SHEET TABLE WRITE')
-
-  rows_to_table(
-    config,
-    auth=task['auth_bq'],
-    project_id=config.project,
-    dataset_id=task['dataset'],
-    table_id=DV360_CUSTOM_SEGMENTS_SHEET_TABLE,
-    rows=sheet_rows,
-    schema=schema,
-    skip_rows=1,
-    disposition='WRITE_TRUNCATE'
-    )
-
-  # Run Query
-  if config.verbose:
-    print('RUN DV360 Custom Segments Query')
-  run_query_from_file(config, task, Queries.dv360_custom_segments.replace('{{dataset}}', task['dataset']), DV360_CUSTOM_SEGMENTS_TABLE)
-
-  # Move Table back to sheets
-  query = 'SELECT * from `' + config.project + '.' + task['dataset'] + '.' + DV360_CUSTOM_SEGMENTS_TABLE + '`'
-  rows = query_to_rows(config, task['auth_bq'], config.project, task['dataset'], query, legacy=False)
-
-  # makes sure types are correct in sheet
-  a1_notation = a1_notation[:1] + '2' + a1_notation[1:]
-  rows = rows_to_type(rows)
-  sheets_clear(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation)
-  sheets_write(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation, rows)
 
 
 '''
@@ -218,6 +140,7 @@ def create_cm_site_segmentation(config, task):
     skip_rows=1,
     disposition='WRITE_TRUNCATE'
   )
+  time.sleep(120)
 
   # Get Site_Type from the sheet
   run_query_from_file(config, task, Queries.cm_site_segmentation.replace('{{dataset}}', task['dataset']), CM_SITE_SEGMENTATION_TABLE)
@@ -301,7 +224,7 @@ def run_floodlight_reports(config, task):
       ]
     },
     "schedule": {
-      "active": True,
+      "active": False,
       "repeats": "WEEKLY",
       "every": 1,
       "repeatsOnWeekDays":["Sunday"]
@@ -316,20 +239,31 @@ def run_floodlight_reports(config, task):
 
   for configId in floodlightConfigs:
     body['name'] = task.get('reportPrefix', '') + "_" + str(configId)
+    # Delete the report if already exists
+    report_delete(config, task['auth_cm'],
+              task['account'],
+              report_id=None,
+              name=body['name'])
     body['floodlightCriteria']['floodlightConfigId']['value'] = configId
     report = report_build(
       config, task['auth_cm'],
       task['account'],
       body
     )
-    reports.append(report['id'])
+    reports.append({
+      'reportId': report['id'],
+      'floodlightConfigId': configId
+    })
 
   if config.verbose:
     print('Finished creating Floodlight reports - moving to BQ')
 
   queries = []
 
-  for createdReportId in reports:
+  for report in reports:
+    createdReportId = report['reportId']
+    floodlightConfigId = report['floodlightConfigId']
+
     filename, report = report_file(
       config, task['auth_cm'],
       task['account'],
@@ -356,7 +290,7 @@ def run_floodlight_reports(config, task):
       out_block['bigquery']['dataset'] = task['dataset']
       out_block['bigquery']['schema'] = schema
       out_block['bigquery']['skip_rows'] = 0
-      out_block['bigquery']['table'] = 'z_Floodlight_CM_Report_' + str(createdReportId)
+      out_block['bigquery']['table'] = 'z_Floodlight_CM_Report_' + str(floodlightConfigId)
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows: put_rows(config, task['auth_bq'], out_block, rows)
@@ -384,7 +318,7 @@ def run_query_from_file(config, task, query, table_name):
     config.project,
     task['dataset'],
     table_name,
-    query.format(**task),
+    query,
     legacy=False
   )
 

@@ -52,7 +52,7 @@
       "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
       "report":{
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "default":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }},
-        "timeout": 90,
+        "timeout": 120,
         "filters": {
           "FILTER_ADVERTISER": {
             "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
@@ -104,50 +104,68 @@
               "METRIC_CM_POST_VIEW_REVENUE",
               "METRIC_REVENUE_ADVERTISER"
             ]
+          },
+           "schedule": {
+              "frequency": "ONE_TIME"
+           }
+        },
+           "schedule": {
+              "frequency": "ONE_TIME"
+           }
+      },
+      "delete": true
+    }},
+    { "dbm":{
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+      "report":{
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Audience_", "default":"ITP_Audit_Audience_", "order":1, "description":"Name of report in DV360, should be unique." }},
+        "timeout": 90,
+        "filters": {
+          "FILTER_ADVERTISER": {
+            "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
+          },
+          "FILTER_PARTNER": {
+            "values":{"field":{ "name":"dv360_partner_id", "kind":"integer", "order":5, "default":"", "description":"DV360 Partner id" }}
           }
+        },
+        "body":{
+          "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
+          "metadata": {
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Audience_", "default":"ITP_Audit_Audience_", "order":1, "description":"Name of report in DV360, should be unique." }},
+            "dataRange": "LAST_90_DAYS",
+            "format": "CSV"
+          },
+          "params": {
+            "type": "TYPE_GENERAL",
+            "groupBys": [
+              "FILTER_ADVERTISER_CURRENCY",
+              "FILTER_LINE_ITEM_NAME",
+              "FILTER_LINE_ITEM",
+              "FILTER_USER_LIST",
+              "FILTER_USER_LIST_TYPE"
+            ],
+            "metrics": [
+              "METRIC_IMPRESSIONS",
+              "METRIC_BILLABLE_IMPRESSIONS",
+              "METRIC_CLICKS",
+              "METRIC_CTR",
+              "METRIC_TOTAL_CONVERSIONS",
+              "METRIC_LAST_CLICKS",
+              "METRIC_LAST_IMPRESSIONS",
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_CM360_POST_VIEW_REVENUE",
+              "METRIC_CM360_POST_CLICK_REVENUE"
+            ],
+            "options": {
+              "includeOnlyTargetedUserLists": false
+            }
+          },
+           "schedule": {
+              "frequency": "ONE_TIME"
+           }
         }
       },
-      "delete": false,
-      "out":{
-        "bigquery":{
-          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
-          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-          "table": "z_Dv360_Browser_Report_Dirty",
-          "header": true,
-          "schema":[
-            {"name":"Advertiser_Id", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Advertiser", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Advertiser_Currency", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Campaign_Id", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Campaign", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Insertion_Order_Daily_Frequency", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Insertion_Order_Id", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Insertion_Order", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Line_Item_Id", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Line_Item", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Environment", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Week", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Month", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Year", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Partner_Id", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Partner", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Line_Item_Type", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Device_Type", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Browser", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Anonymous_Inventory_Modeling", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Operating_System", "type":"STRING","mode":"NULLABLE"},
-            {"name":"Media_Cost_Advertiser_Currency", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Impressions", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Clicks", "type":"INTEGER","mode":"NULLABLE"},
-            {"name":"Total_Conversions", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Post_Click_Conversions", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Post_View_Conversions", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Cm_Post_Click_Revenue", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Cm_Post_View_Revenue", "type":"FLOAT","mode":"NULLABLE"},
-            {"name":"Revenue_Adv_Currency", "type":"FLOAT","mode":"NULLABLE"}
-          ]
-        }
-      }
+      "delete": true
     }},
     { "dcm":{
       "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
@@ -218,49 +236,19 @@
             "dimensionFilters": []
           },
          "schedule": {
-            "active": true,
-            "repeats": "WEEKLY",
-            "every": 1,
-            "repeatsOnWeekDays":["Sunday"]
+           "active": false,
+           "repeats": "WEEKLY",
+           "repeatsOnWeekDays":["MONDAY"],
+           "every": 1
          },
           "delivery": {
             "emailOwner": false
-        }}
-      },
-      "out":{
-        "bigquery":{
-          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
-          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-          "table":"z_CM_Browser_Report_Dirty",
-          "header": true,
-          "is_incremental_load":false
         }
       },
-      "delete":false
+      "delete":true
+      }
     }},
-    { "sdf":{
-        "auth": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
-        "version": "SDF_VERSION_5_3",
-        "partner_id": {"field":{ "name":"dv360_partner_id", "kind":"integer", "order":5, "default":"", "description":"DV360 Partner id" }},
-        "file_types":["FILE_TYPE_CAMPAIGN","FILE_TYPE_LINE_ITEM","FILE_TYPE_INSERTION_ORDER"],
-        "filter_type":"FILTER_TYPE_ADVERTISER_ID",
-        "read": {
-          "filter_ids":{
-            "single_cell": true,
-            "bigquery":{
-              "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-              "query":"select distinct Advertiser_Id from `{dataset}.z_Dv360_Browser_Report_Dirty`",
-              "parameters":{
-                "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "description":"BigQuery dataset for store dashboard tables." }}
-              },
-              "legacy": false
-            }
-          }
-        },
-        "time_partitioned_table":false,
-        "create_single_day_table":false,
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
-      }},
+
     { "bigquery": {
       "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
@@ -318,79 +306,6 @@
         { "name":"Browser_Platform_clean", "type":"STRING" },
         { "name":"Browser_Platform_detail", "type":"STRING" }
       ]
-    }},
-    { "bigquery": {
-      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
-      "from":{
-        "values":[
-          ["Other", "Other", 0],
-          ["Android Webkit", "Android", 1],
-          ["Firefox", "Firefox", 2],
-          ["Chrome", "Chrome/Android", 3],
-          ["Internet Explorer 9", "IE/Edge", 4],
-          ["Safari", "Safari/iOS", 6],
-          ["Safari 5", "Safari/iOS", 7],
-          ["Internet Explorer 10", "IE/Edge", 9],
-          ["Safari 6", "Safari/iOS", 10],
-          ["Opera", "Opera", 1038],
-          ["Internet Explorer 11", "IE/Edge", 12],
-          ["Internet Explorer 8", "IE/Edge", 13],
-          ["Internet Explorer 7", "IE/Edge", 14],
-          ["Internet Explorer 6", "IE/Edge", 15],
-          ["Internet Explorer 5", "IE/Edge", 16],
-          ["Safari 4", "Safari/iOS", 17],
-          ["Safari 3", "Safari/iOS", 18],
-          ["Safari 2", "Safari/iOS", 19],
-          ["Safari 1", "Safari/iOS", 20],
-          ["Microsoft Edge", "IE/Edge", 21],
-          ["Safari 7", "Safari/iOS", 22],
-          ["Safari 8", "Safari/iOS", 23],
-          ["Safari 9", "Safari/iOS", 24],
-          ["Safari 10", "Safari/iOS", 25],
-          ["Safari 11", "Safari/iOS", 26],
-          ["Safari 12", "Safari/iOS", 27],
-          ["Safari 13", "Safari/iOS", 28],
-          ["Safari 14", "Safari/iOS", 29]
-        ]
-      },
-      "to":{
-        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-        "table":"z_Browser_SDF_lookup"
-      },
-      "schema":[
-        { "name":"Browser_Platform", "type":"STRING" },
-        { "name":"Browser_Platform_clean", "type":"STRING" },
-        { "name":"Browser_Platform_id", "type":"INTEGER" }
-      ]
-    }},
-    { "sheets":{
-      "auth":{"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for Sheets." }},
-      "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
-      "tab":"SdfScoring",
-      "range":"A2:M",
-      "header": false,
-      "out":{
-        "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
-        "bigquery":{
-          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-          "table":"z_dv360_scoring_matrix",
-          "schema": [
-            { "name":"Whole_Attribution_Score", "type":"INTEGER" },
-            { "name":"Safari_Attribution_Score", "type":"INTEGER" },
-            { "name":"Safari_Reach_Score", "type":"INTEGER" },
-            { "name":"Audience_Targeting_Include", "type":"BOOL" },
-            { "name":"Google_Audience_Include", "type":"BOOL" },
-            { "name":"Contextual_Targeting_Include", "type":"BOOL" },
-            { "name":"Conversion_Bid_Optimization", "type":"BOOL" },
-            { "name":"Browser_Targeting_Include", "type":"BOOL" },
-            { "name":"Safari_Browser_Targeting_Include", "type":"BOOL" },
-            { "name":"Chrome_Browser_Targeting_Include", "type":"BOOL" },
-            { "name":"FF_Browser_Targeting_Include", "type":"BOOL" },
-            { "name":"View_Through_Enabled", "type":"BOOL" },
-            { "name":"Comment", "type":"STRING" }
-          ]
-        }
-      }
     }},
     { "bigquery": {
       "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
@@ -461,6 +376,127 @@
         { "name":"Attribution_Type", "type":"STRING" }
       ]
     }},
+    { "google_api":{
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+      "api":"displayvideo",
+      "version": "v1",
+      "function":"firstAndThirdPartyAudiences.list",
+      "kwargs":{"partnerId": {"field":{ "name":"dv360_partner_id", "kind":"integer", "order":5, "default":"", "description":"DV360 Partner id" }}},
+      "results": {
+        "bigquery":{
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "table": "z_dv_audiences"
+        }
+      }
+    }},
+    { "dbm":{
+      "auth": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+      "report":{
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "default":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }}
+      },
+      "out":{
+        "bigquery":{
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "table": "z_Dv360_Browser_Report_Dirty",
+          "header": true,
+          "schema":[
+            {"name":"Advertiser_Id", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Advertiser", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Advertiser_Currency", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Campaign_Id", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Campaign", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Insertion_Order_Daily_Frequency", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Insertion_Order_Id", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Insertion_Order", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Line_Item_Id", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Line_Item", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Environment", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Week", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Month", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Year", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Partner_Id", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Partner", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Line_Item_Type", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Device_Type", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Browser", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Anonymous_Inventory_Modeling", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Operating_System", "type":"STRING","mode":"NULLABLE"},
+            {"name":"Media_Cost_Advertiser_Currency", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Impressions", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Clicks", "type":"INTEGER","mode":"NULLABLE"},
+            {"name":"Total_Conversions", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Post_Click_Conversions", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Post_View_Conversions", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Cm_Post_Click_Revenue", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Cm_Post_View_Revenue", "type":"FLOAT","mode":"NULLABLE"},
+            {"name":"Revenue_Adv_Currency", "type":"FLOAT","mode":"NULLABLE"}
+          ]
+        }
+      }
+    }},
+
+
+
+    { "dcm":{
+      "auth": {"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
+      "report":{
+        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "prefix":"ITP_Audit_Browser_", "default": "ITP_Audit_Dashboard_Browser", "description":"Name of the Campaign Manager browser report." }}
+      },
+      "out":{
+        "bigquery":{
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "table":"z_CM_Browser_Report_Dirty",
+          "header": true,
+          "is_incremental_load":false
+        }
+      }
+    }},
+    { "dbm":{
+      "auth": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+      "report":{
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Audience_", "default":"ITP_Audit_Audience_", "order":1, "description":"Name of report in DV360, should be unique." }}
+      },
+      "out":{
+        "bigquery":{
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "table": "z_Dv_Audience_Report",
+          "header": true,
+          "schema":[
+              {"name": "Advertiser_Currency","type": "STRING", "mode": "NULLABLE"},
+              {"name": "Line_Item", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "Line_Item_Id", "type": "INTEGER", "mode": "NULLABLE"},
+              {"name": "Audience_List_Id", "type": "INTEGER", "mode": "NULLABLE"},
+              {"name": "Audience_List_Type", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "Date", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "Impressions", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Billable_Impressions", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Clicks", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "CTR", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Total_Conversions", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Post_Click_Conversions", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Post_View_Conversions", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Revenue_Adv_Currency", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Cm_Post_View_Revenue", "type": "FLOAT", "mode": "NULLABLE"},
+              {"name": "Cm_Post_Click_Revenue", "type": "FLOAT", "mode": "NULLABLE"}
+          ]
+        }
+      }
+    }},
+
+    { "bigquery":{
+        "auth": {"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
+      "run":{
+        "legacy": false,
+        "query":"CREATE OR REPLACE TABLE `{dataset}.DV_Audiences` AS with dv_entities as ( SELECT distinct b.Advertiser, b.Advertiser_Id, b.Campaign, b.Campaign_Id, b.Insertion_Order, b.Insertion_Order_Id, b.Line_Item_Id FROM `{dataset}.z_Dv360_Browser_Report_Dirty` AS b ) SELECT case when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_UNSPECIFIED' then 'N/A' when a.firstAndThirdPartyAudienceType is null then 'N/A' when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_FIRST_PARTY' then 'First Party' when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_THIRD_PARTY' then 'Third Party' end as firstAndThirdPartyAudienceType, CASE WHEN a.audienceType = 'AUDIENCE_TYPE_UNSPECIFIED' THEN 'N/A' WHEN a.audienceType is null THEN 'N/A' WHEN a.audienceType = 'CUSTOMER_MATCH_CONTACT_INFO' THEN 'CustomerMatch ContactInfo' WHEN a.audienceType = 'CUSTOMER_MATCH_DEVICE_ID' THEN 'CustomerMatch DeviceId' WHEN a.audienceType = 'CUSTOMER_MATCH_USER_ID' THEN 'CustomerMatch UserId' WHEN a.audienceType = 'ACTIVITY_BASED' THEN 'Activity Based' WHEN a.audienceType = 'FREQUENCY_CAP' THEN 'Frequency Cap' WHEN a.audienceType = 'TAG_BASED' THEN 'Tag Based' WHEN a.audienceType = 'YOUTUBE_USERS' THEN 'YouTube Users' WHEN a.audienceType = 'LICENSED' THEN 'Licensed' ELSE a.audienceType END AS audienceType, b.Advertiser, b.Advertiser_Id, b.Campaign, b.Campaign_Id, b.Insertion_Order, b.Insertion_Order_Id, r.Line_Item, r.Line_Item_Id, r.Audience_List_Id, r.Date, r.Impressions, r.Clicks, r.CTR, r.Total_Conversions, r.Post_Click_Conversions, r.Post_View_Conversions, r.Revenue_Adv_Currency, r.Cm_Post_View_Revenue, r.Cm_Post_Click_Revenue FROM `{dataset}.z_Dv_Audience_Report` AS r LEFT JOIN `{dataset}.z_dv_audiences` AS a ON r.Audience_List_Id = a.firstAndThirdPartyAudienceId LEFT JOIN dv_entities AS b ON b.Line_Item_Id = r.Line_Item_Id;",
+        "parameters":{
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
+        }
+      }
+    }},
     {
       "itp_audit": {
         "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
@@ -470,7 +506,7 @@
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
-        "timeout": 60,
+        "timeout": 120,
         "read": {
           "advertiser_ids":{
             "single_cell": true,
