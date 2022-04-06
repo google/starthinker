@@ -161,11 +161,11 @@
             }
           },
            "schedule": {
-              "frequency": "ONE_TIME"
+              "frequency": "DAILY"
            }
         }
       },
-      "delete": true
+      "delete": false
     }},
     { "dcm":{
       "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
