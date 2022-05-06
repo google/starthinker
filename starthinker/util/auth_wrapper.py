@@ -20,6 +20,7 @@ import os
 import re
 import json
 import datetime
+import google.auth
 
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import Flow, InstalledAppFlow
@@ -64,6 +65,8 @@ def CredentialsFlowWrapper(client, credentials_only=False, **kwargs):
 def CredentialsServiceWrapper(service):
   if isinstance(service, dict):
     return CredentialsService.from_service_account_info(service)
+  elif service == 'DEFAULT':
+    credentials, ignore = google.auth.default()
   elif RE_CREDENTIALS_JSON.match(service):
     return CredentialsService.from_service_account_info(json.loads(service))
   else:
