@@ -29,8 +29,8 @@ from starthinker.util.sheets import sheets_read
 from starthinker.util.storage import object_exists, object_delete
 from starthinker.util.drive import file_exists, file_delete
 from starthinker.util.csv import rows_to_type
-from starthinker.task.traffic.test import bulkdozer_test
-from starthinker.task.weather_gov.test import weather_gov_test
+from starthinker.task.traffic.check import bulkdozer_test
+from starthinker.task.weather_gov.check import weather_gov_test
 
 
 def test_failed():
@@ -55,8 +55,8 @@ def schema_compare(expected, actual, path=''):
         matched.add(expected_column['name'])
         if expected_column.get('type') != actual_column.get('type'):
           delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'type', 'expected': expected_column.get('type'), 'actual': actual_column.get('type')}
-        if expected_column.get('mode') != actual_column.get('mode'):
-          delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'mode', 'expected': expected_column.get('mode'), 'actual': actual_column.get('mode')}
+        if expected_column.get('mode', 'NULLABLE') != actual_column.get('mode'):
+          delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'mode', 'expected': expected_column.get('mode', 'NULLABLE'), 'actual': actual_column.get('mode')}
         delta.update(schema_compare(expected_column.get('fields', []), actual_column.get('fields', []), make_path(expected_column['name'])))
 
   # find missing

@@ -75,7 +75,7 @@ def make_non_blocking(file_io):
      pass
 
 
-def load_tests():
+def load_test_scripts():
   for root, dirs, files in os.walk(TEST_DIRECTORY):
     for filename in files:
       if filename.endswith('.json'):
@@ -323,7 +323,7 @@ def tests():
     generate_include(args.include)
 
   else:
-    tests = list(load_tests())
+    tests = list(load_test_scripts())
     runs = [t.split('.')[0] for t in (args.tests or [])]
     skips = [t.split('.')[0] for t in (args.skips or [])]
 
