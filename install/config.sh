@@ -642,6 +642,11 @@ setup_credentials_service() {
      echo " 4. StarThinker is still usable for operations that that require ONLY user credentials."
   fi
 
+  echo "If using the UI, please ensure the Service Account has the following additional permissions:"
+  echo "  - Secret Manager Admin"
+  echo "  - Secret Manager Secret Accessor"
+
+  echo ""
   echo "Done"
   echo ""
 }

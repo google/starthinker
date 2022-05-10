@@ -27,44 +27,32 @@ from starthinker.util.auth_wrapper import CredentialsFlowWrapper
 from starthinker.util.auth_wrapper import CredentialsServiceWrapper
 from starthinker.util.auth_wrapper import CredentialsUserWrapper
 
-# WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
-CREDENTIALS_USER_CACHE = None
 DISCOVERY_CACHE = {}
 
 # set timeout to 10 minutes ( reduce socket.timeout: The read operation timed out )
 socket.setdefaulttimeout(600)
 
-def clear_credentials_cache():
-  global CREDENTIALS_USER_CACHE
-  CREDENTIALS_USER_CACHE = None
-
-
 def get_credentials(config, auth):
-  global CREDENTIALS_USER_CACHE
 
   if auth == 'user':
-    if CREDENTIALS_USER_CACHE is None:
-      try:
-        CREDENTIALS_USER_CACHE = CredentialsUserWrapper(
-          config.recipe['setup']['auth']['user'],
-          config.recipe['setup']['auth'].get('client')
-        )
-      except (KeyError, ValueError) as e:
-        print('')
-        print('ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.')
-        print('')
-        print('SOLUTION: Specify a -u [user credentials path] parameter on the command line.')
-        print('          Alternaitvely specify a -u [user credentials path to be created] parameter and a -c [client credentials path] parameter on the command line.')
-        print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "user":"[JSON OR PATH]" }}} in the JSON.')
-        print('')
-        print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md')
-        print('')
-        print('Client JSON Parameter Missing:', str(e))
-        print('')
-
-        sys.exit(1)
-
-    return CREDENTIALS_USER_CACHE
+    try:
+      return CredentialsUserWrapper(
+        config.recipe['setup']['auth']['user'],
+        config.recipe['setup']['auth'].get('client')
+      )
+    except (KeyError, ValueError) as e:
+      print('')
+      print('ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.')
+      print('')
+      print('SOLUTION: Specify a -u [user credentials path] parameter on the command line.')
+      print('          Alternaitvely specify a -u [user credentials path to be created] parameter and a -c [client credentials path] parameter on the command line.')
+      print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "user":"[JSON OR PATH]" }}} in the JSON.')
+      print('')
+      print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md')
+      print('')
+      print('Client JSON Parameter Missing:', str(e))
+      print('')
+      sys.exit(1)
 
   elif auth == 'service':
     try:
@@ -92,6 +80,7 @@ def get_service(config,
   scopes=None,
   headers=None,
   key=None,
+  labels=None,
   uri_file=None
 ):
   global DISCOVERY_CACHE
@@ -106,10 +95,11 @@ def get_service(config,
   if not key:
     key = config.recipe['setup'].get(key, '')
 
-  cache_key = api + version + auth + str(key) + str(threading.current_thread().ident)
+  cache_key = api + version + auth + str(key) + str(threading.current_thread().ident) + config.fingerprint()
 
   if cache_key not in DISCOVERY_CACHE:
     credentials = get_credentials(config, auth)
+
     if uri_file:
       uri_file = uri_file.strip()
       if uri_file.startswith('{'):
@@ -128,6 +118,15 @@ def get_service(config,
               requestBuilder=HttpRequestCustom
           )
     else:
+      # Enables private API access
+      # See: https://github.com/googleapis/google-api-python-client/issues/1225
+      uri_path = 'https://{}.googleapis.com/$discovery/rest?version={}&key={}&labels={}'.format(
+        api,
+        version,
+        key,
+        labels
+      ) if labels else None
+
       try:
         DISCOVERY_CACHE[cache_key] = discovery.build(
           api,
@@ -135,7 +134,8 @@ def get_service(config,
           credentials=credentials,
           developerKey=key,
           requestBuilder=HttpRequestCustom,
-          static_discovery=False
+          static_discovery=False,
+          discoveryServiceUrl=uri_path
         )
       # PATCH: static_discovery not present in google-api-python-client < 2, default version in colab
       # ALTERNATE WORKAROUND: pip install update google-api-python-client==2.3 --no-deps --force-reinstall
@@ -145,7 +145,8 @@ def get_service(config,
           version,
           credentials=credentials,
           developerKey=key,
-          requestBuilder=HttpRequestCustom
+          requestBuilder=HttpRequestCustom,
+          discoveryServiceUrl=uri_path
         )
 
   return DISCOVERY_CACHE[cache_key]

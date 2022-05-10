@@ -218,6 +218,7 @@ setup_appengine() {
   gcloud services enable drive.googleapis.com
   gcloud services enable sheets.googleapis.com
   gcloud services enable doubleclicksearch.googleapis.com
+  gcloud services enable secretmanager.googleapis.com
 
   install_proxy; # first so it install dependencies
   install_virtualenv; # second because pip is here

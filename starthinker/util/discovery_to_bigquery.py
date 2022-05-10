@@ -56,7 +56,7 @@ class Discovery_To_BigQuery():
   sets up the API endpoint, all other calls translate data.
   """
 
-  def __init__(self, api_name:str, api_version:str, key:str=None, recursion_depth:int=RECURSION_DEPTH) -> None:
+  def __init__(self, api_name:str, api_version:str, key:str=None, labels:str=None, recursion_depth:int=RECURSION_DEPTH) -> None:
     """Initialize the API endpoint.
 
     Args:
@@ -73,11 +73,13 @@ class Discovery_To_BigQuery():
     """
 
     self.key = key or ''
+    self.labels = labels or ''
     self.recursion_depth = recursion_depth
-    api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s&key=%s' % (
+    api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s&key=%s&labels=%s' % (
       api_name,
       api_version,
-      self.key
+      self.key,
+      self.labels
     )
     print('DISCOVERY FETCH:', api_url)
     self.api_document = json.load(request.urlopen(api_url))

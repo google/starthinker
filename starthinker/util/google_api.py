@@ -292,12 +292,13 @@ class API():
     self.api = api['api']
     self.version = api['version']
     self.auth = api['auth']
-    self.uri = api.get('uri', None)
-    self.key = api.get('key', None)
+    self.uri = api.get('uri')
+    self.key = api.get('key')
+    self.labels = api.get('labels')
     self.function_stack = list(filter(None, api.get('function', '').split('.')))
     self.function_kwargs = API.__clean__(api.get('kwargs', {}))
     self.iterate = api.get('iterate', False)
-    self.limit = api.get('limit', None)
+    self.limit = api.get('limit')
     self.headers = api.get('headers', {})
 
     self.function = None
@@ -369,6 +370,7 @@ class API():
         auth=self.auth,
         headers=self.headers,
         key=self.key,
+        labels=self.labels,
         uri_file=self.uri)
 
     # build calls along stack
@@ -442,6 +444,21 @@ def API_BigQuery(config, auth, iterate=False):
   api = {
       'api': 'bigquery',
       'version': 'v2',
+      'auth': auth,
+      'iterate': iterate
+  }
+  return API(config, api)
+
+
+def API_SecretManager(config, auth, iterate=False):
+  """SecretManager helper configuration for Google API.
+
+  Defines agreed upon version.
+  """
+
+  api = {
+      'api': 'secretmanager',
+      'version': 'v1',
       'auth': auth,
       'iterate': iterate
   }

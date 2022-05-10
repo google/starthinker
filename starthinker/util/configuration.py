@@ -72,8 +72,10 @@ three important concepts:
 import os
 import json
 import pytz
+import hashlib
 import argparse
 import textwrap
+
 
 from datetime import datetime
 from importlib import import_module
@@ -165,6 +167,15 @@ class Configuration():
     """
 
     return json.dumps(self.recipe, indent=2, default=str)
+
+
+  def fingerprint(self):
+    """Provide value that can be used as a cache key.
+    """
+
+    h = hashlib.sha256()
+    h.update(json.dumps(self.recipe['setup']).encode())
+    return h.hexdigest()
 
 
 def commandline_parser(parser=None, arguments=None):

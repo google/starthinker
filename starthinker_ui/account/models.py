@@ -24,7 +24,6 @@ from django.conf import settings
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 from starthinker.util.auth_wrapper import CredentialsUserWrapper
-from starthinker_ui.account.apps import USER_BUCKET
 
 
 def token_generate(model_class, model_field, length=8):
@@ -118,11 +117,11 @@ class Account(AbstractBaseUser):
   def __unicode__(self):
     return self.email
 
-  def has_perm(self, perm, obj=None):
-    return True
+  #def has_perm(self, perm, obj=None):
+  #  return True
 
-  def has_module_perms(self, app_label):
-    return True
+  #def has_module_perms(self, app_label):
+  #  return True
 
   @property
   def is_staff(self):
@@ -153,4 +152,4 @@ class Account(AbstractBaseUser):
         self.get_credentials_path()) if self.identifier else None
 
   def get_credentials_path(self):
-    return '%s:ui/%s.json' % (USER_BUCKET, self.identifier)
+    return 'secret://%s' % self.identifier

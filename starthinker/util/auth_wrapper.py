@@ -27,11 +27,15 @@ from google_auth_oauthlib.flow import Flow, InstalledAppFlow
 from google.oauth2.credentials import Credentials as CredentialsUser
 from google.oauth2.service_account import Credentials as CredentialsService
 
-from starthinker.config import APPLICATION_NAME, APPLICATION_SCOPES
+from starthinker.config import APPLICATION_NAME, APPLICATION_SCOPES, UI_PROJECT, UI_SERVICE
 from starthinker.util.auth_storage import credentials_storage_get, credentials_storage_put
+from starthinker.util.configuration import Configuration
 
-RE_CREDENTIALS_BUCKET = re.compile(r'[a-z0-9_\-\.]+:.+\.json')
+# FUTURE: migrate to protocol specifier pattern: (storage://, file://, secret://, and {} for JSON)
+RE_CREDENTIALS_STORAGE = re.compile(r'[a-z0-9_\-\.]+:.+\.json')
 RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
+RE_CREDENTIALS_FILE = re.compile(r'.+\.json')
+RE_CREDENTIALS_SECRET = re.compile(r'secret://')
 
 
 def CredentialsFlowWrapper(client, credentials_only=False, **kwargs):
@@ -52,8 +56,7 @@ def CredentialsFlowWrapper(client, credentials_only=False, **kwargs):
     return client_json
   else:
     if 'installed' in client_json:
-      flow = InstalledAppFlow.from_client_config(client_json,
-                                                 APPLICATION_SCOPES, **kwargs)
+      flow = InstalledAppFlow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
     else:
       flow = Flow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
 
@@ -94,9 +97,7 @@ class CredentialsUserWrapper(CredentialsUser):
 
   def from_json(self, data):
     self.token = data['access_token']
-    self.expiry = datetime.datetime.strptime(
-        data['token_expiry'][:19],
-        '%Y-%m-%dT%H:%M:%S').replace(microsecond=0)  # this is always UTC
+    self.expiry = datetime.datetime.strptime(data['token_expiry'][:19], '%Y-%m-%dT%H:%M:%S').replace(microsecond=0)  # this is always UTC
     self._refresh_token = data['refresh_token']
     self._id_token = data['id_token']
     self._token_uri = data['token_uri']
@@ -105,22 +106,14 @@ class CredentialsUserWrapper(CredentialsUser):
 
   def to_json(self):
     return {
-        'access_token':
-            self.token,
-        'token_expiry':
-            self.expiry.strftime('%Y-%m-%dT%H:%M:%SZ') if self.expiry else None,
-        'refresh_token':
-            self._refresh_token,
-        'id_token':
-            self._id_token,
-        'token_uri':
-            self._token_uri,
-        'client_id':
-            self._client_id,
-        'client_secret':
-            self._client_secret,
-        'scopes':
-            self._scopes,
+      'access_token': self.token,
+      'token_expiry': self.expiry.strftime('%Y-%m-%dT%H:%M:%SZ') if self.expiry else None,
+      'refresh_token': self._refresh_token,
+      'id_token': self._id_token,
+      'token_uri': self._token_uri,
+      'client_id': self._client_id,
+      'client_secret': self._client_secret,
+      'scopes': self._scopes,
     }
 
   def load_file(self):
@@ -140,6 +133,23 @@ class CredentialsUserWrapper(CredentialsUser):
     self.from_credentials(flow.credentials)
     self.save()
 
+  def load_secret(self):
+    from starthinker.util.secret_manager import SecretManager
+    self.from_json(
+      json.loads(
+        SecretManager(
+          Configuration(
+            service=UI_SERVICE,
+            project=UI_PROJECT
+          ),
+          'service'
+        ).access(
+          UI_PROJECT,
+          self.user.replace('secret://', '')
+        )
+      )
+    )
+
   def load(self):
     if self.user is None:
       pass
@@ -147,10 +157,14 @@ class CredentialsUserWrapper(CredentialsUser):
       self.from_json(self.user)
     elif RE_CREDENTIALS_JSON.match(self.user):
       self.from_json(json.loads(self.user))
-    elif RE_CREDENTIALS_BUCKET.match(self.user):
+    elif RE_CREDENTIALS_STORAGE.match(self.user):
       self.load_storage()
-    elif self.user:
+    elif RE_CREDENTIALS_FILE.match(self.user):
       self.load_file()
+    elif RE_CREDENTIALS_SECRET.match(self.user):
+      self.load_secret()
+    else:
+      raise NotImplementedError
 
   def save_json(self):
     self.user = json.dumps(self.to_json())
@@ -162,6 +176,20 @@ class CredentialsUserWrapper(CredentialsUser):
   def save_storage(self):
     credentials_storage_put(self.user, self.to_json())
 
+  def save_secret(self):
+    from starthinker.util.secret_manager import SecretManager
+    SecretManager(
+      Configuration(
+        service=UI_SERVICE,
+        project=UI_PROJECT
+      ),
+      'service'
+    ).create(
+      UI_PROJECT,
+      self.user.replace('secret://', ''),
+      json.dumps(self.to_json())
+    )
+
   def save(self, destination=None):
     if destination is not None:
       self.user = destination
@@ -170,12 +198,16 @@ class CredentialsUserWrapper(CredentialsUser):
       pass
     elif isinstance(self.user, dict):
       self.user = self.to_json()
-    elif RE_CREDENTIALS_BUCKET.match(self.user):
+    elif RE_CREDENTIALS_STORAGE.match(self.user):
       self.save_storage()
     elif RE_CREDENTIALS_JSON.match(self.user):
       self.save_json()
-    elif self.user:
+    elif RE_CREDENTIALS_FILE.match(self.user):
       self.save_file()
+    elif RE_CREDENTIALS_SECRET.match(self.user):
+      self.save_secret()
+    else:
+      raise NotImplementedError
 
   def refresh(self, request=None):
     self.load()
@@ -183,7 +215,5 @@ class CredentialsUserWrapper(CredentialsUser):
       if request is None:
         request = Request()
       super(CredentialsUserWrapper, self).refresh(request)
-      self.expiry = self.expiry.replace(
-          microsecond=0
-      )  # make parsing more consistent, microseconds are not essential
+      self.expiry = self.expiry.replace(microsecond=0) # make parsing more consistent, microseconds are not essential
       self.save()

@@ -49,6 +49,7 @@ If you are running gSuite, you can select Internal Deployment and avoid the warn
 - All settings will be derived from a file in **starthinker_assets/config.sh**, the deployment script simply manages this file.
 - Save and re-use the entire **starthinker_assets** directory to preseve all settings and credentials for future releases.
 - AppEngine does not allow chaning regions once a deployment is done, choose carefully.
+- Be sure AppEngine is enabled on the [Cloud Build Configuration](https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account) page.
 - If you get 500 error, check the [APP Engine Error Logs](https://console.cloud.google.com/errors)</a> or change the UI to show errors:
 ```
 source starthinker_assets/production.sh
