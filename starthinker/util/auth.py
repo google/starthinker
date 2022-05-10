@@ -28,6 +28,7 @@ from starthinker.util.auth_wrapper import CredentialsServiceWrapper
 from starthinker.util.auth_wrapper import CredentialsUserWrapper
 
 DISCOVERY_CACHE = {}
+APIS_WITHOUT_DISCOVERY_DOCS = ('oauth',)
 
 # set timeout to 10 minutes ( reduce socket.timeout: The read operation timed out )
 socket.setdefaulttimeout(600)
@@ -104,49 +105,54 @@ def get_service(config,
       uri_file = uri_file.strip()
       if uri_file.startswith('{'):
         DISCOVERY_CACHE[cache_key] = discovery.build_from_document(
-            uri_file,
-            credentials=credentials,
-            developerKey=key,
-            requestBuilder=HttpRequestCustom
+          uri_file,
+          credentials=credentials,
+          developerKey=key,
+          requestBuilder=HttpRequestCustom
        )
       else:
         with open(uri_file, 'r') as cache_file:
           DISCOVERY_CACHE[cache_key] = discovery.build_from_document(
-              cache_file.read(),
-              credentials=credentials,
-              developerKey=key,
-              requestBuilder=HttpRequestCustom
+            cache_file.read(),
+            credentials=credentials,
+            developerKey=key,
+            requestBuilder=HttpRequestCustom
           )
     else:
-      # Enables private API access
       # See: https://github.com/googleapis/google-api-python-client/issues/1225
-      uri_path = 'https://{}.googleapis.com/$discovery/rest?version={}&key={}&labels={}'.format(
-        api,
-        version,
-        key,
-        labels
-      ) if labels else None
-
       try:
+        # Enables private API access
+        if key or labels and api not in APIS_WITHOUT_DISCOVERY_DOCS:
+          uri_template = discovery.V2_DISCOVERY_URI
+          if key: uri_template += "&key={}".format(key)
+          if labels: uri_template += "&labels={}".format(labels)
+        else:
+          uri_template = None
+
         DISCOVERY_CACHE[cache_key] = discovery.build(
           api,
           version,
           credentials=credentials,
           developerKey=key,
           requestBuilder=HttpRequestCustom,
-          static_discovery=False,
-          discoveryServiceUrl=uri_path
+          discoveryServiceUrl=uri_template,
+          static_discovery=False
         )
       # PATCH: static_discovery not present in google-api-python-client < 2, default version in colab
       # ALTERNATE WORKAROUND: pip install update google-api-python-client==2.3 --no-deps --force-reinstall
       except TypeError:
+        # Enables private API access
+        uri_template = discovery.V1_DISCOVERY_URI
+        if key: uri_template += "&key={}".format(key)
+        if labels: uri_template += "&labels={}".format(labels)
+
         DISCOVERY_CACHE[cache_key] = discovery.build(
           api,
           version,
           credentials=credentials,
           developerKey=key,
           requestBuilder=HttpRequestCustom,
-          discoveryServiceUrl=uri_path
+          discoveryServiceUrl=uri_template
         )
 
   return DISCOVERY_CACHE[cache_key]
