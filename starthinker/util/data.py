@@ -210,7 +210,7 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
           "bucket": [ string ],
           "path": [ string ]
         },
-        "file":[ string - full path to place to write file ]
+        "file":[ string - full path to place to write file ],
       }
     }
 
@@ -280,7 +280,7 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
           destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
 
-  if 'sheets' in destination:
+  elif 'sheets' in destination:
     if destination['sheets'].get('delete', False):
       sheets_clear(
         config,
@@ -300,7 +300,7 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
       destination['sheets'].get('append', False),
     )
 
-  if 'file' in destination:
+  elif 'file' in destination:
     path_out, file_ext = destination['file'].rsplit('.', 1)
     file_out = path_out + variant + '.' + file_ext
     if config.verbose:
@@ -309,7 +309,7 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
     with open(file_out, 'w') as save_file:
       save_file.write(rows_to_csv(rows).read())
 
-  if 'storage' in destination and destination['storage'].get(
+  elif 'storage' in destination and destination['storage'].get(
       'bucket') and destination['storage'].get('path'):
     bucket_create(
       config,
@@ -325,7 +325,7 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
       print('SAVING', file_out)
     object_put(config, auth, file_out, rows_to_csv(rows))
 
-  if 'sftp' in destination:
+  elif 'sftp' in destination:
     try:
       cnopts = pysftp.CnOpts()
       cnopts.hostkeys = None
@@ -349,3 +349,5 @@ def put_rows(config, auth, destination, rows, schema=None, variant=''):
     except e:
       print(str(e))
       traceback.print_exc()
+  else:
+    return rows

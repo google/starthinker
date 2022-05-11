@@ -43,7 +43,7 @@ def ga(config, task):
     task['out']['bigquery']['schema'] = report.get_schema()
     task['out']['bigquery']['format'] = 'JSON'
 
-  put_rows(
+  return put_rows(
     config,
     task['auth'],
     task['out'],

@@ -73,22 +73,23 @@ TWITTER_TRENDS_PLACE_SCHEMA = [
 def twitter_trends_places(config, task):
   if config.verbose:
     print('TWITTER TRENDS PLACE')
-  print('PL',
-        list(get_rows(config, task['auth'], task['trends']['places'])))
 
   for place in get_rows(config, task['auth'], task['trends']['places']):
     if config.verbose:
-      print('PLACE', place)
+      print('PLACE:', place, 'RESULTS:')
+
     results = get_twitter_api(config, task).request('trends/place', {'id': int(place)})
     for r in results:
       if config.verbose:
-        print('RESULT', r['name'])
+        print(r['name'], end = ', ')
       yield [
           place, r['name'], r['url'], r['promoted_content'], r['query'],
           r['tweet_volume']
       ]
     print('.', end='')
     sleep(15 * 60 / 75)  # rate limit ( improve to retry )
+
+  print()
 
 
 TWITTER_TRENDS_CLOSEST_SCHEMA = [
@@ -185,4 +186,4 @@ def twitter(config, task):
       task['out']['bigquery']['skip_rows'] = 0
 
   if rows:
-    put_rows(config, task['auth'], task['out'], rows)
+    return put_rows(config, task['auth'], task['out'], rows)

@@ -145,9 +145,7 @@ def google_api_initilaize(config, api_call, alias=None):
       api_call['kwargs']['profileId'] = profile_id
 
       if is_superuser:
-        from starthinker.util.cm_internalv34_uri import URI as DCM_URI
-        api_call['version'] = 'internalv3.3'
-        api_call['uri'] = DCM_URI
+        api_call['version'] = 'prerelease'
       elif 'accountId' in api_call['kwargs']:
         del api_call['kwargs']['accountId']
 
@@ -177,6 +175,7 @@ def google_api_build_results(config, auth, api_call, results):
         api_call['api'],
         api_call['version'],
         api_call.get('key', None),
+        api_call.get('labels', None),
       ).method_schema(
         api_call['function'],
         api_call.get('iterate', False)
@@ -257,7 +256,6 @@ def google_api_execute(config, auth, api_call, results, errors, limit=None):
     ValueError: If a required key in the recipe is missing.
   """
 
-
   try:
     rows = API(config, api_call).execute()
 
@@ -334,8 +332,9 @@ def google_api(config, task):
     'version': task['version'],
     'function': task['function'],
     'iterate': task.get('iterate', False),
-    'limit': task.get('limit', None),
-    'key': config.key,
+    'limit': task.get('limit'),
+    'key': task.get('key', config.key),
+    'labels': task.get('labels'),
     'headers': task.get('headers'),
   }
 
@@ -379,9 +378,9 @@ def google_api(config, task):
       google_api_initilaize(config, api_call, task.get('alias'))
       yield from google_api_execute(config, task['auth'], api_call, results, errors, task.get('limit'))
 
-  put_rows(
+  return put_rows(
     config,
     task['auth'],
     results,
     google_api_combine()
-  ) # FIX: check auth on nested BQ write
+  )

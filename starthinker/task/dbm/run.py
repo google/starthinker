@@ -86,4 +86,4 @@ def dbm(config, task):
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(config, task['auth'], task['out'], rows)
+        return put_rows(config, task['auth'], task['out'], rows)

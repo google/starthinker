@@ -113,4 +113,4 @@ def fred(config, task):
     raise Excpetion(
         'MISSING CONFIGURATION: Specify either series_id or series_group.')
 
-  put_rows(config, task['auth'], name, rows)
+  return put_rows(config, task['auth'], name, rows)

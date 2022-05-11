@@ -93,7 +93,7 @@ def vision_api(config, task):
   # append URI to results for mapping
   schema.insert(0, {'description': 'Mapping back to request.', 'name': 'imageUri', 'type': 'STRING', 'mode': 'REQUIRED'})
 
-  put_rows(
+  return put_rows(
     config,
     task['auth'],
     task['responses'],
