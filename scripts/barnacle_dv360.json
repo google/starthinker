@@ -171,7 +171,7 @@
       },
       "to":{
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
-        "view":"Barnacle_Reports"
+        "table":"Barnacle_Reports"
       }
     }}
   ]
