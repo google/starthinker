@@ -73,7 +73,6 @@ class SecretManager():
   def access(self, project_id, secret_id):
     '''Retrieve a secret and decode into a UTF-8 string.
     '''
-    project_id='654439625232'
     return base64.b64decode(
       API_SecretManager(self.config, self.auth).projects().secrets().versions().access(
         name = 'projects/{}/secrets/{}/versions/latest'.format(project_id.replace(':', '.'), secret_id)
