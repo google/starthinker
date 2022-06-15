@@ -57,13 +57,9 @@ class Command(BaseCommand):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe'])
                    if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
-        if kwargs['remote']:
-          print('Dispatch: %s' % recipe.uid())
-          if kwargs['force']:
-            recipe.force()
-        elif settings.UI_CRON:
-          print('Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk))
-          with open(settings.UI_CRON + '/recipe_%d.json' % recipe.pk, 'w') as f:
+        if 1:
+          print('Write: /tmp/recipe_%d.json' % (recipe.pk))
+          with open('/tmp/recipe_%d.json' % recipe.pk, 'w') as f:
             f.write(json.dumps(recipe.get_json()))
         else:
           raise Exception('Neither UI_CRON configured nor remote specified.')
