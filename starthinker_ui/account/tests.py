@@ -68,7 +68,16 @@ class CredentialsTest(TestCase):
     os.remove(SERVICE_FILE)
 
 
+  def helper_api(self, config):
+    service = get_service(config, 'oauth2', 'v2', 'user')
+    response = service.userinfo().get().execute()
+    self.assertIn('email', response)
+
+
   def helper_refresh(self, config):
+    # test use of configuration
+    self.helper_api(config)
+
     credentials = get_credentials(config, 'user')
     token = credentials.token
     expiry = credentials.expiry
@@ -83,6 +92,9 @@ class CredentialsTest(TestCase):
     self.assertEqual(token, credentials.token)
     self.assertEqual(expiry, credentials.expiry)
 
+    # test after refresh
+    self.helper_api(config)
+
     # wait a bit before refreshing token, multiple tests go too fast and same token is returned
     sleep(1)
 
@@ -91,6 +103,9 @@ class CredentialsTest(TestCase):
     credentials.refresh()
     self.assertEqual(token, credentials.token)
     self.assertEqual(expiry, credentials.expiry)
+
+    # test after refresh
+    self.helper_api(config)
 
     # wait a bit before refreshing token, multiple tests go too fast and same token is returned
     sleep(1)
@@ -102,13 +117,12 @@ class CredentialsTest(TestCase):
     self.assertNotEqual(token, credentials.token)
     self.assertNotEqual(expiry, credentials.expiry)
 
+    # test after refresh
+    self.helper_api(config)
+
 
   def test_file_credentials_user(self):
     config = Configuration(user=USER_FILE)
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-
-    self.assertIn('email', response)
     self.helper_refresh(config)
 
 
@@ -116,18 +130,12 @@ class CredentialsTest(TestCase):
     config = Configuration(service=SERVICE_FILE)
     service = get_service(config, 'cloudresourcemanager', 'v1', 'service')
     response = service.projects().list().execute()
-
     self.assertIn('projects', response)
 
 
   def test_string_credentials_user(self):
     with open(USER_FILE, 'r') as json_file:
       config = Configuration(user=json_file.read())
-
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-
-    self.assertIn('email', response)
     self.helper_refresh(config)
 
 
@@ -135,20 +143,15 @@ class CredentialsTest(TestCase):
     with open(SERVICE_FILE, 'r') as json_file:
       config = Configuration(service=json_file.read())
 
+    # cannot use helper for service
     service = get_service(config, 'cloudresourcemanager', 'v1', 'service')
     response = service.projects().list().execute()
-
     self.assertIn('projects', response)
 
 
   def test_dictionary_credentials_user(self):
     with open(USER_FILE, 'r') as json_file:
       config = Configuration(user=json.load(json_file))
-
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-
-    self.assertIn('email', response)
     self.helper_refresh(config)
 
 
@@ -165,11 +168,6 @@ class CredentialsTest(TestCase):
 
     # use configuration
     config = Configuration(user=USER_STORAGE)
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-
-    # run tests
-    self.assertIn('email', response)
     self.helper_refresh(config)
 
     # clean up storage credentials
@@ -178,20 +176,11 @@ class CredentialsTest(TestCase):
 
   def test_secret_credentials_user(self):
 
-    # load file credentials and save to storage bucket
-    #print('TS-0')
+    # load file credentials and save to secret manager
     config_file = Configuration(user=USER_FILE)
     credentials = get_credentials(config_file, 'user')
     credentials.save(USER_SECRET)
 
-    # use configuration
-    config = Configuration(user=USER_SECRET)
-    #print('TS-1')
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-    self.assertIn('email', response)
-
-    #print('TS-2')
     #print('DOWNLOAD EXISTING SECRET', SecretManager(
     #  Configuration(
     #    service=UI_SERVICE,
@@ -204,12 +193,21 @@ class CredentialsTest(TestCase):
     #  )
     #)
 
-    # run tests
-    #print(config)
+    # use configuration
+    config = Configuration(user=USER_SECRET)
     self.helper_refresh(config)
 
     # clean up secret credentials
-    #object_delete(config_service, 'service', USER_STORAGE)
+    SecretManager(
+      Configuration(
+        service=UI_SERVICE,
+        project=UI_PROJECT
+      ),
+      'service'
+    ).delete(
+       UI_PROJECT,
+       USER_SECRET.replace('secret://', '')
+    )
 
 
   def test_dictionary_credentials_service(self):
@@ -229,9 +227,4 @@ class CredentialsTest(TestCase):
 
     config = Configuration(user=account.get_credentials_path())
     self.assertEqual(config.recipe['setup']['auth']['user'], account.get_credentials_path())
-
-    service = get_service(config, 'oauth2', 'v2', 'user')
-    response = service.userinfo().get().execute()
-    self.assertIn('email', response)
-
     self.helper_refresh(config)
