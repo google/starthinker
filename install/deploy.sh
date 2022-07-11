@@ -69,7 +69,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
 
       main_done=0
-      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Deploy Cloud Function" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Change Analytics Token" "Change API Key" "Change Developer Token")
+      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Deploy Cloud Function" "Change gCloud User" "Change gCloud Project" "Setup Service Credentials" "Change User Credentials" "Change UI Credentials" "Change Analytics Token" "Change API Key" "Change Developer Token")
 
       while (( !main_done ))
       do

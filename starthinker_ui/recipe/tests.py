@@ -75,6 +75,7 @@ from starthinker_ui.recipe.management.commands.job_worker import Workers, worker
 #      "sleep":0
 #    }}
 
+settings.GET_USER_CREDENTIALS = 'FILE'
 WORKER_LOOKBACK_EXPIRE = (JOB_LOOKBACK_MS + 1000)
 
 

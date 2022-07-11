@@ -152,4 +152,7 @@ class Account(AbstractBaseUser):
         self.get_credentials_path()) if self.identifier else None
 
   def get_credentials_path(self):
-    return 'secret://%s' % self.identifier
+    if settings.GET_USER_CREDENTIALS == 'SECRET':
+      return 'secret://%s' % self.identifier
+    else:
+      return '/tmp/%s.json' % self.identifier

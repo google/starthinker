@@ -37,7 +37,8 @@ instance_create()
 
   values=$(gcloud compute instances list --filter="name=$create_INSTANCE" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
-    gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --image-project=debian-cloud --image-family=debian-10 --scopes https://www.googleapis.com/auth/cloud-platform
+    # ignore boot disk warning, space needed for code and swap file
+    gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --image-project=debian-cloud --image-family=debian-10 --scopes cloud-platform --service-account=$(get_service_email) --verbosity=error
   else
     gcloud compute instances start $create_INSTANCE --zone=$STARTHINKER_ZONE
     echo "Instance already exists."
@@ -79,8 +80,11 @@ instance_copy()
 start_worker_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Start Worker Proxy - sudo systemctl status starthinker_proxy"
+  echo "Start Worker Proxy"
   echo "----------------------------------------"
+  echo ""
+  echo " - https://console.cloud.google.com/compute/instances"
+  echo " - sudo systemctl status starthinker_proxy"
   echo ""
 
   sudo bash -c "cat > /etc/systemd/system/starthinker_proxy.service" << EOL
@@ -100,7 +104,7 @@ Restart=always
 RestartSec=5
 TimeoutSec=10
 WorkingDirectory=$STARTHINKER_ROOT/starthinker_assets
-ExecStart="${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
+ExecStart="${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432
 StandardOutput=journal
 User=root
 EOL
@@ -109,9 +113,7 @@ EOL
   sudo systemctl enable starthinker_proxy
   #sudo systemctl restart starthinker_proxy
 
-  echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -120,8 +122,11 @@ start_worker() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Start Worker - sudo systemctl status starthinker"
+  echo "Start Worker"
   echo "----------------------------------------"
+  echo ""
+  echo " - https://console.cloud.google.com/compute/instances"
+  echo " - sudo systemctl status starthinker_proxy"
   echo ""
 
   sudo bash -c "cat > /etc/systemd/system/starthinker.service" << EOL
@@ -143,7 +148,7 @@ Environment=STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT
 Environment=STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 Environment=STARTHINKER_ZONE=$STARTHINKER_ZONE
 Environment=STARTHINKER_CLIENT_WEB=$STARTHINKER_CLIENT_WEB
-Environment=STARTHINKER_SERVICE=$STARTHINKER_SERVICE
+Environment=STARTHINKER_SERVICE='DEFAULT'
 Environment=STARTHINKER_ROOT=$STARTHINKER_ROOT
 Environment=STARTHINKER_CRON=$STARTHINKER_CRON
 Environment=STARTHINKER_UI_DATABASE_ENGINE=$STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE
@@ -166,9 +171,7 @@ EOL
   sudo systemctl enable starthinker
   #sudo systemctl restart starthinker
 
-  echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -193,7 +196,6 @@ setup_worker() {
   setup_credentials_service;
   setup_credentials_ui;
   save_config;
-  firewall_create;
 
   instance_name="starthinker-worker-instance"
   instance_image="starthinker-worker-image-$(date '+%Y-%m-%d-%H-%M-%S')"
@@ -203,6 +205,18 @@ setup_worker() {
   echo "Configure Worker Instance - $instance_name: $STARTHINKER_WORKER_INSTANCE x $STARTHINKER_WORKER_JOBS job handlers"
   echo "----------------------------------------"
   echo ""
+  echo " - https://cloud.google.com/endpoints/docs/openapi/enable-api"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instances/create"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instances/start"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instances/stop"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/create"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/ssh"
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/scp"
+  echo ""
+
+  gcloud services enable compute.googleapis.com
+
+  firewall_create;
 
   instance_create $instance_name "${STARTHINKER_WORKER_INSTANCE}"
 
@@ -211,7 +225,9 @@ setup_worker() {
   instance_command "$instance_name" "sudo systemctl stop starthinker"
   instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
 
-  find . -name '*.pyc' -delete
+  find -L starthinker -name '*.pyc' -delete
+  find -L starthinker_ui -name '*.pyc' -delete
+  find -L starthinker_assets/logs -name "*.log" -delete
 
   instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse
   instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "~/starthinker_ui/" --recurse
@@ -229,6 +245,8 @@ setup_worker() {
   echo "Create Image - starthinker-worker-family"
   echo "----------------------------------------"
   echo ""
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/images/create"
+  echo ""
 
   gcloud compute images create $instance_image --project=$STARTHINKER_PROJECT --description="Worker configuration." --family=starthinker-worker-family --source-disk=$instance_name --source-disk-zone=$STARTHINKER_ZONE
 
@@ -237,10 +255,12 @@ setup_worker() {
   echo "Create Template - starthinker-worker-template"
   echo "----------------------------------------"
   echo ""
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instance-templates/create"
+  echo ""
 
   values=$(gcloud compute instance-templates list --filter="name=starthinker-worker-template" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
-    gcloud compute --project=$STARTHINKER_PROJECT instance-templates create starthinker-worker-template --machine-type=$STARTHINKER_WORKER_INSTANCE --network=projects/$STARTHINKER_PROJECT/global/networks/default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=default --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=starthinker-worker-family --image-project=$STARTHINKER_PROJECT --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=starthinker-worker-template --reservation-affinity=any
+    gcloud compute --project=$STARTHINKER_PROJECT instance-templates create starthinker-worker-template --machine-type=$STARTHINKER_WORKER_INSTANCE --network=projects/$STARTHINKER_PROJECT/global/networks/default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=$(get_service_email) --scopes=cloud-platform --image-family=starthinker-worker-family --image-project=$STARTHINKER_PROJECT --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=starthinker-worker-template --reservation-affinity=any
   else
     echo "Template already exists."
   fi
@@ -249,6 +269,8 @@ setup_worker() {
   echo "----------------------------------------"
   echo "Create Managed Instance Group - starthinker-worker-group"
   echo "----------------------------------------"
+  echo ""
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/create"
   echo ""
 
   values=$(gcloud compute instance-groups managed list --filter="name=starthinker-worker-group" --format="value(name)" --verbosity=none)
@@ -263,11 +285,12 @@ setup_worker() {
   echo "Roll Managed Instance Group  Workers - custom.googleapis.com/starthinker/worker/usage"
   echo "----------------------------------------"
   echo ""
+  echo " - https://cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/rolling-action/replace"
+  echo ""
 
   gcloud compute instance-groups managed rolling-action replace starthinker-worker-group --max-surge="0" --max-unavailable="100%" --zone=$STARTHINKER_ZONE
 
   echo "Done"
-  echo ""
 }
 
 if [ "$1" = "--instance" ];then

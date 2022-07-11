@@ -215,7 +215,10 @@ class Recipe(models.Model):
     return self.account.get_credentials_path() if self.account else '{}'
 
   def get_credentials_service(self):
-    return self.project.service if self.project and self.project.service else '{}'
+    creds = '{}'
+    if self.project and self.project.service and self.project.service != 'DEFAULT': # protect against default credentials
+      creds = self.project.service
+    return creds
 
   def get_project_identifier(self):
     return self.project.get_project_id() if self.project else ''

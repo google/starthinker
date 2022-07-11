@@ -31,17 +31,17 @@ from starthinker_ui.project.models import Project
 
 def project_create(share=''):
 
-  with open(
-    os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET'),
-    'r'
-  ) as f:
-    service = f.read()
+  #with open(
+  #  os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET'),
+  #  'r'
+  #) as f:
+  #  service = f.read()
 
   key = os.environ.get('STARTHINKER_API_KEY', 'MISSING RUN deploy.sh TO SET'),
 
   project = Project.objects.create(
       account=account_create(),
-      service=service,
+      service=None, #service,
       key=key,
       share=share
   )

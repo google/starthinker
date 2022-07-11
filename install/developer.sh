@@ -23,14 +23,14 @@ test_ui() {
 
   install_virtualenv;
   install_requirements;
-  setup_credentials_service;
   setup_credentials_commandline;
   save_config;
 
   echo ""
   echo "----------------------------------------"
-  echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
+  echo "Load Development Settings"
   echo "----------------------------------------"
+  echo " - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
   echo ""
 
   source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
@@ -75,7 +75,6 @@ test_tasks() {
 
   install_virtualenv;
   install_requirements;
-  setup_credentials_service;
   setup_credentials_commandline;
   save_config;
 
@@ -107,7 +106,6 @@ launch_developer_ui() {
 
   install_virtualenv;
   install_requirements;
-  setup_credentials_service;
   setup_credentials_commandline;
   save_config;
   make_cron;
@@ -198,7 +196,6 @@ launch_developer_worker() {
 install_developer() {
   install_virtualenv;
   install_requirements;
-  setup_credentials_service;
   setup_credentials_commandline;
   setup_credentials_user;
   save_config;
@@ -295,7 +292,7 @@ setup_developer() {
   echo " - source $STARTHINKER_CONFIG"
   echo ""
   echo "After activating StarThinker run the sample code:"
-  echo " - python starthinker/all/run.py starthinker/gtech/say_hello.json -u \$STARTHINKER_USER -s \$STARTHINKER_SERVICE -p \$STARTHINKER_PROJECT"
+  echo " - python starthinker/all/run.py starthinker/gtech/say_hello.json -u \$STARTHINKER_USER -p \$STARTHINKER_PROJECT"
   echo ""
   echo "After activating StarThinker run the UI from the menu below or from the command line:"
   echo " - source $STARTHINKER_ROOT/starthinker_assets/developmnet.sh"

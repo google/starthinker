@@ -19,7 +19,6 @@
 ###########################################################################
 
 COMPOSER_NAME="starthinker-on-composer"
-COMPOSER_SERVICE_ACCOUNT=starthinker-on-composer
 COMPOSER_INSTANCE_DATA_FOLDER=/home/airflow/gcs/data
 COMPOSER_PYTHON_VERSION=3
 COMPOSER_NODE_COUNT=3
@@ -113,7 +112,7 @@ composer_environment() {
   STARTHINKER_ROOT=${STARTHINKER_ROOT},\
   STARTHINKER_ZONE=${STARTHINKER_ZONE},\
   STARTHINKER_PROJECT=${STARTHINKER_PROJECT},\
-  STARTHINKER_SERVICE=${STARTHINKER_SERVICE}
+  STARTHINKER_SERVICE='DEFAULT'
 
   echo "Creating StarThinker connections"
   gcloud composer environments run ${COMPOSER_NAME} \

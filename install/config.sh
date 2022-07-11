@@ -34,7 +34,7 @@ STARTHINKER_WORKER_JOBS=4
 STARTHINKER_ANALYTICS="UA-167283455-2"
 
 STARTHINKER_PROJECT=""
-STARTHINKER_ZONE="us-west2-b"
+STARTHINKER_ZONE=""
 STARTHINKER_DEVELOPER_TOKEN=""
 STARTHINKER_API_KEY=""
 
@@ -99,8 +99,10 @@ derive_config() {
 load_config() {
   echo ""
   echo "----------------------------------------"
-  echo "Loading Configuration - ${THIS_DIR}/starthinker_assets/config.sh"
+  echo "Loading Configuration"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${THIS_DIR}/starthinker_assets/config.sh"
   echo ""
 
   if [ -e "${THIS_DIR}/starthinker_assets/config.sh" ]; then
@@ -110,7 +112,6 @@ load_config() {
   derive_config;
 
   echo "Done"
-  echo ""
 }
 
 
@@ -120,8 +121,10 @@ save_config() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Saving Configuration - ${STARTHINKER_CONFIG}"
+  echo "Saving Configuration"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_CONFIG}"
   echo ""
 
   echo "export STARTHINKER_SCALE=$STARTHINKER_SCALE;" > "${STARTHINKER_CONFIG}"
@@ -183,7 +186,6 @@ save_config() {
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "Done"
-  echo ""
 }
 
 
@@ -283,7 +285,7 @@ setup_database() {
       echo "Database Name Unchanged"
     fi
   else
-    echo "Using Existing Database Name"
+    echo "Using Existing Database Name: ${STARTHINKER_UI_PRODUCTION_DATABASE_NAME}"
   fi
 
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_USER}" == "" ]; then
@@ -294,7 +296,7 @@ setup_database() {
       echo "Database User Unchanged"
     fi
   else
-    echo "Using Existing Database User"
+    echo "Using Existing Database User: ${STARTHINKER_UI_PRODUCTION_DATABASE_USER}"
   fi
 
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD}" == "" ]; then
@@ -305,12 +307,8 @@ setup_database() {
       echo "Database Password Unchanged"
     fi
   else
-    echo "Using Existing Database Password"
+    echo "Using Existing Database Password: NOT SHOWN"
   fi
-
-  echo ""
-  echo "Done"
-  echo ""
 }
 
 
@@ -318,9 +316,12 @@ setup_analytics() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Set Analytics Tracking - ${STARTHINKER_ANALYTICS}"
+  echo "Set Analytics Tracking"
   echo "----------------------------------------"
   echo ""
+  echo " - ${STARTHINKER_ANALYTICS}"
+  echo ""
+
   echo "All data collected is anonymous and never shared outside of the StarThinker team."
   echo "Leaving the tracking in place helps us continue supporting StarThinker by showing it is useful."
   echo "To opt out simply enter a blank or type in your own."
@@ -334,9 +335,6 @@ setup_analytics() {
     STARTHINKER_ANALYTICS=$analytics;
   fi
 
-  echo ""
-  echo "Done"
-  echo ""
 }
 
 
@@ -345,8 +343,10 @@ setup_project() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Set gCloud Project - ${STARTHINKER_PROJECT}"
+  echo "Set gCloud Project"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_PROJECT}"
   echo ""
 
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
@@ -370,7 +370,7 @@ setup_project() {
       echo ""
     fi
   else
-    echo "Using Existing Project ID"
+    echo "Using Existing Project ID: ${STARTHINKER_PROJECT}"
     echo ""
   fi
 
@@ -378,13 +378,53 @@ setup_project() {
 }
 
 
+setup_region_and_zone() {
+  forced=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Set gCloud Default Region And Zone"
+  echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_ZONE}"
+  echo " - https://cloud.google.com/compute/docs/regions-zones#available"
+  echo ""
+
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_ZONE}" == "" ]; then
+
+    echo "Retrieve Zone from:  https://cloud.google.com/compute/docs/regions-zones#available"
+    echo ""
+    echo "IMPORTANT SETUP NOTES"
+    echo ""
+    echo " * Ensure the zone supports N1 and N2 compue types."
+    echo " * For the UI: SQL and AppEngine require the zone to be the same and remain unchanged once deployed."
+    echo " * Enter the full zone name, for example: us-central1-a"
+    echo ""
+
+    read -p "Full zone name ( blank to keep existing ): " zone_id
+
+    if [ "${zone_id}" ]; then
+      STARTHINKER_ZONE="${zone_id}"
+      save_config;
+    else
+      echo "Project ID Unchanged"
+      echo ""
+    fi
+  else
+    echo "Using Existing Zone: ${STARTHINKER_ZONE}"
+    echo ""
+  fi
+}
+
 setup_developer_token() {
   forced=$1
 
   echo ""
   echo "----------------------------------------"
-  echo "Set Developer Token - ${STARTHINKER_DEVELOPER_TOKEN}"
+  echo "Set Developer Token"
   echo "----------------------------------------"
+  echo ""
+  echo " - https://developers.google.com/google-ads/api/docs/first-call/dev-token"
   echo ""
 
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_DEVELOPER_TOKEN}" == "" ]; then
@@ -403,11 +443,9 @@ setup_developer_token() {
       echo ""
     fi
   else
-    echo "Using Existing Developer Token"
+    echo "Using Existing Developer Token: ${STARTHINKER_DEVELOPER_TOKEN}"
     echo ""
   fi
-
-  gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
 }
 
 
@@ -416,8 +454,10 @@ setup_api_key() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Set API Key - ${STARTHINKER_API_KEY}"
+  echo "Set API Key"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_API_KEY}"
   echo ""
 
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_API_KEY}" == "" ]; then
@@ -436,11 +476,9 @@ setup_api_key() {
       echo ""
     fi
   else
-    echo "Using Existing API Key"
+    echo "Using Existing API Key: ${STARTHINKER_API_KEY}"
     echo ""
   fi
-
-  gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
 }
 
 
@@ -449,7 +487,7 @@ setup_credentials_commandline() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup Command Line Credentials For User - ${STARTHINKER_CLIENT_INSTALLED}"
+  echo "Setup Command Line Credentials For User"
   echo "----------------------------------------"
   echo ""
 
@@ -491,20 +529,17 @@ setup_credentials_commandline() {
     fi
 
   else
-    echo "Using Existing Client Credentials"
+    echo "Using Existing Client Credentials: ${STARTHINKER_CLIENT_INSTALLED}"
   fi
 
   if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json" ]; then
     rm "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json"
     echo "Failed To Create Client Desktop Credentials, Fix Then Run This Script Again"
     echo " 1. Check permissions of gcloud user."
-    echo " 2. Check if service accounts are enabled for the project."
-    echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
+    echo " 2. Check if client accounts are enabled for the project."
+    echo " 3. Manually paste client JSON credentials into: starthinker_assets/client_installed.json"
     exit 1;
   fi
-
-  echo "Done"
-  echo ""
 }
 
 
@@ -513,16 +548,13 @@ setup_credentials_ui() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup UI Credentials - ${STARTHINKER_CLIENT_WEB}"
+  echo "Setup UI Credentials"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_CLIENT_WEB}"
   echo ""
 
   if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
-
-    values=$(gcloud app describe --format="value(name)" --verbosity=none)
-    if [ -z "${values}" ]; then
-      gcloud app create --region "${STARTHINKER_REGION}"
-    fi
 
     echo "Step 1: Configure Consent Screen ( do only once )"
     echo "----------------------------------------"
@@ -535,7 +567,7 @@ setup_credentials_ui() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. In Authorized domains, type $(gcloud app browse --no-launch-browser) and press Enter."
+    echo "  D. In Authorized domains, type $(gcloud app browse --no-launch-browser), without http://, and press Enter."
     echo "  E. All other fields are optional, click Save."
     echo ""
 
@@ -545,7 +577,6 @@ setup_credentials_ui() {
     echo "  B. Choose Web Application."
     echo "  C. For Name enter: StarThinker."
     echo "  D. For Authorized redirect URIs enter:"
-    echo "       http://localhost:8000/oauth_callback/"
     echo "       $(gcloud app browse --no-launch-browser)/oauth_callback/"
     echo "  F. Click Create and ignore the confirmation pop-up."
     echo ""
@@ -570,92 +601,75 @@ setup_credentials_ui() {
      rm "${STARTHINKER_ROOT}/starthinker_assets/client_web.json"
      echo "Failed To Create Client Web Credentials, Fix Then Run This Script Again"
      echo " 1. Check permissions of gcloud user."
-     echo " 2. Check if service accounts are enabled for the project."
-     echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
+     echo " 2. Check if client accounts are enabled for the project."
+     echo " 3. Manually paste client JSON credentials into: starthinker_assets/client_web.json"
      exit 1;
   fi
-
-  echo "Done"
-  echo ""
 }
 
 
 get_service_email() {
-  echo $(sed -ne 's/\s*"client_email"\s*:\s*"\(.*\)",/\1/ p' ${STARTHINKER_SERVICE})
+  echo $(echo "starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com" | sed -r "s/(google.com):(.*)/\2.\1/g")
+}
+
+get_cloudbuild_email() {
+  project_number=$(gcloud projects describe $STARTHINKER_PROJECT --format="value(projectNumber)")
+  echo "${project_number}@cloudbuild.gserviceaccount.com"
 }
 
 setup_credentials_service() {
-  forced=$1
-
   echo ""
   echo "----------------------------------------"
-  echo "Setup Service Credentials - ${STARTHINKER_SERVICE}"
+  echo "Setup Service Credentials - NO KEY DOWNLOAD"
   echo "----------------------------------------"
   echo ""
+  echo " - starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com"
+  echo ""
 
-  if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
+  gcloud alpha iam service-accounts create "starthinker" \
+  --display-name="StarThinker (Service Account)" \
+  --description="This service account is used by the StarThinker framework." \
+  --verbosity=critical
 
-    echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo ""
+  if [ !$? ]; then
 
-    gcloud alpha iam service-accounts create "starthinker" \
-    --display-name="StarThinker (Service Account)" \
-    --description="This service account is used by the StarThinker framework." \
-    --verbosity=critical
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/secretmanager.admin'
 
-    return_code=$?
-    if [ !$return_code ]; then
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/secretmanager.secretAccessor'
 
-      service=$(echo "${STARTHINKER_PROJECT}"  | sed -r "s/(google.com):(.*)/\2.\1/g")
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/cloudsql.editor'
 
-      gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
-      --member=serviceAccount:starthinker@${service}.iam.gserviceaccount.com \
-      --role='roles/editor'
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/iam.serviceAccountUser'
 
-      return_code=$?
-      if [ !$return_code ]; then
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/compute.admin'
 
-        gcloud iam service-accounts keys create ${STARTHINKER_ROOT}/starthinker_assets/service.json \
-        --iam-account=starthinker@${service}.iam.gserviceaccount.com \
-        --key-file-type=json
-
-      else
-        echo "WARNING: Failed to create starthinker_assets/service.json account keys.  You may not be able to deploy workers."
-
-      fi
-
-    else
-      echo "WARNING: Failed to create starthinker_assets/service.json file.  You may not be able to deploy workers."
-
-    fi
+    gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+    --member=serviceAccount:$(get_service_email) \
+    --role='roles/cloudsql.client'
 
   else
-    echo "Using Existing Service Credentials"
+    echo "WARNING: Failed to create service account.  You may not be able to deploy workers."
+    exit
   fi
-
-  if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/service.json" ]; then
-     rm "${STARTHINKER_ROOT}/starthinker_assets/service.json"
-     echo "Failed To Create Service Credentials, You will not be able to use service accounts, use user accounts instead."
-     echo " 1. Check permissions of gcloud user."
-     echo " 2. Check if service accounts are enabled for the project."
-     echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
-     echo " 4. StarThinker is still usable for operations that that require ONLY user credentials."
-  fi
-
-  echo "If using the UI, please ensure the Service Account has the following additional permissions:"
-  echo "  - Secret Manager Admin"
-  echo "  - Secret Manager Secret Accessor"
-
-  echo ""
-  echo "Done"
-  echo ""
 }
 
 setup_credentials_user() {
   echo ""
   echo "----------------------------------------"
-  echo "Update User Credentials - ${STARTHINKER_USER}"
+  echo "Update User Credentials"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_USER}"
   echo ""
 
   source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
@@ -738,8 +752,10 @@ install_virtualenv() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Install Virtual Environment ( Uses Sudo ) - ${STARTHINKER_ENV}"
+  echo "Install Virtual Environment ( Uses Sudo )"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_ENV}"
   echo ""
 
   case "$(uname -s)" in
@@ -756,7 +772,6 @@ install_virtualenv() {
   fi
 
   echo "Done"
-  echo ""
 }
 
 
@@ -774,7 +789,6 @@ install_requirements() {
 
   echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -799,7 +813,6 @@ setup_swap() {
 
   echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -807,8 +820,10 @@ setup_domain() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Set UI Domain - $STARTHINKER_UI_PRODUCTION_DOMAIN"
+  echo "Set UI Domain"
   echo "----------------------------------------"
+  echo ""
+  echo " - $STARTHINKER_UI_PRODUCTION_DOMAIN"
   echo ""
   echo "If you DO NOT HAVE A DOMAIN then LEAVE IT BLANK."
   echo "If left blank, the default domain of [project].[appengine URL] will be used."
@@ -830,7 +845,6 @@ setup_domain() {
 
   echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -878,24 +892,28 @@ generate_translations() {
   echo "Generate Translations"
   echo "----------------------------------------"
   echo ""
+  echo " - https://docs.djangoproject.com/en/4.0/topics/i18n/translation/"
+  echo ""
 
   source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
   cd "${STARTHINKER_ROOT}/starthinker_ui"
-  python3 manage.py makemessages;
+  python3 manage.py makemessages -a;
   python3 manage.py compilemessages;
   cd "${STARTHINKER_ROOT}"
   deactivate
 
   echo "Done"
-  echo ""
 }
 
 
 install_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Install Cloud Proxy ( Uses Sudo ) - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+  echo "Install Cloud Proxy ( Uses Sudo )"
   echo "----------------------------------------"
+  echo ""
+  echo " - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+  echo " - https://cloud.google.com/sql/docs/mysql/sql-proxy"
   echo ""
 
   case "$(uname -s)" in
@@ -917,7 +935,6 @@ install_proxy() {
 
   echo ""
   echo "Done"
-  echo ""
 }
 
 
@@ -934,6 +951,7 @@ if [ "$1" = "--no_user" ];then
 else
   setup_gcloud;
   setup_project;
+  setup_region_and_zone;
   check_gsuite;
 fi
 

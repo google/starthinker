@@ -120,7 +120,9 @@ def worker_downscale():
   try:
     group_instances_delete(get_instance_name())
   except HttpError as e:
-    log_manager_error('WORKER DOWNSCALE NOT AVAILABLE: %s' % str(e))
+    log_manager_error('WORKER DOWNSCALE REQUIRES GCP: %s' % str(e))
+  except FileNotFoundError as e:
+    log_manager_error('WORKER DOWNSCALE REQUIRES SERVICE: %s' % str(e))
 
 
 def make_non_blocking(file_io):

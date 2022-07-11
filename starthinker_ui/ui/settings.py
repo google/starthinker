@@ -19,6 +19,9 @@
 # General StarThinker constants that can also be used from the command line interface
 from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
 
+# Remains unchanged in production, modified to 'FILE' for testing.
+GET_USER_CREDENTIALS = 'SECRET'
+
 # See available translations (this is just the default if browser does not provide)
 LANGUAGE_CODE = 'en-us'
 
