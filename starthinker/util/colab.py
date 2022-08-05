@@ -28,15 +28,15 @@ class Colab:
     self.code_lines = []
     self.id = 0
     self.colab = {
-        'license': 'Licensed under the Apache License, Version 2.0',
-        'copyright': 'Copyright 2020 Google LLC',
+        #'license': 'Licensed under the Apache License, Version 2.0',
+        #'copyright': 'Copyright 2020 Google LLC',
         'nbformat': int(version.split('.', 1)[0]),
         'nbformat_minor': int(version.split('.', 1)[1]),
         'metadata': {
             'colab': {
                 'name': name,
-                'provenance': [],
-                'collapsed_sections': [],
+                #'provenance': [],
+                #'collapsed_sections': [],
                 'toc_visible': True
             },
             'kernelspec': {
@@ -49,12 +49,14 @@ class Colab:
 
   def _next_id(self):
    self.id += 1
-   return '{}-{:03d}'.format(hashlib.md5(self.colab['metadata']['colab']['name'].encode('utf-8')).hexdigest()[-8:], self.id)
+   return '{}{:04d}'.format(hashlib.md5(self.colab['metadata']['colab']['name'].encode('utf-8')).hexdigest()[-8:], self.id)
 
   def _code(self):
     if self.code_lines:
       self.colab['cells'].append({
           'cell_type': 'code',
+          'execution_count': None,
+          'outputs': [],
           'metadata': {
               'id': self._next_id(),
           },
