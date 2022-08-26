@@ -2,7 +2,7 @@
 
 UI tests use the open source out of the box [Django Test Framework](https://docs.djangoproject.com/en/2.2/topics/testing/).
 These are standard Python unit tests with a few additional Django helpers.  Tests use command line credentials.  Tests can
-be excuted per Django instructons or via the helper bash script:
+be executed per Django instructons or via the helper bash script:
 
 ## Steps
 ```
