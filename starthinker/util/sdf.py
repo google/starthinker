@@ -89,7 +89,7 @@ def sdf_download(config, auth, version, partner_id, file_types, filter_type,
   if 'error' in response:
     raise Exception(response['error']['message'])
 
-  return download_media(config, 'user', response['response']['resourceName'])
+  return download_media(config, auth, response['response']['resourceName'])
 
 
 def add_seekable_to_file(f):
