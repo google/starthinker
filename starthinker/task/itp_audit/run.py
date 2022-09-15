@@ -257,20 +257,27 @@ def run_floodlight_reports(config, task):
 
   if config.verbose:
     print('Finished creating Floodlight reports - moving to BQ')
+    print('Waiting an hour for Floodlight reports to finish')
+
+  # Wait for reports to finish
+  time.sleep(3600)
 
   queries = []
 
   for report in reports:
     createdReportId = report['reportId']
     floodlightConfigId = report['floodlightConfigId']
-
-    filename, report = report_file(
-      config, task['auth_cm'],
-      task['account'],
-      createdReportId,
-      None,
-      task.get('timeout', 10),
-    )
+    try:
+      filename, report = report_file(
+        config, task['auth_cm'],
+        task['account'],
+        createdReportId,
+        None,
+        60,
+      )
+    except:
+      print('Floodlight Report not found: %s' % createdReportId)
+      report = None
 
     if report:
       if config.verbose:

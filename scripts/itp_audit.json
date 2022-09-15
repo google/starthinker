@@ -138,6 +138,7 @@
           "params": {
             "type": "TYPE_GENERAL",
             "groupBys": [
+              "FILTER_DATE",
               "FILTER_ADVERTISER_CURRENCY",
               "FILTER_LINE_ITEM_NAME",
               "FILTER_LINE_ITEM",
@@ -471,7 +472,7 @@
               {"name": "Line_Item_Id", "type": "INTEGER", "mode": "NULLABLE"},
               {"name": "Audience_List_Id", "type": "INTEGER", "mode": "NULLABLE"},
               {"name": "Audience_List_Type", "type": "STRING", "mode": "NULLABLE"},
-              {"name": "Date", "type": "STRING", "mode": "NULLABLE"},
+              {"name": "ReportDate", "type": "STRING", "mode": "NULLABLE"},
               {"name": "Impressions", "type": "FLOAT", "mode": "NULLABLE"},
               {"name": "Billable_Impressions", "type": "FLOAT", "mode": "NULLABLE"},
               {"name": "Clicks", "type": "FLOAT", "mode": "NULLABLE"},
