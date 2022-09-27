@@ -22,10 +22,12 @@ import threading
 
 from googleapiclient import discovery
 from googleapiclient.http import HttpRequest
+from google.auth import impersonated_credentials
 
 from starthinker.util.auth_wrapper import CredentialsFlowWrapper
 from starthinker.util.auth_wrapper import CredentialsServiceWrapper
 from starthinker.util.auth_wrapper import CredentialsUserWrapper
+from starthinker.config import APPLICATION_SCOPES
 
 DISCOVERY_CACHE = {}
 APIS_WITHOUT_DISCOVERY_DOCS = ('oauth',)
@@ -56,10 +58,10 @@ def get_credentials(config, auth):
       sys.exit(1)
 
   elif auth == 'service':
+    credentials = None
     try:
-      return CredentialsServiceWrapper(
-        config.recipe['setup']['auth']['service']
-      )
+      credentials = CredentialsServiceWrapper(
+        config.recipe['setup']['auth']['service'])
     except (KeyError, ValueError) as e:
       print('')
       print('ERROR: You are attempting to access an API endpoint that requires Google Cloud SERVICE authentication but have not provided credentials to make that possible.')
@@ -72,7 +74,13 @@ def get_credentials(config, auth):
       print('Client JSON Parameter Missing:', str(e))
       print('')
       sys.exit(1)
-
+    target_email = config.recipe['setup']['auth'].get('target_email')
+    if target_email:
+      credentials = impersonated_credentials.Credentials(
+          source_credentials=credentials,
+          target_principal=target_email,
+          target_scopes=APPLICATION_SCOPES)
+    return credentials
 
 def get_service(config,
   api='gmail',

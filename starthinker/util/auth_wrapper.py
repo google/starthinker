@@ -70,6 +70,7 @@ def CredentialsServiceWrapper(service):
     return CredentialsService.from_service_account_info(service)
   elif service == 'DEFAULT':
     credentials, ignore = google.auth.default()
+    return credentials
   elif RE_CREDENTIALS_JSON.match(service):
     return CredentialsService.from_service_account_info(json.loads(service))
   else:
