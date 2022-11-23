@@ -98,7 +98,7 @@ class CreativeAssetDAO(BaseDAO):
 
     file_buffer = object_get(
         self.config,
-        'user',
+        self.auth,
         '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), filename))
 
     file_mime = mimetypes.guess_type(filename, strict=False)[0]
