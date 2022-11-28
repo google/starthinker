@@ -22,7 +22,6 @@ Google Sheet that represents the Bulkdozer feed, and
 """
 
 import json
-import pytz
 
 from starthinker.util.sheets import sheets_get, sheets_read, sheets_write
 from dateutil import parser
@@ -295,7 +294,7 @@ class Feed:
       result = parser.parse(value)
 
       if not result.tzinfo:
-        result = pytz.timezone(self._timezone).localize(result)
+        result = zoneinfo.ZoneInfo(self._timezone).localize(result)
 
       if ':' in value:
         return result.strftime('%Y-%m-%dT%H:%M:%S.000%z')

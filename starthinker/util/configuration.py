@@ -71,7 +71,7 @@ three important concepts:
 
 import os
 import json
-import pytz
+import zoneinfo
 import hashlib
 import argparse
 import textwrap
@@ -147,7 +147,7 @@ class Configuration():
     self.key = self.recipe['setup'].get('key')
 
     # find date based on timezone
-    self.timezone = pytz.timezone(
+    self.timezone = zoneinfo.ZoneInfo(
       self.recipe['setup'].get(
         'timezone',
         'America/Los_Angeles'

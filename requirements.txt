@@ -24,7 +24,6 @@ google-auth-httplib2
 google-cloud-bigquery>=2.13
 google-cloud-vision
 pysftp
-pytz
 tzlocal
 TwitterAPI
 python-dateutil
