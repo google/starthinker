@@ -53,6 +53,7 @@
     { "include":{
       "script":"scripts/anonymize.json",
       "parameters":{
+        "auth":"service",
         "from_project":{"field":{"name":"project", "kind":"string", "description":"Project where BigQuery dataset is read from."}},
         "from_dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From_", "default":"Manual"}},
         "to_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is created."}},

@@ -71,11 +71,15 @@ three important concepts:
 
 import os
 import json
-import zoneinfo
 import hashlib
 import argparse
 import textwrap
 
+# handle python 3.8-3.9 transition
+try:
+  from zoneinfo import ZoneInfo
+except:
+  from pytz import timezone as ZoneInfo
 
 from datetime import datetime
 from importlib import import_module
@@ -147,7 +151,7 @@ class Configuration():
     self.key = self.recipe['setup'].get('key')
 
     # find date based on timezone
-    self.timezone = zoneinfo.ZoneInfo(
+    self.timezone = ZoneInfo(
       self.recipe['setup'].get(
         'timezone',
         'America/Los_Angeles'

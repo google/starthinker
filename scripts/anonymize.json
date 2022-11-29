@@ -35,7 +35,7 @@
   },
   "tasks":[
     { "anonymize":{
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used." }},
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used." }},
       "bigquery":{
         "from":{
           "project":{"field":{ "name":"from_project", "kind":"string", "order":1, "description":"Original project to read from." }},

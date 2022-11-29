@@ -24,9 +24,9 @@ google-auth-httplib2
 google-cloud-bigquery>=2.13
 google-cloud-vision
 pysftp
-tzlocal
 TwitterAPI
 python-dateutil
+pytz
 psutil
 moviepy==1.0.0
 py-xlsx
