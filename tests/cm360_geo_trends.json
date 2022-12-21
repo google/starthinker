@@ -1,0 +1,96 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "prefix":"StarThinker_Test_", "suffix":"_Campaign_Comparison_CM", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/cm360_geo_trends.json",
+      "parameters":{
+        "auth_bq":"service",
+        "auth_cm":"user",
+        "auth_sheet":"user",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "prefix":"StarThinker_Test_", "suffix":"_Campaign_Comparison_CM", "default": "Manual"}},
+        "account":{"field":{ "name":"account", "kind":"integer", "description":"Campaign Manager Account ID" }},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "prefix":"StarThinker Test ", "suffix":" Campaign Comparison CM", "default": "Manual"}},
+        "advertiser":[],
+        "relativeDateRange":"LAST_14_DAYS"
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Campaign_Comparison_CM_", "suffix":"_Campaign_Comparison", "default": "Manual"}},
+        "table":"Comparison",
+        "schema":[
+          { "name": "Cohort", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Report_Day", "type": "DATE", "mode": "NULLABLE" },
+          { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Ad", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Placement", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Ad_Type", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Platform_Type", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Location", "type": "RECORD", "mode": "NULLABLE", "fields": [
+            { "name": "Zip_Code", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "City", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "County", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "DMA", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "State_Code", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Area_Land_Meters", "type": "FLOAT", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "Location_Ranking", "type": "RECORD", "mode": "NULLABLE", "fields": [
+            { "name": "Population", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Density", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Impression", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Impression_Rate", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Impression_Cost", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Click", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Click_Rate", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Click_Cost", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Conversion", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Conversion_Rate", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Conversion_Cost", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Costs", "type": "FLOAT", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "Cohort_A", "type": "RECORD", "mode": "NULLABLE", "fields": [
+            { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Ad", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Placement", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Population", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Clicks", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Conversions", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Costs", "type": "FLOAT", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "Cohort_B", "type": "RECORD", "mode": "NULLABLE", "fields": [
+            { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Ad", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Placement", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Population", "type": "FLOAT", "mode": "NULLABLE" },
+            { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Clicks", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Conversions", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Costs", "type": "FLOAT", "mode": "NULLABLE" }
+            ]
+          }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "prefix":"StarThinker_Test_", "suffix":"_Campaign_Comparison_CM", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}
