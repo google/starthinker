@@ -784,7 +784,7 @@ install_requirements() {
 
   source "${STARTHINKER_ENV}/bin/activate"
   python3 -m pip install --upgrade pip
-  python3 -m pip install install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
+  python3 -m pip install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
   deactivate
 
   echo ""

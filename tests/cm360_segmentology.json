@@ -46,7 +46,7 @@
     { "dataset":{
       "auth":"service",
       "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_CM_", "suffix":"_Segmentology", "default": "Manual"}},
-      "delete":true
+      "delete":false
     }}
   ]
 }

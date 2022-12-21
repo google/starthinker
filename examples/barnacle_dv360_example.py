@@ -179,7 +179,7 @@ def recipe_barnacle_dv360(config, auth_read, auth_write, partner, recipe_slug):
     },
     'to':{
       'dataset':recipe_slug,
-      'view':'Barnacle_Reports'
+      'table':'Barnacle_Reports'
     }
   })
 

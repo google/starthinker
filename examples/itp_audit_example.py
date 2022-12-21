@@ -29,9 +29,8 @@ from starthinker.task.drive.run import drive
 from starthinker.task.dataset.run import dataset
 from starthinker.task.dbm.run import dbm
 from starthinker.task.dcm.run import dcm
-from starthinker.task.sdf.run import sdf
 from starthinker.task.bigquery.run import bigquery
-from starthinker.task.sheets.run import sheets
+from starthinker.task.google_api.run import google_api
 from starthinker.task.itp_audit.run import itp_audit
 
 
@@ -74,7 +73,7 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
     'auth':auth_dv,
     'report':{
       'name':recipe_name,
-      'timeout':90,
+      'timeout':120,
       'filters':{
         'FILTER_ADVERTISER':{
           'values':dv360_advertiser_ids
@@ -126,170 +125,70 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
             'METRIC_CM_POST_VIEW_REVENUE',
             'METRIC_REVENUE_ADVERTISER'
           ]
+        },
+        'schedule':{
+          'frequency':'ONE_TIME'
+        }
+      },
+      'schedule':{
+        'frequency':'ONE_TIME'
+      }
+    },
+    'delete':True
+  })
+
+  dbm(config, {
+    'auth':auth_dv,
+    'report':{
+      'name':recipe_name,
+      'timeout':90,
+      'filters':{
+        'FILTER_ADVERTISER':{
+          'values':dv360_advertiser_ids
+        },
+        'FILTER_PARTNER':{
+          'values':dv360_partner_id
+        }
+      },
+      'body':{
+        'timezoneCode':recipe_timezone,
+        'metadata':{
+          'title':recipe_name,
+          'dataRange':'LAST_90_DAYS',
+          'format':'CSV'
+        },
+        'params':{
+          'type':'TYPE_GENERAL',
+          'groupBys':[
+            'FILTER_DATE',
+            'FILTER_ADVERTISER_CURRENCY',
+            'FILTER_LINE_ITEM_NAME',
+            'FILTER_LINE_ITEM',
+            'FILTER_USER_LIST',
+            'FILTER_USER_LIST_TYPE'
+          ],
+          'metrics':[
+            'METRIC_IMPRESSIONS',
+            'METRIC_BILLABLE_IMPRESSIONS',
+            'METRIC_CLICKS',
+            'METRIC_CTR',
+            'METRIC_TOTAL_CONVERSIONS',
+            'METRIC_LAST_CLICKS',
+            'METRIC_LAST_IMPRESSIONS',
+            'METRIC_REVENUE_ADVERTISER',
+            'METRIC_CM360_POST_VIEW_REVENUE',
+            'METRIC_CM360_POST_CLICK_REVENUE'
+          ],
+          'options':{
+            'includeOnlyTargetedUserLists':False
+          }
+        },
+        'schedule':{
+          'frequency':'DAILY'
         }
       }
     },
-    'delete':False,
-    'out':{
-      'bigquery':{
-        'auth':auth_bq,
-        'dataset':recipe_slug,
-        'table':'z_Dv360_Browser_Report_Dirty',
-        'header':True,
-        'schema':[
-          {
-            'name':'Advertiser_Id',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Advertiser',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Advertiser_Currency',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Campaign_Id',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Campaign',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Insertion_Order_Daily_Frequency',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Insertion_Order_Id',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Insertion_Order',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Line_Item_Id',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Line_Item',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Environment',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Week',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Month',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Year',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Partner_Id',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Partner',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Line_Item_Type',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Device_Type',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Browser',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Anonymous_Inventory_Modeling',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Operating_System',
-            'type':'STRING',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Media_Cost_Advertiser_Currency',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Impressions',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Clicks',
-            'type':'INTEGER',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Total_Conversions',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Post_Click_Conversions',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Post_View_Conversions',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Cm_Post_Click_Revenue',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Cm_Post_View_Revenue',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          },
-          {
-            'name':'Revenue_Adv_Currency',
-            'type':'FLOAT',
-            'mode':'NULLABLE'
-          }
-        ]
-      }
-    }
+    'delete':False
   })
 
   dcm(config, {
@@ -362,56 +261,19 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
           ]
         },
         'schedule':{
-          'active':True,
+          'active':False,
           'repeats':'WEEKLY',
-          'every':1,
           'repeatsOnWeekDays':[
-            'Sunday'
-          ]
+            'MONDAY'
+          ],
+          'every':1
         },
         'delivery':{
           'emailOwner':False
         }
-      }
-    },
-    'out':{
-      'bigquery':{
-        'auth':auth_bq,
-        'dataset':recipe_slug,
-        'table':'z_CM_Browser_Report_Dirty',
-        'header':True,
-        'is_incremental_load':False
-      }
-    },
-    'delete':False
-  })
-
-  sdf(config, {
-    'auth':auth_dv,
-    'version':'SDF_VERSION_5_3',
-    'partner_id':dv360_partner_id,
-    'file_types':[
-      'FILE_TYPE_CAMPAIGN',
-      'FILE_TYPE_LINE_ITEM',
-      'FILE_TYPE_INSERTION_ORDER'
-    ],
-    'filter_type':'FILTER_TYPE_ADVERTISER_ID',
-    'read':{
-      'filter_ids':{
-        'single_cell':True,
-        'bigquery':{
-          'dataset':recipe_slug,
-          'query':'select distinct Advertiser_Id from `{dataset}.z_Dv360_Browser_Report_Dirty`',
-          'parameters':{
-            'dataset':recipe_slug
-          },
-          'legacy':False
-        }
-      }
-    },
-    'time_partitioned_table':False,
-    'create_single_day_table':False,
-    'dataset':recipe_slug
+      },
+      'delete':True
+    }
   })
 
   bigquery(config, {
@@ -600,241 +462,6 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
     'from':{
       'values':[
         [
-          'Other',
-          'Other',
-          0
-        ],
-        [
-          'Android Webkit',
-          'Android',
-          1
-        ],
-        [
-          'Firefox',
-          'Firefox',
-          2
-        ],
-        [
-          'Chrome',
-          'Chrome/Android',
-          3
-        ],
-        [
-          'Internet Explorer 9',
-          'IE/Edge',
-          4
-        ],
-        [
-          'Safari',
-          'Safari/iOS',
-          6
-        ],
-        [
-          'Safari 5',
-          'Safari/iOS',
-          7
-        ],
-        [
-          'Internet Explorer 10',
-          'IE/Edge',
-          9
-        ],
-        [
-          'Safari 6',
-          'Safari/iOS',
-          10
-        ],
-        [
-          'Opera',
-          'Opera',
-          1038
-        ],
-        [
-          'Internet Explorer 11',
-          'IE/Edge',
-          12
-        ],
-        [
-          'Internet Explorer 8',
-          'IE/Edge',
-          13
-        ],
-        [
-          'Internet Explorer 7',
-          'IE/Edge',
-          14
-        ],
-        [
-          'Internet Explorer 6',
-          'IE/Edge',
-          15
-        ],
-        [
-          'Internet Explorer 5',
-          'IE/Edge',
-          16
-        ],
-        [
-          'Safari 4',
-          'Safari/iOS',
-          17
-        ],
-        [
-          'Safari 3',
-          'Safari/iOS',
-          18
-        ],
-        [
-          'Safari 2',
-          'Safari/iOS',
-          19
-        ],
-        [
-          'Safari 1',
-          'Safari/iOS',
-          20
-        ],
-        [
-          'Microsoft Edge',
-          'IE/Edge',
-          21
-        ],
-        [
-          'Safari 7',
-          'Safari/iOS',
-          22
-        ],
-        [
-          'Safari 8',
-          'Safari/iOS',
-          23
-        ],
-        [
-          'Safari 9',
-          'Safari/iOS',
-          24
-        ],
-        [
-          'Safari 10',
-          'Safari/iOS',
-          25
-        ],
-        [
-          'Safari 11',
-          'Safari/iOS',
-          26
-        ],
-        [
-          'Safari 12',
-          'Safari/iOS',
-          27
-        ],
-        [
-          'Safari 13',
-          'Safari/iOS',
-          28
-        ],
-        [
-          'Safari 14',
-          'Safari/iOS',
-          29
-        ]
-      ]
-    },
-    'to':{
-      'dataset':recipe_slug,
-      'table':'z_Browser_SDF_lookup'
-    },
-    'schema':[
-      {
-        'name':'Browser_Platform',
-        'type':'STRING'
-      },
-      {
-        'name':'Browser_Platform_clean',
-        'type':'STRING'
-      },
-      {
-        'name':'Browser_Platform_id',
-        'type':'INTEGER'
-      }
-    ]
-  })
-
-  sheets(config, {
-    'auth':auth_sheets,
-    'sheet':recipe_name,
-    'tab':'SdfScoring',
-    'range':'A2:M',
-    'header':False,
-    'out':{
-      'auth':auth_bq,
-      'bigquery':{
-        'dataset':recipe_slug,
-        'table':'z_dv360_scoring_matrix',
-        'schema':[
-          {
-            'name':'Whole_Attribution_Score',
-            'type':'INTEGER'
-          },
-          {
-            'name':'Safari_Attribution_Score',
-            'type':'INTEGER'
-          },
-          {
-            'name':'Safari_Reach_Score',
-            'type':'INTEGER'
-          },
-          {
-            'name':'Audience_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'Google_Audience_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'Contextual_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'Conversion_Bid_Optimization',
-            'type':'BOOL'
-          },
-          {
-            'name':'Browser_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'Safari_Browser_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'Chrome_Browser_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'FF_Browser_Targeting_Include',
-            'type':'BOOL'
-          },
-          {
-            'name':'View_Through_Enabled',
-            'type':'BOOL'
-          },
-          {
-            'name':'Comment',
-            'type':'STRING'
-          }
-        ]
-      }
-    }
-  })
-
-  bigquery(config, {
-    'auth':auth_bq,
-    'from':{
-      'values':[
-        [
           'Firefox',
           'Firefox',
           'Firefox'
@@ -1007,6 +634,314 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
     ]
   })
 
+  google_api(config, {
+    'auth':auth_dv,
+    'api':'displayvideo',
+    'version':'v1',
+    'function':'firstAndThirdPartyAudiences.list',
+    'kwargs':{
+      'partnerId':dv360_partner_id
+    },
+    'results':{
+      'bigquery':{
+        'dataset':recipe_slug,
+        'table':'z_dv_audiences'
+      }
+    }
+  })
+
+  dbm(config, {
+    'auth':auth_dv,
+    'report':{
+      'name':recipe_name
+    },
+    'out':{
+      'bigquery':{
+        'auth':auth_bq,
+        'dataset':recipe_slug,
+        'table':'z_Dv360_Browser_Report_Dirty',
+        'header':True,
+        'schema':[
+          {
+            'name':'Advertiser_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Advertiser',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Advertiser_Currency',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Campaign_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Campaign',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Insertion_Order_Daily_Frequency',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Insertion_Order_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Insertion_Order',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Line_Item_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Line_Item',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Environment',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Week',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Month',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Year',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Partner_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Partner',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Line_Item_Type',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Device_Type',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Browser',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Anonymous_Inventory_Modeling',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Operating_System',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Media_Cost_Advertiser_Currency',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Impressions',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Clicks',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Total_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Post_Click_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Post_View_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Cm_Post_Click_Revenue',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Cm_Post_View_Revenue',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Revenue_Adv_Currency',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          }
+        ]
+      }
+    }
+  })
+
+  dcm(config, {
+    'auth':auth_cm,
+    'report':{
+      'account':cm_account_id,
+      'name':recipe_name
+    },
+    'out':{
+      'bigquery':{
+        'auth':auth_bq,
+        'dataset':recipe_slug,
+        'table':'z_CM_Browser_Report_Dirty',
+        'header':True,
+        'is_incremental_load':False
+      }
+    }
+  })
+
+  dbm(config, {
+    'auth':auth_dv,
+    'report':{
+      'name':recipe_name
+    },
+    'out':{
+      'bigquery':{
+        'auth':auth_bq,
+        'dataset':recipe_slug,
+        'table':'z_Dv_Audience_Report',
+        'header':True,
+        'schema':[
+          {
+            'name':'Advertiser_Currency',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Line_Item',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Line_Item_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Audience_List_Id',
+            'type':'INTEGER',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Audience_List_Type',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'ReportDate',
+            'type':'STRING',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Impressions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Billable_Impressions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Clicks',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'CTR',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Total_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Post_Click_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Post_View_Conversions',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Revenue_Adv_Currency',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Cm_Post_View_Revenue',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          },
+          {
+            'name':'Cm_Post_Click_Revenue',
+            'type':'FLOAT',
+            'mode':'NULLABLE'
+          }
+        ]
+      }
+    }
+  })
+
+  bigquery(config, {
+    'auth':auth_bq,
+    'run':{
+      'legacy':False,
+      'query':'CREATE OR REPLACE TABLE `{dataset}.DV_Audiences` AS with dv_entities as ( SELECT distinct b.Advertiser, b.Advertiser_Id, b.Campaign, b.Campaign_Id, b.Insertion_Order, b.Insertion_Order_Id, b.Line_Item_Id FROM `{dataset}.z_Dv360_Browser_Report_Dirty` AS b ) SELECT case when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_UNSPECIFIED' then 'N/A' when a.firstAndThirdPartyAudienceType is null then 'N/A' when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_FIRST_PARTY' then 'First Party' when a.firstAndThirdPartyAudienceType = 'FIRST_AND_THIRD_PARTY_AUDIENCE_TYPE_THIRD_PARTY' then 'Third Party' end as firstAndThirdPartyAudienceType, CASE WHEN a.audienceType = 'AUDIENCE_TYPE_UNSPECIFIED' THEN 'N/A' WHEN a.audienceType is null THEN 'N/A' WHEN a.audienceType = 'CUSTOMER_MATCH_CONTACT_INFO' THEN 'CustomerMatch ContactInfo' WHEN a.audienceType = 'CUSTOMER_MATCH_DEVICE_ID' THEN 'CustomerMatch DeviceId' WHEN a.audienceType = 'CUSTOMER_MATCH_USER_ID' THEN 'CustomerMatch UserId' WHEN a.audienceType = 'ACTIVITY_BASED' THEN 'Activity Based' WHEN a.audienceType = 'FREQUENCY_CAP' THEN 'Frequency Cap' WHEN a.audienceType = 'TAG_BASED' THEN 'Tag Based' WHEN a.audienceType = 'YOUTUBE_USERS' THEN 'YouTube Users' WHEN a.audienceType = 'LICENSED' THEN 'Licensed' ELSE a.audienceType END AS audienceType, b.Advertiser, b.Advertiser_Id, b.Campaign, b.Campaign_Id, b.Insertion_Order, b.Insertion_Order_Id, r.Line_Item, r.Line_Item_Id, r.Audience_List_Id, r.Date, r.Impressions, r.Clicks, r.CTR, r.Total_Conversions, r.Post_Click_Conversions, r.Post_View_Conversions, r.Revenue_Adv_Currency, r.Cm_Post_View_Revenue, r.Cm_Post_Click_Revenue FROM `{dataset}.z_Dv_Audience_Report` AS r LEFT JOIN `{dataset}.z_dv_audiences` AS a ON r.Audience_List_Id = a.firstAndThirdPartyAudienceId LEFT JOIN dv_entities AS b ON b.Line_Item_Id = r.Line_Item_Id;',
+      'parameters':{
+        'dataset':recipe_slug
+      }
+    }
+  })
+
   itp_audit(config, {
     'auth_dv':auth_dv,
     'auth_cm':auth_cm,
@@ -1015,7 +950,7 @@ def recipe_itp_audit(config, recipe_timezone, auth_sheets, auth_bq, auth_dv, aut
     'account':cm_account_id,
     'dataset':recipe_slug,
     'sheet':recipe_name,
-    'timeout':60,
+    'timeout':120,
     'read':{
       'advertiser_ids':{
         'single_cell':True,

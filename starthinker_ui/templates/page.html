@@ -138,6 +138,10 @@
 
     {% include "floodlight.html" %}
 
+    <div id="message" class="card-panel grey lighten-3 black-text valign-wrapper center-align">
+      <p>The StarThinker project will no longer recieve new solution conributions from the Google team.<br/>Please read the full <a href="https://medium.com/starthinker/starthinker-open-source-support-ends-at-google-a7041f2b0970" target="_blank">StarThinker Open Source Support Ends At Google</a> article for more details.</p>
+    </div>
+
     {% if messages %}
       {% for message in messages %}
         {% if message.tags == 'success' %}

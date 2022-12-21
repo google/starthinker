@@ -61,6 +61,7 @@ SECRET_KEY = os.environ.get(
 ) or 'safetyandcivilreassuranceadministrationofficials'
 ALLOWED_HOSTS = [
     domain_to_host(os.environ.get('STARTHINKER_UI_DOMAIN', '')) or 'localhost',
+    'b2607f8b048001000002472f4c0a8140e1f40000000000000000001.proxy.googlers.com',
     '127.0.0.1'
 ]
 

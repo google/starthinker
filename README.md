@@ -1,4 +1,9 @@
-This is not an officially supported Google product. It is a reference implementation.
+**End of Google Support:** The StarThinker project will no longer recieve new
+solution conributions from the Google team.  Please read the full
+[StarThinker Open Source Support Ends At Google](https://medium.com/starthinker/starthinker-open-source-support-ends-at-google-a7041f2b0970)
+article for more details.
+
+**Disclaimer:** This is not an officially supported Google product. It is a reference implementation.
 There is absolutely NO WARRANTY provided for using this code. **The code is Apache Licensed
 and CAN BE fully modified, white labeled, and disassembled by your team.**
 

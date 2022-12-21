@@ -28,12 +28,12 @@ from starthinker.util.configuration import Configuration
 from starthinker.task.anonymize.run import anonymize
 
 
-def recipe_anonymize(config, auth_read, from_project, from_dataset, to_project, to_dataset):
+def recipe_anonymize(config, auth, from_project, from_dataset, to_project, to_dataset):
   """Copies tables and view from one dataset to another and anynonamizes all rows.
      Used to create sample datasets for dashboards.
 
      Args:
-       auth_read (authentication) - Credentials used.
+       auth (authentication) - Credentials used.
        from_project (string) - Original project to read from.
        from_dataset (string) - Original dataset to read from.
        to_project (string) - Anonymous data will be writen to.
@@ -41,7 +41,7 @@ def recipe_anonymize(config, auth_read, from_project, from_dataset, to_project, 
   """
 
   anonymize(config, {
-    'auth':auth_read,
+    'auth':auth,
     'bigquery':{
       'from':{
         'project':from_project,
@@ -74,7 +74,7 @@ if __name__ == "__main__":
   parser.add_argument("-service", help="Path to SERVICE credentials json file.", default=None)
   parser.add_argument("-verbose", help="Print all the steps as they happen.", action="store_true")
 
-  parser.add_argument("-auth_read", help="Credentials used.", default='service')
+  parser.add_argument("-auth", help="Credentials used.", default='service')
   parser.add_argument("-from_project", help="Original project to read from.", default=None)
   parser.add_argument("-from_dataset", help="Original dataset to read from.", default=None)
   parser.add_argument("-to_project", help="Anonymous data will be writen to.", default=None)
@@ -92,4 +92,4 @@ if __name__ == "__main__":
     verbose=args.verbose
   )
 
-  recipe_anonymize(config, args.auth_read, args.from_project, args.from_dataset, args.to_project, args.to_dataset)
+  recipe_anonymize(config, args.auth, args.from_project, args.from_dataset, args.to_project, args.to_dataset)
