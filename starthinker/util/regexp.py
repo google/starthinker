@@ -17,7 +17,13 @@
 ###########################################################################
 
 import re
-import pytz
+
+# handle python 3.8-3.9 transition
+try:
+  from zoneinfo import ZoneInfo
+except:
+  from pytz import timezone as ZoneInfo
+
 from datetime import date, datetime
 
 
@@ -54,7 +60,10 @@ def epoch_to_datetime(epoch_seconds, multiplier=1):
   if epoch_seconds is None:
     return None
   else:
-    return datetime.fromtimestamp(int(epoch_seconds) / multiplier, pytz.utc)
+    return datetime.fromtimestamp(
+      int(epoch_seconds) / multiplier,
+      ZoneInfo('UTC')
+    )
 
 
 def parse_url(text):
