@@ -260,7 +260,7 @@ setup_worker() {
 
   values=$(gcloud compute instance-templates list --filter="name=starthinker-worker-template" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
-    gcloud compute --project=$STARTHINKER_PROJECT instance-templates create starthinker-worker-template --machine-type=$STARTHINKER_WORKER_INSTANCE --network=projects/$STARTHINKER_PROJECT/global/networks/default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=$(get_service_email) --scopes=cloud-platform --image-family=starthinker-worker-family --image-project=$STARTHINKER_PROJECT --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=starthinker-worker-template --reservation-affinity=any
+    gcloud compute --project=$STARTHINKER_PROJECT instance-templates create starthinker-worker-template --machine-type=$STARTHINKER_WORKER_INSTANCE --network=projects/$STARTHINKER_PROJECT/global/networks/default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=$(get_service_email) --scopes=cloud-platform --image-family=starthinker-worker-family --image-project=$STARTHINKER_PROJECT --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=starthinker-worker-template --reservation-affinity=any --no-address
   else
     echo "Template already exists."
   fi
