@@ -1,5 +1,5 @@
-**End of Google Support:** The StarThinker project will no longer recieve new
-solution conributions from the Google team.  Please read the full
+**End of Google Support:** The StarThinker project will no longer receive new
+solution contributions from the Google team.  Please read the full
 [StarThinker Open Source Support Ends At Google](https://medium.com/starthinker/starthinker-open-source-support-ends-at-google-a7041f2b0970)
 article for more details.
 
