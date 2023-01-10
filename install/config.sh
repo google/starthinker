@@ -725,12 +725,14 @@ install_virtualenv_darwin() {
     return
   else
     if [[ -z $VIRTUAL_ENV ]]; then
-      python3 -m pip install pip --upgrade --quiet --user;
+      #python3 -m pip install pip --upgrade --quiet --user;
+      echo "Missing pip for python3, please install."
     fi
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
-    python3 -m pip install virtualenv --quiet --user;
+    #python3 -m pip install virtualenv --quiet --user;
+    echo "Missing virtualenv for python3, please install."
   fi
 
 }
@@ -783,8 +785,8 @@ install_requirements() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
-  python3 -m pip install --upgrade pip
-  python3 -m pip install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
+  #python3 -m pip install --upgrade pip
+  python3 -m pip install -r ${STARTHINKER_ROOT}/requirements.txt --require-hashes --quiet
   deactivate
 
   echo ""
