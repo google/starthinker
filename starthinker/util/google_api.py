@@ -473,7 +473,7 @@ def API_DBM(config, auth, iterate=False):
 
   api = {
       'api': 'doubleclickbidmanager',
-      'version': 'v1.1',
+      'version': 'v2',
       'auth': auth,
       'iterate': iterate
   }
@@ -503,7 +503,7 @@ def API_DCM(config, auth, iterate=False, internal=False):
 
   api = {
       'api': 'dfareporting',
-      'version': 'v3.5',
+      'version': 'v4',
       'auth': auth,
       'iterate': iterate
   }
@@ -657,7 +657,7 @@ def API_DV360(config, auth, iterate=False):
 
   api = {
       'api': 'displayvideo',
-      'version': 'v1',
+      'version': 'v2',
       'auth': auth,
       'iterate': iterate
   }
