@@ -42,7 +42,7 @@ Example Read DV360 Partner Name and Id Into BigQuery:
       }
     }}
 
-Example Read DV360 Advertisers defined in another BigQuery table:
+Example Read DV360 Advertisers defined in another BigQuery table and append the advertiserId:
 
     { "google_api": {
       "auth": "user",
@@ -56,6 +56,9 @@ Example Read DV360 Advertisers defined in another BigQuery table:
           "legacy":false
         }
       },
+      "append":[
+         { "name": "advertiserId", "type": "INTEGER", "mode": "REQUIRED" }
+      ],
       "iterate":true,
       "results": {
         "bigquery": {
@@ -236,7 +239,24 @@ def google_api_build_errors(config, auth, api_call, errors):
   return errors
 
 
-def google_api_execute(config, auth, api_call, results, errors, limit=None):
+#def google_api_append(schema, values, rows):
+#  """Append columns to the rows containing the kwargs used to call the API.
+#  Args:
+#    schema (dict): name of the key to use for the api arguments
+#    values (dict): the kwargs used to call the API
+#    rows (list): a list of rows to add the prefix to each one
+#
+#  Returns (list):
+#    A generator containing the rows
+#  """
+#
+#  for row in rows:
+#    for s in schema:
+#      row[s['name']] = values[s['name']]
+#    yield row
+
+
+def google_api_execute(config, auth, api_call, results, errors, append=None):
   """Execute the actual API call and write to the end points defined.
 
   The API call is completely defined at this point.
@@ -247,7 +267,7 @@ def google_api_execute(config, auth, api_call, results, errors, limit=None):
     api_call (dict): the JSON for the API call as defined in recipe.
     results (dict): defines where the data will be written
     errors (dict): defines where the errors will be written
-    limit (int): Reduce the number of calls ( mostly for debugging )
+    append (dict): optional parameters to append to each row, given as BQ schema
 
   Returns (dict):
     None, all data is transfered between API / BigQuery
@@ -270,6 +290,13 @@ def google_api_execute(config, auth, api_call, results, errors, limit=None):
 
       if config.verbose:
         print('.', end='', flush=True)
+
+      if append:
+        rows = (
+          {s['name']: api_call['kwargs'][s['name']] for s in append}
+          for row in rows
+        )
+        #rows = google_api_append(append, api_call['kwargs'], rows)
 
       yield from map(lambda r: Discovery_To_BigQuery.clean(r), rows)
 
@@ -338,6 +365,8 @@ def google_api(config, task):
     'headers': task.get('headers'),
   }
 
+  append = task.get('append')
+
   results = google_api_build_results(
     config,
     task['auth'],
@@ -376,7 +405,10 @@ def google_api(config, task):
     for kwargs in kwargs_list:
       api_call['kwargs'] = kwargs
       google_api_initilaize(config, api_call, task.get('alias'))
-      yield from google_api_execute(config, task['auth'], api_call, results, errors, task.get('limit'))
+      yield from google_api_execute(config, task['auth'], api_call, results, errors, append)
+
+  if append:
+    results['bigquery']['schema'].extend(append)
 
   return put_rows(
     config,
