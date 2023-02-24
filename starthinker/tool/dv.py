@@ -65,7 +65,7 @@ def main():
 
   # get report
   if args.report:
-    report = API_DBM(config, auth).queries().getquery(
+    report = API_DBM(config, auth).queries().get(
         queryId=args.report).execute()
     print(json.dumps(report, indent=2, sort_keys=True))
 
@@ -88,7 +88,7 @@ def main():
 
   # get list
   else:
-    for report in API_DBM(config, auth, iterate=True).queries().listqueries().execute():
+    for report in API_DBM(config, auth, iterate=True).queries().list().execute():
       print(json.dumps(report, indent=2, sort_keys=True))
 
 

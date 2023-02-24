@@ -16,10 +16,6 @@
 #
 ###########################################################################
 
-# https://developers.google.com/bid-manager/v1/queries
-# https://developers.google.com/drive/v3/web/manage-downloads
-# https://developers.google.com/bid-manager/guides/entity-write/format
-
 import re
 import pprint
 import json
@@ -43,8 +39,6 @@ RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 def report_get(config, auth, report_id=None, name=None):
   """ Returns the DBM JSON definition of a report based on name or ID.
 
-  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
-
   Args:
     * auth: (string) Either user or service.
     * report_id: (int) ID of DCm report to fetch ( either or name ).
@@ -56,11 +50,11 @@ def report_get(config, auth, report_id=None, name=None):
   """
 
   if name:
-    for query in API_DBM(config, auth, iterate=True).queries().listqueries().execute():
+    for query in API_DBM(config, auth, iterate=True).queries().list().execute():
       if query['metadata']['title'] == name:
         return query
   else:
-    return API_DBM(config, auth).queries().getquery(queryId=report_id).execute()
+    return API_DBM(config, auth).queries().get(queryId=report_id).execute()
 
 
 def report_filter(config, auth, body, filters):
@@ -109,9 +103,6 @@ def report_filter(config, auth, body, filters):
 def report_build(config, auth, body):
   """ Creates a DBM report given a JSON definition.
 
-  Bulletproofing:
-  https://developers.google.com/bid-manager/v1/queries/createquery
-
   The report will be automatically run the first time.
 
   The body JSON provided will have the following fields added if not present:
@@ -133,25 +124,31 @@ def report_build(config, auth, body):
 
     # add default daily schedule if it does not exist ( convenience )
     body.setdefault('schedule', {})
-    body['schedule'].setdefault('nextRunTimezoneCode', body['timezoneCode'])
+    body['schedule'].setdefault('nextRunTimezoneCode', str(config.timezone))
     body['schedule'].setdefault('frequency', 'DAILY')
     if body['schedule']['frequency'] != 'ONE_TIME':
-      body['schedule'].setdefault('nextRunMinuteOfDay', 4 * 60)
-      body['schedule'].setdefault('endTimeMs',
-                                  int((time.time() + (365 * 24 * 60 * 60)) *
-                                      1000))  # 1 year in future
+      body['schedule'].setdefault('startDate', {
+        "day": config.date.day,
+        "month": config.date.month,
+        "year": config.date.year
+      })
+      body['schedule'].setdefault('endDate', {
+        "day": config.date.day,
+        "month": config.date.month,
+        "year": config.date.year + 1
+      })
 
     # build report
     #pprint.PrettyPrinter().pprint(body)
-    report = API_DBM(config, auth).queries().createquery(body=body, asynchronous=True).execute()
+    report = API_DBM(config, auth).queries().create(
+      body=body
+    ).execute()
 
     # run report first time
-    body = {
-        'dataRange': report['metadata']['dataRange'],
-        'timezoneCode': body['timezoneCode']
-    }
-    API_DBM(config, auth).queries().runquery(
-        queryId=report['queryId'], body=body).execute()
+    API_DBM(config, auth).queries().run(
+      queryId=report['queryId'],
+      synchronous=False
+    ).execute()
 
   else:
     if config.verbose:
@@ -162,8 +159,6 @@ def report_build(config, auth, body):
 
 def report_fetch(config, auth, report_id=None, name=None, timeout=60):
   """ Retrieves most recent DBM file JSON by name or ID, if in progress, waits for it to complete.
-
-  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
 
   Timeout is in minutes ( retries will happen at 5 minute interval, default
   total time is 20 minutes )
@@ -184,35 +179,57 @@ def report_fetch(config, auth, report_id=None, name=None, timeout=60):
   if config.verbose:
     print('DBM Report Download ( timeout ):', report_id or name, timeout)
 
-  while timeout >= 0:  # allow zero to execute at least once
-    # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
-    timeout -= 1
-
-    report = report_get(config, auth, report_id, name)
-    #pprint.PrettyPrinter().pprint(report)
+  # check report
+  if report_id is None:
+    report = report_get(config, auth, name=name)
     if report:
-      # report is running ( return only if timeout is exhausted )
-      if report['metadata'].get('googleCloudStoragePathForLatestReport',
-                                '') == '':
-        if config.verbose:
-          print('DBM Still Running')
-        if timeout < 0:
-          return True
-      # file exists ( return it success )
-      else:
-        return report['metadata']['googleCloudStoragePathForLatestReport']
-
-    # no report ( break out of loop it will never finish )
+      report_id = report['queryId']
     else:
       if config.verbose:
-        print('DBM No Report')
+        print('MISSING REPORT')
       return False
 
-    # sleep a minute
-    if timeout > 0:
+  # check file
+  while timeout >= 0:  # allow zero to execute at least once
+    timeout -= 1
+
+    try:
+      report_file = next(API_DBM(
+        config,
+        auth,
+        iterate=True
+      ).queries().reports().list(
+        queryId=report_id,
+        orderBy='key.reportId desc',
+        pageSize=1
+      ).execute())
+
+      #pprint.PrettyPrinter().pprint(report_file)
+
       if config.verbose:
-        print('WAITING MINUTES', timeout)
-      time.sleep(60)
+        print('DBM Report Status:', report_file['metadata']['status']['state'])
+
+      # loop
+      if report_file['metadata']['status']['state'] in ('RUNNING', 'QUEUED'):
+        if config.verbose:
+          print('WAITING A MINUTE OF:', timeout)
+          time.sleep(60)
+
+      # exit
+      elif report_file['metadata']['status']['state'] == 'DONE':
+        return report_file['metadata']['googleCloudStoragePath']
+
+      # exit
+      elif report_file['metadata']['status']['state'] == 'FAILED':
+        if config.verbose:
+          print('FAILED REPORT')
+        return False
+
+    # exit
+    except StopIteration:
+      if config.verbose:
+        print('MISSING FILE')
+      return False
 
 
 def report_file(config, auth,
@@ -221,8 +238,6 @@ def report_file(config, auth,
                 timeout=60,
                 chunksize=DBM_CHUNKSIZE):
   """ Retrieves most recent DBM file by name or ID, if in progress, waits for it to complete.
-
-  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
 
   Timeout is in minutes ( retries will happen at 1 minute interval, default
   total time is 60 minutes )
@@ -269,9 +284,6 @@ def report_file(config, auth,
 def report_delete(config, auth, report_id=None, name=None):
   """ Deletes a DBM report based on name or ID.
 
-  Bulletproofing:
-  https://developers.google.com/bid-manager/v1/queries/deletequery
-
   Args:
     * auth: (string) Either user or service.
     * report_id: (int) ID of DCm report to fetch ( either or name ).
@@ -284,9 +296,10 @@ def report_delete(config, auth, report_id=None, name=None):
 
   if config.verbose:
     print('DBM DELETE:', report_id or name)
+
   report = report_get(config, auth, report_id, name)
   if report:
-    API_DBM(config, auth).queries().deletequery(queryId=report['queryId']).execute()
+    API_DBM(config, auth).queries().delete(queryId=report['queryId']).execute()
   else:
     if config.verbose:
       print('DBM DELETE: No Report')
@@ -294,9 +307,6 @@ def report_delete(config, auth, report_id=None, name=None):
 
 def report_list(config, auth):
   """ Lists all the DBM report configurations for the current credentials.
-
-  Bulletproofing:
-  https://developers.google.com/bid-manager/v1/queries/listqueries
 
   Args:
     * auth: (string) Either user or service.
@@ -306,7 +316,7 @@ def report_list(config, auth):
 
   """
 
-  for query in API_DBM(config, auth, iterate=True).queries().listqueries().execute():
+  for query in API_DBM(config, auth, iterate=True).queries().list().execute():
     yield query
 
 
