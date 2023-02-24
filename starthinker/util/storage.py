@@ -245,16 +245,14 @@ def bucket_delete(config, auth, name):
 def bucket_access(config, auth,
                   project,
                   name,
-                  role,
+                  role='OWNER',
                   emails=[],
                   groups=[],
-                  services=[],
                   domains=[]):
 
-  entities = map(lambda e: 'user-%s' % e, emails) + \
-    map(lambda e: 'group-%s' % e, groups) + \
-    map(lambda e: 'user-%s' % e, services) + \
-    map(lambda e: 'domain-%s' % e, domains)
+  entities = ['user-%s' % e for e in  emails]
+  entities += ['group-%s' % e for e in groups]
+  entities += ['domain-%s' % e for e in  domains]
 
   for entity in entities:
     body = {
