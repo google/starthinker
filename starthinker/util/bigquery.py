@@ -238,7 +238,7 @@ def datasets_access(config, auth,
         }).execute()
 
 
-def run_query(config, auth, project_id, query, legacy=True, dataset_id=None):
+def run_query(config, auth, project_id, query, legacy=False, dataset_id=None):
 
   body = {'query': query, 'useLegacySql': legacy}
 
@@ -257,7 +257,7 @@ def query_to_table(config, auth,
                    table_id,
                    query,
                    disposition='WRITE_TRUNCATE',
-                   legacy=True,
+                   legacy=False,
                    billing_project_id=None,
                    target_project_id=None):
   target_project_id = target_project_id or project_id
@@ -293,7 +293,7 @@ def query_to_view(config, auth,
                   dataset_id,
                   view_id,
                   query,
-                  legacy=True,
+                  legacy=False,
                   replace=False):
 
   body = {
@@ -772,7 +772,7 @@ def query_to_rows(config, auth,
                   dataset_id,
                   query,
                   row_max=None,
-                  legacy=True,
+                  legacy=False,
                   as_object=False):
   if config.verbose:
     print('BIGQUERY QUERY:', project_id, dataset_id)
@@ -827,7 +827,7 @@ def query_to_rows(config, auth,
       break
 
 
-def query_to_schema(config, auth, project_id, dataset_id, query, legacy=True):
+def query_to_schema(config, auth, project_id, dataset_id, query, legacy=False):
 
   if config.verbose:
     print('BIGQUERY QUERY SCHEMA:', project_id, dataset_id)

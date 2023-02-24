@@ -86,7 +86,7 @@ def bigquery_run(config, task):
       task['run']['query'],
       task['run'].get('parameters')
     ),
-    task['run'].get('legacy', True)
+    task['run'].get('legacy', False)
   )
 
 
@@ -144,7 +144,7 @@ def bigquery_query(config, task):
         else 'WRITE_TRUNCATE',
       legacy=task['from'].get(
         'legacy',
-        task['from'].get('useLegacySql', True)
+        task['from'].get('useLegacySql', False)
       ),  # DEPRECATED: useLegacySql,
       target_project_id=task['to'].get('project_id', config.project)
     )
@@ -162,7 +162,7 @@ def bigquery_query(config, task):
         task['from']['query'],
         task['from'].get('parameters')
       ),
-      legacy=task['from'].get('legacy', True)
+      legacy=task['from'].get('legacy', False)
     )
 
     # makes sure types are correct in sheet
@@ -197,7 +197,7 @@ def bigquery_query(config, task):
         task['from']['query'],
         task['from'].get('parameters')
       ),
-      legacy=task['from'].get('use_legacy_sql', True)
+      legacy=task['from'].get('use_legacy_sql', False)
     )
 
     if rows:
@@ -219,7 +219,7 @@ def bigquery_query(config, task):
       ),
       task['from'].get(
         'legacy',
-        task['from'].get('useLegacySql', True)
+        task['from'].get('useLegacySql', False)
       ),  # DEPRECATED: useLegacySql
       task['to'].get('replace', False)
     )
