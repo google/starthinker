@@ -239,21 +239,21 @@ def google_api_build_errors(config, auth, api_call, errors):
   return errors
 
 
-#def google_api_append(schema, values, rows):
-#  """Append columns to the rows containing the kwargs used to call the API.
-#  Args:
-#    schema (dict): name of the key to use for the api arguments
-#    values (dict): the kwargs used to call the API
-#    rows (list): a list of rows to add the prefix to each one
-#
-#  Returns (list):
-#    A generator containing the rows
-#  """
-#
-#  for row in rows:
-#    for s in schema:
-#      row[s['name']] = values[s['name']]
-#    yield row
+def google_api_append(schema, values, rows):
+  """Append columns to the rows containing the kwargs used to call the API.
+  Args:
+    schema (dict): name of the key to use for the api arguments
+    values (dict): the kwargs used to call the API
+    rows (list): a list of rows to add the prefix to each one
+
+  Returns (list):
+    A generator containing the rows
+  """
+
+  for row in rows:
+    for s in schema:
+      row[s['name']] = values[s['name']]
+    yield row
 
 
 def google_api_execute(config, auth, api_call, results, errors, append=None):
@@ -292,11 +292,7 @@ def google_api_execute(config, auth, api_call, results, errors, append=None):
         print('.', end='', flush=True)
 
       if append:
-        rows = (
-          {s['name']: api_call['kwargs'][s['name']] for s in append}
-          for row in rows
-        )
-        #rows = google_api_append(append, api_call['kwargs'], rows)
+        rows = google_api_append(append, api_call['kwargs'], rows)
 
       yield from map(lambda r: Discovery_To_BigQuery.clean(r), rows)
 
