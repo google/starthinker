@@ -28,7 +28,7 @@ REQUIREMENTS = [
     'google-auth',
     'google-auth-oauthlib',
     'google-auth-httplib2',
-    'google-cloud-bigquery==2.13',
+    'google-cloud-bigquery==3.10.0',
     'pysftp',
     'pytz',
     'tzlocal',
