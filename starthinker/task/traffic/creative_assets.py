@@ -111,7 +111,7 @@ class CreativeAssetDAO(BaseDAO):
 
     result = self._api().insert(
         profileId=self.profile_id,
-        advertiserId=feed_item.get(FieldMap.ADVERTISER_ID, None),
+        advertiserId=str(feed_item.get(FieldMap.ADVERTISER_ID, None)),
         media_body=media,
         body=new_item).execute()
 
