@@ -66,8 +66,8 @@ def get_profile_for_api(config, auth, account_id=None):
     account_id=int(account_id)
 
   for p in API_DCM(config, auth, iterate=True).userProfiles().list().execute():
-    p_id = int(p['profileId'])
-    a_id = int(p['accountId'])
+    p_id = str(p['profileId'])
+    a_id = str(p['accountId'])
 
     # take the first profile for admin
     if a_id == 2515 and 'subAccountId' not in p:

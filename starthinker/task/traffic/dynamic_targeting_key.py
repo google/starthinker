@@ -56,7 +56,7 @@ class DynamicTargetingKeyDAO(BaseDAO):
     if not cache_key in self._key_cache:
       keys = self._api().list(
           profileId=self.profile_id,
-          advertiserId=advertiser_id,
+          advertiserId=str(advertiser_id),
           names=[key_name]).execute()
 
       self._key_cache[cache_key] = 'dynamicTargetingKeys' in keys and len(

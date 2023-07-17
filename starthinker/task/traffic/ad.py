@@ -85,7 +85,7 @@ class AdDAO(BaseDAO):
     # this Bulkdozer session
     if store.get('CREATIVE', creative_id):
       creative = self._api_creatives().get(
-          profileId=self.profile_id, id=creative_id).execute()
+          profileId=self.profile_id, id=str(creative_id)).execute()
       wait = 2
 
       while not creative['active'] and timeout > 0:
@@ -95,7 +95,7 @@ class AdDAO(BaseDAO):
         timeout -= wait
         wait *= 2
         creative = self._api_creatives().get(
-            profileId=self.profile_id, id=creative_id).execute()
+            profileId=self.profile_id, id=str(creative_id)).execute()
 
       if not creative['active']:
         raise Exception(

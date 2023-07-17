@@ -87,11 +87,11 @@ class CreativeAssociationDAO(BaseDAO):
           feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
           feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
-        association = {'creativeId': creative['id']}
+        association = {'creativeId': str(creative['id'])}
 
         result = self._api().insert(
             profileId=self.profile_id,
-            campaignId=campaign['id'],
+            campaignId=str(campaign['id']),
             body=association).execute()
 
         feed_item[FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID] = '%s|%s' % (
