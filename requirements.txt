@@ -494,9 +494,9 @@ packaging==21.3 \
     --hash=sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb \
     --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522
     # via google-cloud-bigquery
-paramiko==2.12.0 \
-    --hash=sha256:376885c05c5d6aa6e1f4608aac2a6b5b0548b1add40274477324605903d9cd49 \
-    --hash=sha256:b2df1a6325f6996ef55a8789d0462f5b502ea83b3c990cbb5bbe57345c6812c4
+paramiko==3.4.0 \
+    --hash=sha256:43f0b51115a896f9c00f59618023484cb3a14b98bbceab43394a39c6739b7ee7 \
+    --hash=sha256:aac08f26a31dc4dffd92821527d1682d99d52f9ef6851968114a8728f3c274d3
     # via pysftp
 pillow==9.4.0 \
     --hash=sha256:0845adc64fe9886db00f5ab68c4a8cd933ab749a87747555cec1c95acea64b0b \
@@ -774,10 +774,6 @@ rsa==4.9 \
     --hash=sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7 \
     --hash=sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21
     # via google-auth
-setuptools==65.6.3 \
-    --hash=sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54 \
-    --hash=sha256:a7620757bf984b58deaf32fc8a4577a9bbc0850cf92c20e1ce41c38c19e5fb75
-    # via gunicorn
 simple-salesforce==1.12.2 \
     --hash=sha256:518d701088c3d4425a15cd352d84e8379f8fe25a101a4c7905090aa727e3f916 \
     --hash=sha256:aec79a90440aafdf8a76d642650a561b39801549f3fe05400ea96d50d2ff19d0
@@ -789,7 +785,6 @@ six==1.16.0 \
     #   google-auth
     #   google-auth-httplib2
     #   isodate
-    #   paramiko
     #   python-dateutil
     #   requests-file
     #   smartsheet-python-sdk
