@@ -35,7 +35,7 @@ REQUIREMENTS = [
     'TwitterAPI',
     'python-dateutil',
     'psutil',
-    'moviepy==1.0.0',
+    'moviepy',
     'py-xlsx',
     'simple-salesforce',
     'smartsheet-python-sdk'
